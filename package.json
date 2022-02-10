@@ -1,0 +1,38 @@
+{
+  "name": "vite-plugin-vue-svg-icons",
+  "version": "1.0.5",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "browser": "dist/index.umd.js",
+  "repository": {
+    "type": "git",
+    "url": "https://gitee.com/RainBow8/vite-plugin-vue-svg-icons"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.16.10",
+    "@rollup/plugin-babel": "^5.3.0",
+    "@rollup/plugin-commonjs": "^21.0.1",
+    "@rollup/plugin-node-resolve": "^13.1.3",
+    "rollup": "^2.66.0",
+    "rollup-plugin-copy": "^3.4.0",
+    "rollup-plugin-terser": "^7.0.2",
+    "rollup-plugin-vue": "^6.0.0",
+    "vue": "^3.2.28"
+  },
+  "keywords": [
+    "vite-plugin-vue-svg-icons",
+    "svg-icon"
+  ],
+  "scripts": {
+    "build": "env ENV=prod rollup -c",
+    "dev": "rollup -c -w",
+    "test": "node test/test.js",
+    "pretest": "npm run build",
+    "deploy": "npm publish --registry=https://registry.npmjs.org/",
+    "remove": "npm unpublish --registry https://registry.npmjs.org/ vite-plugin-vue-svg-icons@请输入你的版本号",
+    "deprecate": "npm deprecate vite-plugin-vue-svg-iconsn@'< 1.0.8' 'bug'"
+  },
+  "files": [
+    "dist"
+  ]
+}
