@@ -1,7 +1,7 @@
 # vite-plugin-vue-svg-icons
 
 #### 介绍
-    可改变svg color、size 的组件, 支持全部iconfont.cn 上的svg
+    一个svg图标的插件，多个SVG图标，也只发起一次网络请求，组件可以改变color、size, 支持全部iconfont.cn上的svg
 
 #### 安装
     yarn add vite-plugin-vue-svg-icons -D

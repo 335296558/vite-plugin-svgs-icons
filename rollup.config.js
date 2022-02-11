@@ -16,14 +16,14 @@ const plugins = [
     copy({
         targets: [
             {
-                src: 'packages/svg-icon',
+                src: 'src/svg-icon',
                 dest: 'dist'
             }
         ]
     }),
     process.env.ENV === 'prod' && terser()
 ] 
-const entry = './packages/index.js'
+const entry = './src/index.js'
 const name = 'vitePluginVueSvgIcons';
 export default [
     {

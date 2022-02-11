@@ -7,9 +7,7 @@
  */
 import fs from 'fs';
 import { join } from 'path';
-console.log(__dirname, '__dirname')
-// let jsStr = fs.readFileSync(join(`${process.cwd()}`,'./svg-icon/index.js'), 'utf8');
-let jsStr = fs.readFileSync(`${__dirname}/svg-icon/index.js`, 'utf8');
+const jsStr = fs.readFileSync(`${__dirname}/svg-icon/index.js`, 'utf8');
 let defaultOptions;
 export default function vitePluginVueSvgIcons(options={}) {
     const ModuleId = 'svg-icon'
