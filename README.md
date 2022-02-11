@@ -1,7 +1,7 @@
 # vite-plugin-vue-svg-icons
 
 #### 介绍
-    一个svg图标的插件，多个SVG图标，也只发起一次网络请求，组件可以改变color、size, 支持全部iconfont.cn上的svg
+    一个svg图标的插件，无需每个svg都发起http请求, 组件可以改变color、size, 支持全部iconfont.cn上的svg
 
 #### 安装
     yarn add vite-plugin-vue-svg-icons -D
@@ -17,7 +17,7 @@
         ],
     })
 ```
-#### vitePluginVueSvgIcons 方法传参，Object
+#### vitePluginVueSvgIcons 方法传参，Object， 如果不需要的svg图标建议不要放在目录下
 
 | 参数名 | 类型 | 默认值 |
 | -------- | -------- | -------- |
