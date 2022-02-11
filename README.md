@@ -19,9 +19,9 @@
 ```
 #### vitePluginVueSvgIcons 方法传参，Object， 如果不需要的svg图标建议不要放在目录下
 
-| 参数名 | 类型 | 默认值 |
-| -------- | -------- | -------- |
-|dir|String|`${process.cwd()}/src/assets/svg`|
+| 参数名 | 类型 | 描述 | 默认值 |
+| -------- | -------- | -------- | -------- |
+|dir|String|存放svg图标的目录|`${process.cwd()}/src/assets/svg`|
 
 #### svg组件使用说明
 ```js

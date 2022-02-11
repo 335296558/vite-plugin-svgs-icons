@@ -66,7 +66,10 @@ export default {
     },
     methods: {
         svgColorSize(name) {
-            if (!svgs[name]) return name;
+            if (!svgs[name]) {
+                console.warn(name+'.svg文件不存在，请检查配置中的dir参数配置的目录是否存在应该svg文件')
+                return name
+            };
             return transformColorSize(svgs[name], {
                 color: this.color,
                 size: this.size,
