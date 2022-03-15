@@ -16,7 +16,7 @@ export const transformColorSize = (svgStr, option={})=> {
     }
     svgStr = svgStr.replace(/\width="[0-9]*"/g, `width="${option.size}" `)
     svgStr = svgStr.replace(/\height="[0-9]*"/g, `height="${option.size}" `)
-    svgStr = svgStr.replace(/fill="[\s\S]*" /g, `fill="${option.color}" `)
+    svgStr = svgStr.replace(/fill="[\s\S]+?"/g, `fill="${option.color}" `)
     if (svgStr.indexOf('width="')<0) {
         svgStr = svgStr.replace(/<svg/g, `<svg width="${option.size}"`)
     }
