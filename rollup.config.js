@@ -37,15 +37,3 @@ export default [
 		plugins
 	},
 ]
-// export default {
-//     input: entry,
-//     format: 'cjs', // 请不要更改打包模式，请不要更改打包模式，请不要更改打包模式，
-//     external: ['vue'],
-//     output: {
-//         file: pkg.main,
-//         name: name,
-//         format: 'cjs',
-//         exports: 'default',
-//     },
-//     plugins,
-// }
