@@ -16,14 +16,14 @@ export const transformColorSize = (svgStr, option={})=> {
     }
     svgStr = svgStr.replace(/\width="[0-9]*"/g, `width="${option.size}" `)
     svgStr = svgStr.replace(/\height="[0-9]*"/g, `height="${option.size}" `)
-    svgStr = svgStr.replace(/fill="[\s\S]+?"/g, `fill="${option.color}" `)
+    if (option.convertColor) svgStr = svgStr.replace(/fill="[\s\S]+?"/g, `fill="${option.color}" `)
     if (svgStr.indexOf('width="')<0) {
         svgStr = svgStr.replace(/<svg/g, `<svg width="${option.size}"`)
     }
     if (svgStr.indexOf('height="')<0) {
         svgStr = svgStr.replace(/<svg/g, `<svg height="${option.size}"`)
     }
-    if (svgStr.indexOf('fill="')<0) {
+    if (option.convertColor && svgStr.indexOf('fill="')<0) {
         svgStr = svgStr.replace(/<path/g, `<path fill="${option.color}"`)
     }
     return svgStr
@@ -59,6 +59,10 @@ export default {
             type: String, 
             default: '#4e4f4f' 
         },
+        convertColor:{
+            type: Boolean, 
+            default: true
+        },
         protect: {
             type: Boolean, 
             default: true
@@ -73,7 +77,8 @@ export default {
             return transformColorSize(svgs[name], {
                 color: this.color,
                 size: this.size,
-                protect: this.protect
+                protect: this.protect,
+                convertColor: this.convertColor
             })
         }
     },

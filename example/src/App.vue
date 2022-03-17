@@ -17,6 +17,7 @@ const color = ref('#f00')
         <svgIcon name="logo" :color="color" :size="size"></svgIcon>
         <svgIcon name="shop" :color="color" :size="size"></svgIcon>
         <svgIcon name="voice" :color="color" :size="size"></svgIcon>
+        <svgIcon name="testColor" :convert-color="false" :size="size"></svgIcon>
         <div class="box">
             <div class="title"><b>修改大小</b></div>
             <br />
