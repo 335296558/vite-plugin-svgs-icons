@@ -4,6 +4,7 @@ specifiers:
   '@vitejs/plugin-vue': ^2.0.0
   vite: ^2.7.13
   vite-plugin-inspect: ^0.3.13
+  vite-plugin-vue-svg-icons: ^1.1.0
   vue: ^3.2.25
 
 dependencies:
@@ -13,6 +14,7 @@ devDependencies:
   '@vitejs/plugin-vue': 2.1.0_vite@2.7.13+vue@3.2.29
   vite: 2.7.13
   vite-plugin-inspect: 0.3.13_vite@2.7.13
+  vite-plugin-vue-svg-icons: 1.1.0
 
 packages:
 
@@ -443,6 +445,10 @@ packages:
       vite: 2.7.13
     transitivePeerDependencies:
       - supports-color
+    dev: true
+
+  /vite-plugin-vue-svg-icons/1.1.0:
+    resolution: {integrity: sha512-yHfN8nlhS3sDHv0x67/p7Z6+0++XB6TiCh6h4Drscqn+GEIZmHmw3DnfVFw2kvxhW90hlJrlGAjep1pqrh8vOA==}
     dev: true
 
   /vite/2.7.13:
