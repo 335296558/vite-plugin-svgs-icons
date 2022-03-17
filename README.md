@@ -47,6 +47,5 @@
 |name|String|空|
 |color|String|svg自带值|
 |size|Number|svg自带值|
-<!-- |convertColor|Boolean|true 设置为false将不会修改svg的默认color| -->
 
 <!-- [示列图像]() -->
