@@ -45,7 +45,7 @@
 | 参数名 | 类型 | 默认值 |
 | -------- | -------- | -------- |
 |name|String|空|
-|color|String|svg自带值|
+|color|String|svg自带值, 不设置就不会更改svg原本的color|
 |size|Number|svg自带值|
 
 <!-- [示列图像]() -->
