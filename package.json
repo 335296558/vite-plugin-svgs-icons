@@ -21,7 +21,9 @@
   },
   "keywords": [
     "vite-plugin-vue-svg-icons",
-    "svg-icon"
+    "svg-icon",
+    "vue-svg-icon",
+    "svg"
   ],
   "scripts": {
     "build": "env ENV=prod rollup -c",
