@@ -3,6 +3,9 @@
 #### 介绍
     一个svg图标的插件，无需每个svg都发起http请求, 组件可以改变color、size, 支持全部iconfont.cn上的svg
 
+#### 版本变化
+    v1.1.2开始不再在DOM上直接设置style,改为class设置基础样式
+
 <img src="./example/src/assets/demo.gif" width="400px"></img>   
 #### 安装
     yarn add vite-plugin-vue-svg-icons -D
