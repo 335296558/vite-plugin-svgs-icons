@@ -31,10 +31,10 @@ export const transformColorSize = (svgStr, option={})=> {
 export default {
     render() {
         return h(
-            'span',
+            'i',
             {
+                class: ['peas-svg-icon', this.class],
                 style: {
-                    'display': 'inline-block',
                     'width': this.size+'px',
                     'height': this.size+'px',
                 },
@@ -59,6 +59,10 @@ export default {
             type: String, 
             default: '' 
         },
+        class: { 
+            type: String, 
+            default: '' 
+        },
         protect: {
             type: Boolean, 
             default: true
@@ -73,7 +77,8 @@ export default {
             return transformColorSize(svgs[name], {
                 color: this.color,
                 size: this.size,
-                protect: this.protect
+                protect: this.protect,
+                class: this.class,
             })
         }
     },

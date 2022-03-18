@@ -80,3 +80,8 @@ const color = ref('#f00')
     font-weight: 700;
 }
 </style>
+<style scoped>
+.yshuag {
+    font-size: 200px;
+}
+</style>

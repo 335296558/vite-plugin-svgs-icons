@@ -36,6 +36,9 @@ export default function vitePluginVueSvgIcons(options={}) {
 
     return {
         name: 'vite-plugin-svg-icons',
+        transformIndexHtml(html) {
+            return `${html}\n<style>.peas-svg-icon{display: inline-block;}</style>`
+        },
         resolveId(id) {
             if (id === ModuleId) {
                 return resolvedModuleId
@@ -53,7 +56,7 @@ export default function vitePluginVueSvgIcons(options={}) {
                 return `
                 import { h } from 'vue'
                 const svgs = ${svgStr};
-                \n${jsStr}`
+                \n${jsStr};`
             }
             return
         }
