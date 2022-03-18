@@ -48,5 +48,6 @@
 |name|String|空|
 |color|String|svg自带值, 不设置就不会更改svg原本的color|
 |size|Number|svg自带值|
+|class|String|-|
 
 <!-- [示列图像]() -->
