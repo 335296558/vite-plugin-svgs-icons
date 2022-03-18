@@ -37,7 +37,7 @@ export default function vitePluginVueSvgIcons(options={}) {
     return {
         name: 'vite-plugin-svg-icons',
         transformIndexHtml(html) {
-            return `${html}\n<style>.peas-svg-icon{display: inline-block;}</style>`
+            return `${html}\n<style>.peas-svg-icon{display: inline-flex;justify-content: center;align-items: center;}</style>`
         },
         resolveId(id) {
             if (id === ModuleId) {

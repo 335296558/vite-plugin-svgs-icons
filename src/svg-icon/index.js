@@ -34,10 +34,10 @@ export default {
             'i',
             {
                 class: ['peas-svg-icon', this.class],
-                style: {
-                    'width': this.size+'px',
-                    'height': this.size+'px',
-                },
+                // style: {
+                //     'width': this.size+'px',
+                //     'height': this.size+'px',
+                // },
                 innerHTML:  this.svgColorSize(this.name)
             },
         )

@@ -79,9 +79,12 @@ const color = ref('#f00')
     cursor: pointer;
     font-weight: 700;
 }
+.icon {
+    font-size: 200px;
+}
 </style>
 <style scoped>
-.yshuag {
+.icon {
     font-size: 200px;
 }
 </style>
