@@ -17,12 +17,15 @@ export const transformColorSize = (svgStr, option={})=> {
     svgStr = svgStr.replace(/\width="[0-9]*"/g, `width="${option.size}" `)
     svgStr = svgStr.replace(/\height="[0-9]*"/g, `height="${option.size}" `)
     if (option.color) svgStr = svgStr.replace(/fill="[\s\S]+?"/g, `fill="${option.color}" `)
-    if (svgStr.indexOf('width="')<0) {
+    // 判断如果svg原本不带width、height 属性，主动给它设置上---------start
+    let svgStartTag = svgStr.match(/<svg([^>]+)/g)[0]
+    if (svgStartTag.indexOf('width="')<0) {
         svgStr = svgStr.replace(/<svg/g, `<svg width="${option.size}"`)
     }
-    if (svgStr.indexOf('height="')<0) {
+    if (svgStartTag.indexOf('height="')<0) {
         svgStr = svgStr.replace(/<svg/g, `<svg height="${option.size}"`)
     }
+    // ---------end
     if (option.color && svgStr.indexOf('fill="')<0) {
         svgStr = svgStr.replace(/<path/g, `<path fill="${option.color}"`)
     }
