@@ -14,15 +14,19 @@ export const transformColorSize = (svgStr, option={})=> {
         // 你的SVG中可能存XSS 攻击的风险！插件进行了阻断，此时你的svg无法显示，强制开启 设置 
         return console.error('There is a risk of XSS attacks in your SVG! The plug-in is blocked, at this time your svg cannot be displayed, forcibly open');
     }
-    svgStr = svgStr.replace(/\width="[0-9]*"/g, `width="${option.size}" `)
-    svgStr = svgStr.replace(/\height="[0-9]*"/g, `height="${option.size}" `)
     if (option.color) svgStr = svgStr.replace(/fill="[\s\S]+?"/g, `fill="${option.color}" `)
     // 判断如果svg原本不带width、height 属性，主动给它设置上---------start
     let svgStartTag = svgStr.match(/<svg([^>]+)/g)[0]
-    if (svgStartTag.indexOf('width="')<0) {
+    if (svgStartTag.match(/\width="[0-9]*"/g) && option.size) {
         svgStr = svgStr.replace(/<svg/g, `<svg width="${option.size}"`)
     }
-    if (svgStartTag.indexOf('height="')<0) {
+    if (svgStartTag.match(/\height="[0-9]*"/g) && option.size) {
+        svgStr = svgStr.replace(/<svg/g, `<svg height="${option.size}"`)
+    }
+    if (svgStartTag.indexOf('width="') < 0) {
+        svgStr = svgStr.replace(/<svg/g, `<svg width="${option.size}"`)
+    }
+    if (svgStartTag.indexOf('height="') < 0) {
         svgStr = svgStr.replace(/<svg/g, `<svg height="${option.size}"`)
     }
     // ---------end
@@ -37,10 +41,7 @@ export default {
             'i',
             {
                 class: ['peas-svg-icon', this.class],
-                // style: {
-                //     'width': this.size+'px',
-                //     'height': this.size+'px',
-                // },
+                'data-svg-file-name': this.name,
                 innerHTML:  this.svgColorSize(this.name)
             },
         )
@@ -56,7 +57,7 @@ export default {
         },
         size: {
             type: [String, Number], 
-            default: '40'
+            default: '20'
         },
         color: { 
             type: String, 

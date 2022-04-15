@@ -14,11 +14,14 @@ const color = ref('#f00')
             针对<a href="https://www.iconfont.cn/" target="_blank">iconfont.cn</a> 
             上的svg 写了一个可以修改color、size vue组件
         </h4>
+        <svgIcon name="test1" :color="color" :size="size"></svgIcon>
         <svgIcon name="aa" :color="color" :size="size"></svgIcon>
         <svgIcon name="logo" :color="color" :size="size"></svgIcon>
         <svgIcon name="shop" :color="color" :size="size"></svgIcon>
         <svgIcon name="voice" :color="color" :size="size"></svgIcon>
         <svgIcon name="testColor" :size="size"></svgIcon>
+        <svgIcon name="customerService" :color="color" :size="size"></svgIcon>
+        <svgIcon name="chat" :color="color" :size="size"></svgIcon>
         <div class="box">
             <div class="title"><b>修改大小</b></div>
             <br />
