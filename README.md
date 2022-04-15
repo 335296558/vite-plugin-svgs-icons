@@ -46,9 +46,9 @@
 #### 组件参数说明
 | 参数名 | 类型 | 默认值 |
 | -------- | -------- | -------- |
-|name|String|空|
+|name|String|-|
 |color|String|svg自带值, 不设置就不会更改svg原本的color|
-|size|Number|svg自带值|
+|size|Number|15px|
 |class|String|-|
 
 <!-- [示列图像]() -->
