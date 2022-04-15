@@ -48,7 +48,7 @@
 | -------- | -------- | -------- |
 |name|String|-|
 |color|String|svg自带值, 不设置就不会更改svg原本的color|
-|size|Number|15px|
+|size|Number|默认15px, 设置为false, 无默认值，svg也不会被设置上大小|
 |class|String|-|
 
 <!-- [示列图像]() -->

@@ -56,7 +56,7 @@ export default {
             default: '',
         },
         size: {
-            type: [String, Number], 
+            type: [String, Number, Boolean], 
             default: '20'
         },
         color: { 
