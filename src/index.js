@@ -10,12 +10,11 @@ import { join } from 'path';
 const jsStr = fs.readFileSync(`${__dirname}/svg-icon/index.js`, 'utf8');
 let defaultOptions;
 
+// svg初始化源码
 const transformSvgHTML = (svgStr, option={})=> {
     option = Object.assign({
-        size: 200,
         protect: true,
-        class: '',
-        color: '#f00',
+        multicolor: false,
     }, option)
     if (!svgStr) return
     if (
@@ -32,26 +31,20 @@ const transformSvgHTML = (svgStr, option={})=> {
         return console.error('There is a risk of XSS attacks in your SVG! The plug-in is blocked, at this time your svg cannot be displayed, forcibly open');
     }
     
-    if (option.color) svgStr = svgStr.replace(/fill="[\s\S]+?"/g, `fill="${option.color}" `)
-    // 判断如果svg原本不带width、height 属性，主动给它设置上---------start
+    // 清空原码设置的宽高 
     let svgStartTag = svgStr.match(/<svg([^>]+)/g)[0]
     if (svgStartTag.match(/\width="[0-9]*"/g)) {
-        svgStr = svgStr.replace(/<svg/g, `<svg width="${option.size}"`)
+        svgStr = svgStr.replace(/\width="[0-9]*"/g, '')
     }
     if (svgStartTag.match(/\height="[0-9]*"/g)) {
-        svgStr = svgStr.replace(/<svg/g, `<svg height="${option.size}"`)
+        svgStr = svgStr.replace(/\height="[0-9]*"/g, '')
     }
-    if (svgStartTag.indexOf('width="') < 0 && option.size) {
-        svgStr = svgStr.replace(/<svg/g, `<svg width="${option.size}"`)
+    // 区分单色还是多色
+    if (option.multicolor) {
+        svgStr = svgStr.replace(/<svg/g, `<svg data-multicolor`)
+    } else {
+        svgStr = svgStr.replace(/<svg/g, `<svg data-singlecolor`)
     }
-    if (svgStartTag.indexOf('height="') < 0 && option.size) {
-        svgStr = svgStr.replace(/<svg/g, `<svg height="${option.size}"`)
-    }
-    // ---------end
-    if (option.color && svgStr.indexOf('fill="')<0) {
-        svgStr = svgStr.replace(/<path/g, `<path fill="${option.color}"`)
-    }
-    
     return svgStr
 }
 
@@ -88,7 +81,10 @@ export default function vitePluginVueSvgIcons(options={}) {
             files.forEach(item => {
                 let svgText = fs.readFileSync(item.path, 'utf8');
                 const name = item.filename.replace(/.svg/g, '')
-                const newSvgText = transformSvgHTML(svgText)
+                const newSvgText = transformSvgHTML(svgText, { 
+                    multicolor: item.path.indexOf('multicolor')>=0,
+                    name
+                })
                 let svgHtml = `\n
                     \n        <symbol id="${name}">
                     \n            ${newSvgText}            
@@ -106,7 +102,7 @@ export default function vitePluginVueSvgIcons(options={}) {
             return `\n
                 \n${html}
                 \n${svgHtmlMaps}
-                \n<style>.v-svg-icons {position: fixed;left: -100%;bottom: -100%;display: none;}svg path {fill: inherit;}</style>
+                \n<style>.v-svg-icons {position: fixed;left: -100%;bottom: -100%;display: none;}[data-singlecolor] path{fill: inherit;}</style>
             \n`;
         },
         resolveId(id) {
@@ -116,17 +112,6 @@ export default function vitePluginVueSvgIcons(options={}) {
         },
         async load(id, code) {
             if (id === resolvedModuleId) {
-                // const files = await loopReaddir(`${defaultOptions.dir}`);
-                // let svgs = {}
-                // files.forEach(item => {
-                //     let svgText = fs.readFileSync(item.path, 'utf8');
-                //     svgs[item.filename.replace(/.svg/g, '')] = svgText
-                // });
-                // const svgStr = JSON.stringify(svgs)
-                // return `
-                // import { h } from 'vue'
-                // const svgs = ${svgStr};
-                // \n${jsStr};`
                 return `\n
                 \nimport { h } from 'vue'
                 \n${jsStr};`

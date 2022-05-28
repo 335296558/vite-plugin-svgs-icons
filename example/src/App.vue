@@ -20,8 +20,10 @@ const color = ref('#f00')
         <svgIcon name="shop" :color="color" :size="size"></svgIcon>
         <svgIcon name="voice" :color="color" :size="size"></svgIcon>
         <svgIcon name="testColor" :size="size"></svgIcon>
+        <svgIcon name="moer" :size="size"></svgIcon>
         <svgIcon name="customerService" :color="color" :size="size"></svgIcon>
         <svgIcon name="chat" :color="color" :size="size"></svgIcon>
+        <svgIcon name="chat" :color="color"></svgIcon>
         <div class="box">
             <div class="title"><b>修改大小</b></div>
             <br />
