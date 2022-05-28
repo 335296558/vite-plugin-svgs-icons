@@ -14,6 +14,7 @@ export const transformColorSize = (svgStr, option={})=> {
         // 你的SVG中可能存XSS 攻击的风险！插件进行了阻断，此时你的svg无法显示，强制开启 设置 
         return console.error('There is a risk of XSS attacks in your SVG! The plug-in is blocked, at this time your svg cannot be displayed, forcibly open');
     }
+    
     if (option.color) svgStr = svgStr.replace(/fill="[\s\S]+?"/g, `fill="${option.color}" `)
     // 判断如果svg原本不带width、height 属性，主动给它设置上---------start
     let svgStartTag = svgStr.match(/<svg([^>]+)/g)[0]
@@ -33,18 +34,29 @@ export const transformColorSize = (svgStr, option={})=> {
     if (option.color && svgStr.indexOf('fill="')<0) {
         svgStr = svgStr.replace(/<path/g, `<path fill="${option.color}"`)
     }
+    
     return svgStr
 }
 export default {
     render() {
         return h(
-            'i',
+            'svg',
             {
-                class: ['peas-svg-icon', this.class],
-                'data-svg-file-name': this.name,
-                innerHTML:  this.svgColorSize(this.name)
+                class: ['v-svg-icon', this.class],
+                'data-v-svg': this.name,
+                width: this.size,
+                height: this.size,
+                innerHTML: `<use xlink:href="#${this.name}" fill="${this.color}" />`
             },
         )
+        // return h(
+        //     'i',
+        //     {
+        //         class: ['peas-svg-icon', this.class],
+        //         'data-svg-file-name': this.name,
+        //         innerHTML:  this.svgColorSize(this.name)
+        //     },
+        // )
     },
     props: {
         svg: { 
@@ -72,18 +84,18 @@ export default {
             default: true
         }
     },
-    methods: {
-        svgColorSize(name) {
-            if (!svgs[name]) {
-                console.warn(name+'.svg文件不存在，请检查配置中的dir参数配置的目录是否存在应该svg文件')
-                return name
-            };
-            return transformColorSize(svgs[name], {
-                color: this.color,
-                size: this.size,
-                protect: this.protect,
-                class: this.class,
-            })
-        }
-    },
+    // methods: {
+    //     svgColorSize(name) {
+    //         if (!name) {
+    //             console.warn(name+'.svg文件不存在，请检查配置中的dir参数配置的目录是否存在应该svg文件')
+    //             return name
+    //         };
+    //         return transformColorSize(name, {
+    //             color: this.color,
+    //             size: this.size,
+    //             protect: this.protect,
+    //             class: this.class,
+    //         })
+    //     }
+    // },
 }

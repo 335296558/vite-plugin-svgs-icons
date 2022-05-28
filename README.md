@@ -3,6 +3,10 @@
 #### 介绍
     一个svg图标的插件，无需每个svg都发起http请求, 组件可以改变color、size, 支持全部iconfont.cn上的svg
 
+#### 版本
+    v3.0.0 开始，采用svg use进行索引显示，不再直接显示svg源码
+    v1.1.6和以下版本 是直接显示svg源码
+
 
 <img src="./example/src/assets/demo.gif" width="400px"></img>   
 #### 安装
