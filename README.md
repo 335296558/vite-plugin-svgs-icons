@@ -7,14 +7,16 @@
     2022-5-28，新增v3.0.0开始采用svg use进行复制显示，不再直接显示svg源码,
     详情请看 README.3.0.md 文档
     
-    v1.1.6和以下版本 是直接显示svg源码
+    v1.1.6和以下版本 是直接显示svg的
 
 [v3.0.0 README.3.0.md](README.3.0.md)
 
 <img src="./example/src/assets/demo.gif" width="400px"></img>   
 #### 安装
     yarn add vite-plugin-vue-svg-icons -D
+    
     npm i vite-plugin-vue-svg-icons -D
+    
     pnpm add vite-plugin-vue-svg-icons -D
 
 #### vite.config.js 使用说明
