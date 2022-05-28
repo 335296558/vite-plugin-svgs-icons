@@ -13,11 +13,11 @@
 
 <img src="./example/src/assets/demo.gif" width="400px"></img>   
 #### 安装
-    yarn add vite-plugin-vue-svg-icons -D
+    yarn add vite-plugin-vue-svg-icons@1.1.6 -D
     
-    npm i vite-plugin-vue-svg-icons -D
+    npm i vite-plugin-vue-svg-icons@1.1.6 -D
     
-    pnpm add vite-plugin-vue-svg-icons -D
+    pnpm add vite-plugin-vue-svg-icons@1.1.6 -D
 
 #### vite.config.js 使用说明
 ```js
