@@ -13,7 +13,6 @@
   "devDependencies": {
     "@vitejs/plugin-vue": "^2.0.0",
     "vite": "^2.7.13",
-    "vite-plugin-inspect": "^0.3.13",
-    "vite-plugin-vue-svg-icons": "^1.1.6"
+    "vite-plugin-inspect": "^0.3.13"
   }
 }

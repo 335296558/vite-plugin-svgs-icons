@@ -1,16 +1,25 @@
 # vite-plugin-vue-svg-icons
+[English](README.en.md) | 简体中文｜[v3.0.0 README.3.0.md](README.3.0.md)
+#### introduce
+    An SVG icon plug-in without each SVG a HTTP request component can change the color, size, support all the I
 
-English | [简体中文](README.md)
+#### version
+    2022-5-28，The new v 3 0 0 using SVG use to copy，No longer shows the SVG source code directly,
+    See the README 3 0 md document
+    
+    Version 1.1.6 is directly shows the SVG
 
-#### Introduce
-    An SVG icon plug-in without each SVG a HTTP request component can change the color and size, Support all svg on iconfont.cn
+[v3.0.0 README.3.0.md](README.3.0.md)
 
+<img src="./example/src/assets/demo.gif" width="400px"></img>   
 #### install
     yarn add vite-plugin-vue-svg-icons -D
+
     npm i vite-plugin-vue-svg-icons -D
+
     pnpm add vite-plugin-vue-svg-icons -D
 
-#### vite.config.js Instructions
+#### vite.config.js instructions
 ```js
     import vitePluginVueSvgIcons from 'vite-plugin-vue-svg-icons'
     export default defineConfig({
@@ -21,7 +30,7 @@ English | [简体中文](README.md)
 ```
 #### vitePluginVueSvgIcons Methods the reference，Object， If you don't need to SVG icon is not recommended in the directory
 
-| parameter name | type | description | default |
+| param | type | description | default |
 | -------- | -------- | -------- | -------- |
 |dir|String|SVG icon directory|`${process.cwd()}/src/assets/svg`|
 
@@ -31,7 +40,7 @@ English | [简体中文](README.md)
     <script setup>
         import svgIcon from 'svg-icon'
     </script>
-    //Write the name parameter is definition file name，such as：svg/logo.svg，then you only need name="logo" to reference this svg
+    // name Param is written definition file name，比如：svg/logo.svg，So what do you refer to the SVG Need only name="logo"
     <template>
         <svgIcon name="logo" color="#f00" size="80" />
     </template>
@@ -44,10 +53,11 @@ English | [简体中文](README.md)
 ```
 
 #### Component parameters that
-| parameter name | type | default |
+| param | type | default |
 | -------- | -------- | -------- |
-|name|String|null|
-|color|String|SVG bring value, If you don't set it, it will not change the original color of the svg|
-|size|Number|SVG bring value|
+|name|String|-|
+|color|String|SVG bring values do not set will not change the color SVG originally|
+|size|Number|The default 15 px set to false, no default values, SVG size will not be set|
+|class|String|-|
 
 <!-- [示列图像]() -->
