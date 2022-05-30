@@ -7,7 +7,7 @@
     2022-5-28，The new v 3 0 0 using SVG use to copy，No longer shows the SVG source code directly,
     See the README 3 0 md document
     
-    Version 1.1.6 is directly shows the SVG
+    Version 1.1.7 is directly shows the SVG
 
 [v3.0.0 README.3.0.md](README.3.0.md)
 
