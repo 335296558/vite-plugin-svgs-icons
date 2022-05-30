@@ -55,6 +55,7 @@ export default function vitePluginVueSvgIcons(options={}) {
     defaultOptions = Object.assign({
         dir: join(`${process.cwd()}/src/assets/svg`)
     }, options)
+    
     // 递归读取目录并返回一个path集合
     const loopReaddir = async (url, paths=[])=> {
         let files = fs.readdirSync(url);
