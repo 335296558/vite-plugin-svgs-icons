@@ -24,3 +24,4 @@ dist
 build
 pnpm-global
 pnpm-lock.yaml
+example/pnpm-lock.yaml
