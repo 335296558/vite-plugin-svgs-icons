@@ -6,7 +6,7 @@
   "browser": "dist/index.umd.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/335296558/vite-plugin-vue-svg-icons"
+    "url": "git+https://github.com/335296558/vite-plugin-vue-svg-icons.git"
   },
   "devDependencies": {
     "@babel/core": "^7.16.10",
@@ -36,5 +36,15 @@
   },
   "files": [
     "dist"
-  ]
+  ],
+  "description": "[English](README.en.md) | [简体中文](README.en.md)｜[v3.0.0 README.3.0.md 简体中文](README.3.0.md)",
+  "bugs": {
+    "url": "https://github.com/335296558/vite-plugin-vue-svg-icons/issues"
+  },
+  "homepage": "https://github.com/335296558/vite-plugin-vue-svg-icons#readme",
+  "directories": {
+    "example": "example"
+  },
+  "author": "335296558@qq.com",
+  "license": "ISC"
 }
