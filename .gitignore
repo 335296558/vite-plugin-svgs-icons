@@ -22,5 +22,5 @@ node_modules
 yarn.lock
 dist
 build
-pnpm-lock.yaml
 pnpm-global
+pnpm-lock.yaml
