@@ -18,6 +18,10 @@ const plugins = [
             {
                 src: 'src/svg-icon',
                 dest: 'dist'
+            },
+            {
+                src: './index.d.ts',
+                dest: 'dist'
             }
         ]
     }),
