@@ -1,25 +1,19 @@
 # vite-plugin-vue-svg-icons
-[English](README.en.md) | 简体中文｜[v3.0.0 README.3.0.md](README.3.0.md)
+[简体中文文档](README.md)
+v3.0.0 English
+
 #### introduce
-    An SVG icon plug-in without each SVG a HTTP request component can change the color, size, support all the I
-
-#### version
-    2022-5-28，The new v 3 0 0 using SVG use to copy，No longer shows the SVG source code directly,
-    See the README 3 0 md document
-    
-    Version 1.1.7 is directly shows the SVG
-
-[v3.0.0 README.3.0.md](README.3.0.md)
+    An SVG icon plug-in without each SVG a HTTP request component can change the color, size only supports single color
 
 <img src="./example/src/assets/demo.gif" width="400px"></img>   
 #### install
-    yarn add vite-plugin-vue-svg-icons@1.1.6 -D
+    yarn add vite-plugin-vue-svg-icons -D
 
-    npm i vite-plugin-vue-svg-icons@1.1.6 -D
+    npm i vite-plugin-vue-svg-icons -D
 
-    pnpm add vite-plugin-vue-svg-icons@1.1.6 -D
+    pnpm add vite-plugin-vue-svg-icons -D
 
-#### vite.config.js instructions
+#### vite.config.js Directions for use
 ```js
     import vitePluginVueSvgIcons from 'vite-plugin-vue-svg-icons'
     export default defineConfig({
@@ -30,17 +24,33 @@
 ```
 #### vitePluginVueSvgIcons Methods the reference，Object， If you don't need to SVG icon is not recommended in the directory
 
-| param | type | description | default |
+| param name | type | description | default |
 | -------- | -------- | -------- | -------- |
 |dir|String|SVG icon directory|`${process.cwd()}/src/assets/svg`|
+```js
+    // Directory, pay attention to
+    // Multicolor SVG please put multicolor this directory, multicolor can't change color
+    // If polychromatic SVG is not on the multicolor this directory, will be modified to monochrome
+    // No multicolor directory you from already built
+    |assets
+        |svg
+            |multicolor
+                xxx.svg
+                xxx.svg
+                xxx.svg
 
+            xxx.svg
+            xxx.svg
+            xxx.svg
+```
 #### The instructions on the SVG components
 ```js
     // app.vue Local registration using
     <script setup>
         import svgIcon from 'svg-icon'
     </script>
-    // name Param is written definition file name，比如：svg/logo.svg，So what do you refer to the SVG Need only name="logo"
+    // name Param is the SVG file name，such as：svg/logo.svg
+    // So what do you refer to the SVG only need the name logo
     <template>
         <svgIcon name="logo" color="#f00" size="80" />
     </template>
@@ -52,12 +62,18 @@
     VueApp.component('svg-icon', svgIcon);
 ```
 
-#### Component parameters that
+#### Component param that
 | param | type | default |
 | -------- | -------- | -------- |
-|name|String|-|
-|color|String|SVG bring values do not set will not change the color SVG originally|
-|size|Number|The default 15 px set to false, no default values, SVG size will not be set|
-|class|String|-|
+|name|String|Necessary to set the name, the same as the file name, or does not display well.The name parameter is a SVG file name, such as: name="logo"|
+|color|String| inherit，Please set your ideal color, Support only monochrome SVG|
+|size|Number|default 20, The default value is set to false, SVG size will not be set|
+|class|String| - |
 
 <!-- [示列图像]() -->
+
+
+#### 版本描述：
+    v3.0.21 < Less than this version of the abandoned and deleted!To upgrade the new
+    v3.0.21 Normal version
+    v3.0.22 Optimization of the definition of internal id: adding a prefix to id

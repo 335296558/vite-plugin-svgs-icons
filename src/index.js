@@ -91,7 +91,7 @@ export default function vitePluginVueSvgIcons(options={}) {
                     name
                 })
                 let svgHtml = `\n
-                    \n        <symbol id="${name}">
+                    \n        <symbol id="ei-${name}">
                     \n            ${newSvgText}            
                     \n        </symbol>
                 \n`;
