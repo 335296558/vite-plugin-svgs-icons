@@ -1,4 +1,7 @@
 export default {
+    created() {
+        console.log('created', '---')
+    },
     render() {
         let domAttr = {
             width: this.size,

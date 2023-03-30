@@ -48,14 +48,15 @@ const transformSvgHTML = (svgStr, option={})=> {
     return svgStr
 }
 
-export default function vitePluginVueSvgIcons(options={}) {
+export default async function vitePluginVueSvgIcons(options={}) {
     const ModuleId = 'svg-icon'
     const resolvedModuleId = '\0' + ModuleId
     const svgRegex = /.svg/
     defaultOptions = Object.assign({
-        dir: join(`${process.cwd()}/src/assets/svg`)
+        dir: join(`${process.cwd()}/src/assets/svg`),
+        // isNuxt3: false,
     }, options)
-    
+
     // 递归读取目录并返回一个path集合
     const loopReaddir = async (url, paths=[])=> {
         let files = fs.readdirSync(url);
@@ -76,40 +77,42 @@ export default function vitePluginVueSvgIcons(options={}) {
         })
         return paths
     }
-    
 
-    return {
-        name: 'vite-plugin-svg-icons',
-        async transformIndexHtml(html) {
-            const files = await loopReaddir(`${defaultOptions.dir}`);
-            let symbolMaps = '';
-            files.forEach(item => {
-                let svgText = fs.readFileSync(item.path, 'utf8');
-                const name = item.filename.replace(/.svg/g, '')
-                const newSvgText = transformSvgHTML(svgText, { 
-                    multicolor: item.path.indexOf('multicolor')>=0,
-                    name
-                })
-                let svgHtml = `\n
-                    \n        <symbol id="ei-${name}">
-                    \n            ${newSvgText}            
-                    \n        </symbol>
-                \n`;
-                symbolMaps+=svgHtml
-            });
-            const svgHtmlMaps = `\n
-                \n<svg class="v-svg-icons" xmlns="http://www.w3.org/2000/svg">
-                \n    <def>
-                            ${symbolMaps}
-                \n    </def>
-                \n</svg>
+    async function transformIndexHtml(html) {
+        const files = await loopReaddir(`${defaultOptions.dir}`);
+        let symbolMaps = '';
+        files.forEach(item => {
+            let svgText = fs.readFileSync(item.path, 'utf8');
+            const name = item.filename.replace(/.svg/g, '')
+            const newSvgText = transformSvgHTML(svgText, { 
+                multicolor: item.path.indexOf('multicolor')>=0,
+                name
+            })
+            let svgHtml = `\n
+                \n        <symbol id="ei-${name}">
+                \n            ${newSvgText}            
+                \n        </symbol>
             \n`;
-            return `\n
-                \n${html}
-                \n${svgHtmlMaps}
-                \n<style>.v-svg-icons {position: fixed;left: -100%;bottom: -100%;display: none;}[data-singlecolor] path{fill: inherit;}</style>
-            \n`;
-        },
+            symbolMaps+=svgHtml
+        });
+        const svgHtmlMaps = `\n
+            \n<svg class="v-svg-icons" xmlns="http://www.w3.org/2000/svg">
+            \n    <def>
+                        ${symbolMaps}
+            \n    </def>
+            \n</svg>
+        \n`;
+        return `\n
+            \n${html}
+            \n${svgHtmlMaps}
+            \n<style>.v-svg-icons {position: fixed;left: -100%;bottom: -100%;display: none;}[data-singlecolor] path{fill: inherit;}</style>
+        \n`;
+    }
+    
+    const pluginOptions = {
+        // name: 'vite-plugin-svg-icons',
+        name: 'vite:vue-svg-icons',
+        transformIndexHtml,
         resolveId(id) {
             if (id === ModuleId) {
                 return resolvedModuleId
@@ -118,10 +121,13 @@ export default function vitePluginVueSvgIcons(options={}) {
         async load(id, code) {
             if (id === resolvedModuleId) {
                 return `\n
-                \nimport { h } from 'vue'
+                \nimport { h } from 'vue';
                 \n${jsStr};`
             }
             return
-        }
+        },
     }
+    return pluginOptions;
 }
+
+
