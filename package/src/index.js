@@ -5,9 +5,9 @@
  * @author 335296558@qq.com
  * @name vite-plugin-vue-svg-icons || vitePluginVueSvgIcons
  */
-// import fs from 'node:fs';
 import path from 'path';
-import { join } from 'path';
+import fs from 'fs';
+// import fs from 'node:fs';
 // const fs = require('fs');
 // const path = require('path');
 // import { readFile } from 'fs/promises';
