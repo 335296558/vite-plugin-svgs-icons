@@ -7,11 +7,6 @@
  */
 import path from 'path';
 import fs from 'fs';
-// import fs from 'node:fs';
-// const fs = require('fs');
-// const path = require('path');
-// import { readFile } from 'fs/promises';
-// import { join } from 'path';
 
 const join = path.join;
 const jsStr = fs.readFileSync(`${__dirname}/components/svgIcon.js`, 'utf8');
@@ -125,6 +120,10 @@ export default async function vitePluginVueSvgIcons(options={}) {
             }
         },
         async load(id, code) {
+            if (id.endsWith(".html")) {
+                console.log(code, 'code')
+                return;
+            }
             if (id === resolvedModuleId) {
                 return `\n
                 \nimport { h } from 'vue';
