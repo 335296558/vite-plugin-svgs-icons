@@ -7,8 +7,11 @@
  */
 import path from 'path';
 import fs from 'fs';
+import { fileURLToPath } from 'url';
 
 const join = path.join;
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const jsStr = fs.readFileSync(`${__dirname}/components/svgIcon.js`, 'utf8');
 let defaultOptions;
 // svg初始化源码
@@ -54,6 +57,7 @@ export default async function vitePluginVueSvgIcons(options={}) {
     const resolvedModuleId = '\0' + ModuleId
     const svgRegex = /.svg/
     defaultOptions = Object.assign({
+        ssr: false,
         dir: join(`${process.cwd()}/src/assets/svg`),
         // isNuxt3: false,
     }, options);
@@ -110,7 +114,6 @@ export default async function vitePluginVueSvgIcons(options={}) {
         const rsHtmlString = tgHtmlStr;
         return rsHtmlString;
     }
-    
     const pluginOptions = {
         name: 'vite:vue-svg-icons',
         transformIndexHtml,
@@ -120,10 +123,6 @@ export default async function vitePluginVueSvgIcons(options={}) {
             }
         },
         async load(id, code) {
-            if (id.endsWith(".html")) {
-                console.log(code, 'code')
-                return;
-            }
             if (id === resolvedModuleId) {
                 return `\n
                 \nimport { h } from 'vue';

@@ -10,7 +10,7 @@ export default defineConfig({
             formats:['es','cjs']
         },
         rollupOptions: {
-            external: ['vue', 'fs', 'path'],
+            external: ['vue', 'fs', 'path','url'],
             plugins: [
                 copy({
                     targets: [
