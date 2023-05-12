@@ -1,5 +1,7 @@
 # vite-plugin-vue-svg-icons
-[English documentation](README.en.md)
+[English documentation](README.en.md) 
+
+[Nuxt3](https://github.com/335296558/nuxt-svg-icon)
 
 #### 介绍
     一个svg图标的插件，无需每个svg都发起http请求, 组件可以改变color、size【仅支持单色】, 支持全部iconfont.cn上的svg
