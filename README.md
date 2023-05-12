@@ -7,7 +7,7 @@
     一个svg图标的插件，无需每个svg都发起http请求, 组件可以改变color、size【仅支持单色】, 支持全部iconfont.cn上的svg
     
 
-<img src="./example/src/assets/demo.gif" width="400px"></img>   
+<img src="./demo/src/assets/demo.gif" width="400px"></img>  
 #### 安装
     yarn add vite-plugin-vue-svg-icons -D
 
