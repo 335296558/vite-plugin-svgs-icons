@@ -78,6 +78,7 @@ v3.0.0 English
 
 
 #### 版本描述：
+    v3.1.0 > Upgrade the new version, replace the build tool vite
     v3.0.21 < Less than this version of the abandoned and deleted!To upgrade the new
     v3.0.21 Normal version
     v3.0.22 Optimization of the definition of internal id: adding a prefix to id
