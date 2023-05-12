@@ -8,7 +8,7 @@
 import path from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
-
+const PluginName = 'vite-plugin-vue-svg-icons';
 const join = path.join;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -57,7 +57,8 @@ export default async function vitePluginVueSvgIcons(options={}) {
         moduleId: 'svg-icon',
         ssr: false,
         dir: join(`${process.cwd()}/src/assets/svg`),
-        // isNuxt3: false,
+        svgId: '__v__svg__icons',
+        iconPrefix: 'ei',
     }, options);
     const ModuleId = defaultOptions.moduleId;
     const resolvedModuleId = '\0' + ModuleId;
@@ -66,7 +67,7 @@ export default async function vitePluginVueSvgIcons(options={}) {
     const loopReaddir = async (url, paths=[])=> {
         let files = fs.readdirSync(url);
         if (files.length === 0) {
-            console.warn('vite-plugin-vue-svg-icons:File directory is empty --->'+FilePath);
+            console.warn(PluginName+':File directory is empty --->'+FilePath);
             return [];
         }
         files.forEach(name=>{
@@ -90,7 +91,7 @@ export default async function vitePluginVueSvgIcons(options={}) {
     async function transformIndexHtml(html) {
         const FilePath = `${defaultOptions.dir}`;
         if (!fs.existsSync(FilePath)) {
-            console.warn('vite-plugin-vue-svg-icons:The directory does not exist ----> '+FilePath);
+            console.warn(PluginName+':The directory does not exist ----> '+FilePath);
             return html;
         }
         const files = await loopReaddir(FilePath);
@@ -102,14 +103,14 @@ export default async function vitePluginVueSvgIcons(options={}) {
                 multicolor: item.path.indexOf('multicolor')>=0,
                 name
             })
-            let svgHtml = `<symbol id="ei-${name}">${newSvgText}</symbol>`;
+            let svgHtml = `<symbol id="${defaultOptions.iconPrefix}-${name}">${newSvgText}</symbol>`;
             symbolMaps+=svgHtml
         });
-        const svgHtmlMaps = `<svg id="__v__svg__icons" xmlns="http://www.w3.org/2000/svg"><def>${symbolMaps} </def></svg>`;
+        const svgHtmlMaps = `<svg id="${defaultOptions.svgId}" xmlns="http://www.w3.org/2000/svg"><def>${symbolMaps} </def></svg>`;
         const tgHtmlStr = `\n
             \n${html}
             \n${svgHtmlMaps}
-            \n<style>#__v__svg__icons {position: fixed;left: -100%;bottom: -100%;display: none;}[data-singlecolor] path{fill: inherit;}</style>
+            \n<style>#${defaultOptions.svgId} {position: fixed;left: -100%;bottom: -100%;display: none;}[data-singlecolor] path{fill: inherit;}</style>
         \n`;
         const rsHtmlString = tgHtmlStr;
         return rsHtmlString;
