@@ -2,10 +2,13 @@
 [简体中文文档](README.md)
 v3.0.0 English
 
+[Nuxt3 nuxt-svg-icon](https://github.com/335296558/nuxt-svg-icon)
+
 #### introduce
     An SVG icon plug-in without each SVG a HTTP request component can change the color, size only supports single color
 
-<img src="./example/src/assets/demo.gif" width="400px"></img>   
+
+<img src="../demo/src/assets/demo.gif" width="400px"></img> 
 #### install
     yarn add vite-plugin-vue-svg-icons -D
 
@@ -27,6 +30,7 @@ v3.0.0 English
 | param name | type | description | default |
 | -------- | -------- | -------- | -------- |
 |dir|String|SVG icon directory|`${process.cwd()}/src/assets/svg`|
+|moduleId|String|define import name|svg-icon|
 ```js
     // Directory, pay attention to
     // Multicolor SVG please put multicolor this directory, multicolor can't change color
