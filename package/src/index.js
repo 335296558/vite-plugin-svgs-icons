@@ -53,15 +53,15 @@ const transformSvgHTML = (svgStr, option={})=> {
 }
 
 export default async function vitePluginVueSvgIcons(options={}) {
-    const ModuleId = 'svg-icon'
-    const resolvedModuleId = '\0' + ModuleId
-    const svgRegex = /.svg/
     defaultOptions = Object.assign({
+        moduleId: 'svg-icon',
         ssr: false,
         dir: join(`${process.cwd()}/src/assets/svg`),
         // isNuxt3: false,
     }, options);
-
+    const ModuleId = defaultOptions.moduleId;
+    const resolvedModuleId = '\0' + ModuleId;
+    const svgRegex = /.svg/;
     // 递归读取目录并返回一个path集合
     const loopReaddir = async (url, paths=[])=> {
         let files = fs.readdirSync(url);
