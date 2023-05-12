@@ -64,6 +64,9 @@ import svgIcon from 'svg-icon';
                 <input type="radio" value="#9707ff" v-model="color" />
             </label>
         </div>
+        <h4 style="color:rgb(253, 169, 169);display: flex;align-items: center;justify-content: center;">
+            <span style="padding-right:15px;">Nuxt3用法👉👉👉</span> <a href="https://github.com/335296558/nuxt-svg-icon" target="_blank"><svgIcon name="github" size="30"></svgIcon></a>
+        </h4>
     </div>
 </template>
 
