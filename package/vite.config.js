@@ -1,28 +1,18 @@
 import { resolve } from 'path';
 import { defineConfig } from 'vite';
-import copy from 'rollup-plugin-copy';
 export default defineConfig({
     build: {
         lib: {
-            entry: resolve(__dirname, 'src/index.js'),
+            entry: {
+                index: resolve(__dirname, 'src/index.js'),
+                'components/svgIcon': resolve(__dirname, 'src/components/svgIcon.js')
+            },
             name: 'vitePluginVueSvgIcons',
-            fileName: 'index',
+            // fileName: 'index', // 如果开启所以打包的文件都会变成index，但不会重复，它会index.js、index2.js
             formats:['es','cjs']
         },
         rollupOptions: {
             external: ['vue', 'fs', 'path','url','node:fs', 'node:url'],
-            plugins: [
-                copy({
-                    targets: [
-                        { src: './src/components/', dest: 'dist/' },
-                        { src: './index.d.ts', dest: 'dist/' }
-                        // { src: resolve(__dirname, 'src/components'), dest: 'dist/' },
-                        // { src: resolve(__dirname, 'index.d.ts'), dest: 'dist/' }
-                    ],
-                    // 因为打包后dist目录会被先清空，所以要加hook: 'writeBundle'
-                    hook: 'writeBundle' 
-                })
-            ]
         }
     }
 })

@@ -5,13 +5,10 @@
  * @author 335296558@qq.com
  * @name vite-plugin-vue-svg-icons || vitePluginVueSvgIcons
  */
-import { join, dirname } from 'path';
+import { join } from 'path';
 import fs from 'fs';
-import { fileURLToPath } from 'url';
+import svgIconString from './components/svgIcon.js?raw';
 const PluginName = 'vite-plugin-vue-svg-icons';
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-const jsStr = fs.readFileSync(`${__dirname}/components/svgIcon.js`, 'utf8');
 let defaultOptions;
 // svg初始化源码
 const transformSvgHTML = (svgStr, option={})=> {
@@ -124,14 +121,10 @@ export default async function vitePluginVueSvgIcons(options={}) {
         },
         async load(id, code) {
             if (id === resolvedModuleId) {
-                return `\n
-                \nimport { h } from 'vue';
-                \n${jsStr};`
+                return `${svgIconString}`;
             }
             return
         },
     }
     return pluginOptions;
 }
-
-
