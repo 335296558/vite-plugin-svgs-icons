@@ -7,7 +7,7 @@
     一个svg图标的插件，无需每个svg都发起http请求, 组件可以改变color、size【仅支持单色】, 支持全部iconfont.cn上的svg
     
 
-<img src="./demo/src/assets/demo.gif" width="400px"></img>  
+<img src="./demo/src/assets/demo_git_svgo.gif" width="400px">
 #### 安装
     yarn add vite-plugin-vue-svg-icons -D
 
@@ -77,6 +77,7 @@
 
 
 #### 版本描述：
+    v3.1.2 > 优化了build配置, 优化导入方式!
     v3.1.0 > 升级新版, 更换构建工具vite
     v3.0.21 < 小于这个版本的放弃与删除了！升级新版
     v3.0.21 正常版
