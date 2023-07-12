@@ -103,11 +103,7 @@ export default async function vitePluginVueSvgIcons(options={}) {
             symbolMaps+=svgHtml
         });
         const svgHtmlMaps = `<svg id="${defaultOptions.svgId}" xmlns="http://www.w3.org/2000/svg"><def>${symbolMaps} </def></svg>`;
-        const tgHtmlStr = `\n
-            \n${html}
-            \n${svgHtmlMaps}
-            \n<style>#${defaultOptions.svgId} {position: fixed;left: -100%;bottom: -100%;display: none;}[data-singlecolor] path{fill: inherit;}</style>
-        \n`;
+        const tgHtmlStr = `${html}${svgHtmlMaps}<style>#${defaultOptions.svgId} {position: fixed;left: -100%;bottom: -100%;display: none;}[data-singlecolor] path{fill: inherit;}</style>`;
         const rsHtmlString = tgHtmlStr;
         return rsHtmlString;
     }
