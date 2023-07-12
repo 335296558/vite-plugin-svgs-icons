@@ -63,7 +63,7 @@ export default async function vitePluginVueSvgIcons(options={}) {
     const loopReaddir = async (url, paths=[])=> {
         let files = fs.readdirSync(url);
         if (files.length === 0) {
-            console.warn(PluginName+':File directory is empty --->'+FilePath);
+            console.warn(PluginName+':File directory is empty --->'+defaultOptions.dir);
             return [];
         }
         files.forEach(name=>{
