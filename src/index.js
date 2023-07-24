@@ -17,17 +17,22 @@ const transformSvgHTML = (svgStr, option={})=> {
         multicolor: false,
     }, option)
     if (!svgStr) return
+    // 限制危险标签，比如script、foreignObject等
+    // 限制通过SVG图像的外部链接加载资源。
+    // 限制SVG图像内的扩展逻辑。
     if (
         option.protect && 
         (
             svgStr.indexOf('function')>=0 || 
             svgStr.indexOf('Function()')>=0 || 
             svgStr.indexOf('[native code]')>=0 ||
-            (svgStr.indexOf('https://')>=0 && svgStr.indexOf('http://www.w3.org')<0)
+            svgStr.indexOf('<script')>=0 ||
+            svgStr.indexOf('<foreignObject')>=0 ||
+            (svgStr.indexOf('https://') >=0 && svgStr.indexOf('http://www.w3.org') < 0)
         )
     ) {
         // 安全保护机制
-        // 你的SVG中可能存XSS 攻击的风险！插件进行了阻断，此时你的svg无法显示，强制开启 设置 
+        // 你的SVG中可能存XSS 攻击的风险！插件进行了阻断，此时你的svg无法显示，强制开启 设置 可在调用插件处设置protect为true
         return console.error('There is a risk of XSS attacks in your SVG! The plug-in is blocked, at this time your svg cannot be displayed, forcibly open');
     }
     
