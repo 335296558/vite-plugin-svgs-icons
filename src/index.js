@@ -10,6 +10,31 @@ import fs from 'fs';
 import svgIconString from './components/svgIcon.js?raw';
 const PluginName = 'vite-plugin-vue-svg-icons';
 let defaultOptions;
+
+// string get push url = 字符串中提取url
+function getStringUrls(htmlString) {
+    let urls = [];
+    let start = 0;
+    let end = 0;
+
+    while (true) {
+        start = htmlString.indexOf("http", end);
+        if (start === -1) {
+            break;
+        }
+
+        end = htmlString.indexOf('"', start);
+        if (end === -1) {
+            break;
+        }
+
+        const url = htmlString.slice(start, end);
+        urls.push(url);
+    }
+
+    return urls;
+}
+
 // svg初始化源码
 const transformSvgHTML = (svgStr, option={})=> {
     option = Object.assign({
@@ -20,21 +45,8 @@ const transformSvgHTML = (svgStr, option={})=> {
     // 限制危险标签，比如script、foreignObject等
     // 限制通过SVG图像的外部链接加载资源。
     // 限制SVG图像内的扩展逻辑。
-    // const httpsRegex = /^(https?:\/\/www\.w3\.org\/2000\/svg)$/;
-    // const httpRegex = /^(http?:\/\/www\.w3\.org\/2000\/svg)$/;
-    // const isHttps = regex.test(svgStr);
-    // const isHttp = regex.test(svgStr);
-    // www.w3.org
-    const regex = /(https?:\/\/\S+)/g;
-    const urls = svgStr.match(regex) || [];
-    let isOtherUrl = false;
-    for (let index = 0; index < urls.length; index++) {
-        const ukey = urls[index];
-        if (ukey && ukey.indexOf('www.w3.org') <=0) {
-            isOtherUrl = true;
-            break;
-        }
-    }
+    const urls = getStringUrls(svgStr);
+    const isOtherUrl = urls.find(k=> k && k.indexOf('//www.w3.org')<0);
     if (
         option.protect && 
         (
@@ -49,7 +61,8 @@ const transformSvgHTML = (svgStr, option={})=> {
     ) {
         // 安全保护机制
         // 你的SVG中可能存XSS 攻击的风险！插件进行了阻断，此时你的svg无法显示，强制开启 设置 可在调用插件处设置protect为true
-        return console.error('There is a risk of XSS attacks in your SVG! The plug-in is blocked, at this time your svg cannot be displayed, forcibly open');
+        console.error(option.name+'.svg There is a risk of XSS attacks in your SVG! The plug-in is blocked, at this time your svg cannot be displayed, forcibly open');
+        console.error(option.name+'.svg 你的SVG图标中可能存XSS 攻击的风险！');
     }
     
     // 清空原码设置的宽高 
