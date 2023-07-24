@@ -19,7 +19,7 @@
   "scripts": {
     "dev": "vite dev demo watch",
     "build": "vite build && vite build demo",
-    "preview": "vite preview",
+    "preview": "vite preview demo",
     "deploy": "npm publish --registry=https://registry.npmjs.org/",
     "remove": "npm unpublish --registry https://registry.npmjs.org/ vite-plugin-vue-svg-icons@请输入你的版本号",
     "deprecate": "npm deprecate vite-plugin-vue-svg-iconsn@'< 3.1.3' 'critical bug fixed in v3.1.3'"

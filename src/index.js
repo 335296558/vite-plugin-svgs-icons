@@ -10,7 +10,7 @@ import fs from 'fs';
 import svgIconString from './components/svgIcon.js?raw';
 const PluginName = 'vite-plugin-vue-svg-icons';
 let defaultOptions;
-
+let otherUrls = [];
 // string get push url = 字符串中提取url
 function getStringUrls(htmlString) {
     let urls = [];
@@ -47,6 +47,8 @@ const transformSvgHTML = (svgStr, option={})=> {
     // 限制SVG图像内的扩展逻辑。
     const urls = getStringUrls(svgStr);
     const isOtherUrl = urls.find(k=> k && k.indexOf('//www.w3.org')<0);
+    (isOtherUrl && otherUrls.indexOf(isOtherUrl) <0) && otherUrls.push(isOtherUrl);
+    console.log(otherUrls, 'isOtherUrl');
     if (
         option.protect && 
         (
@@ -151,6 +153,10 @@ export default async function vitePluginVueSvgIcons(options={}) {
         },
         async load(id, code) {
             if (id === resolvedModuleId) {
+                // let logString = '';
+                // if (otherUrls.length) {
+                //     logString = 'console.error("你的SVG图标中存在不安全的URL，可能存在全安风险问题！");';
+                // }
                 return `${svgIconString}`;
             }
             return
