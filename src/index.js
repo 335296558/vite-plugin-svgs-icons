@@ -20,6 +20,21 @@ const transformSvgHTML = (svgStr, option={})=> {
     // 限制危险标签，比如script、foreignObject等
     // 限制通过SVG图像的外部链接加载资源。
     // 限制SVG图像内的扩展逻辑。
+    // const httpsRegex = /^(https?:\/\/www\.w3\.org\/2000\/svg)$/;
+    // const httpRegex = /^(http?:\/\/www\.w3\.org\/2000\/svg)$/;
+    // const isHttps = regex.test(svgStr);
+    // const isHttp = regex.test(svgStr);
+    // www.w3.org
+    const regex = /(https?:\/\/\S+)/g;
+    const urls = svgStr.match(regex) || [];
+    let isOtherUrl = false;
+    for (let index = 0; index < urls.length; index++) {
+        const ukey = urls[index];
+        if (ukey && ukey.indexOf('www.w3.org') <=0) {
+            isOtherUrl = true;
+            break;
+        }
+    }
     if (
         option.protect && 
         (
@@ -28,7 +43,8 @@ const transformSvgHTML = (svgStr, option={})=> {
             svgStr.indexOf('[native code]')>=0 ||
             svgStr.indexOf('<script')>=0 ||
             svgStr.indexOf('<foreignObject')>=0 ||
-            (svgStr.indexOf('https://') >=0 && svgStr.indexOf('http://www.w3.org') < 0)
+            svgStr.indexOf('<foreignObject')>=0 ||
+            isOtherUrl
         )
     ) {
         // 安全保护机制
