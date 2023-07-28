@@ -46,7 +46,7 @@ const transformSvgHTML = (svgStr, option={})=> {
     // 限制通过SVG图像的外部链接加载资源。
     // 限制SVG图像内的扩展逻辑。
     const urls = getStringUrls(svgStr);
-    const isOtherUrl = urls.find(k=> k && k.indexOf('//www.w3.org')<0);
+    const isOtherUrl = urls.find(k=> k && k.indexOf('//www.w3.org')<=0);
     (isOtherUrl && otherUrls.indexOf(isOtherUrl) <0) && otherUrls.push(isOtherUrl);
     if (
         option.protect && 
@@ -62,7 +62,7 @@ const transformSvgHTML = (svgStr, option={})=> {
         // 安全保护机制
         // 你的SVG中可能存XSS 攻击的风险！插件进行了阻断，此时你的svg无法显示，强制开启 设置 可在调用插件处设置protect为true
         console.error(option.name+'.svg There is a risk of XSS attacks in your SVG! The plug-in is blocked, at this time your svg cannot be displayed, forcibly open');
-        console.error(option.name+'.svg 你的SVG图标中可能存XSS 攻击的风险！');
+        console.error('SVG图标中可能存XSS 攻击的风险！');
     }
     
     // 清空原码设置的宽高 
@@ -151,10 +151,6 @@ export default async function vitePluginVueSvgIcons(options={}) {
         },
         async load(id, code) {
             if (id === resolvedModuleId) {
-                // let logString = '';
-                // if (otherUrls.length) {
-                //     logString = 'console.error("你的SVG图标中存在不安全的URL，可能存在全安风险问题！");';
-                // }
                 return `${svgIconString}`;
             }
             return
