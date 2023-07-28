@@ -57,7 +57,6 @@ const transformSvgHTML = (svgStr, option={})=> {
             svgStr.indexOf('[native code]')>=0 ||
             svgStr.indexOf('<script')>=0 ||
             svgStr.indexOf('<foreignObject')>=0 ||
-            svgStr.indexOf('<foreignObject')>=0 ||
             isOtherUrl
         )
     ) {
