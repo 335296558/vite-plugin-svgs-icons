@@ -48,7 +48,6 @@ const transformSvgHTML = (svgStr, option={})=> {
     const urls = getStringUrls(svgStr);
     const isOtherUrl = urls.find(k=> k && k.indexOf('//www.w3.org')<0);
     (isOtherUrl && otherUrls.indexOf(isOtherUrl) <0) && otherUrls.push(isOtherUrl);
-    console.log(otherUrls, 'isOtherUrl');
     if (
         option.protect && 
         (
