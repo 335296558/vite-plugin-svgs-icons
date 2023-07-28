@@ -10,6 +10,31 @@ import fs from 'fs';
 import svgIconString from './components/svgIcon.js?raw';
 const PluginName = 'vite-plugin-vue-svg-icons';
 let defaultOptions;
+let otherUrls = [];
+// string get push url = 字符串中提取url
+function getStringUrls(htmlString) {
+    let urls = [];
+    let start = 0;
+    let end = 0;
+
+    while (true) {
+        start = htmlString.indexOf("http", end);
+        if (start === -1) {
+            break;
+        }
+
+        end = htmlString.indexOf('"', start);
+        if (end === -1) {
+            break;
+        }
+
+        const url = htmlString.slice(start, end);
+        urls.push(url);
+    }
+
+    return urls;
+}
+
 // svg初始化源码
 const transformSvgHTML = (svgStr, option={})=> {
     option = Object.assign({
@@ -17,18 +42,27 @@ const transformSvgHTML = (svgStr, option={})=> {
         multicolor: false,
     }, option)
     if (!svgStr) return
+    // 限制危险标签，比如script、foreignObject等
+    // 限制通过SVG图像的外部链接加载资源。
+    // 限制SVG图像内的扩展逻辑。
+    const urls = getStringUrls(svgStr);
+    const isOtherUrl = urls.find(k=> k && k.indexOf('//www.w3.org')<=0);
+    (isOtherUrl && otherUrls.indexOf(isOtherUrl) <0) && otherUrls.push(isOtherUrl);
     if (
         option.protect && 
         (
             svgStr.indexOf('function')>=0 || 
             svgStr.indexOf('Function()')>=0 || 
             svgStr.indexOf('[native code]')>=0 ||
-            (svgStr.indexOf('https://')>=0 && svgStr.indexOf('http://www.w3.org')<0)
+            svgStr.indexOf('<script')>=0 ||
+            svgStr.indexOf('<foreignObject')>=0 ||
+            isOtherUrl
         )
     ) {
         // 安全保护机制
-        // 你的SVG中可能存XSS 攻击的风险！插件进行了阻断，此时你的svg无法显示，强制开启 设置 
-        return console.error('There is a risk of XSS attacks in your SVG! The plug-in is blocked, at this time your svg cannot be displayed, forcibly open');
+        // 你的SVG中可能存XSS 攻击的风险！插件进行了阻断，此时你的svg无法显示，强制开启 设置 可在调用插件处设置protect为true
+        console.error(option.name+'.svg There is a risk of XSS attacks in your SVG! The plug-in is blocked, at this time your svg cannot be displayed, forcibly open');
+        console.error('SVG图标中可能存XSS 攻击的风险！');
     }
     
     // 清空原码设置的宽高 

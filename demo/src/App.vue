@@ -7,7 +7,13 @@ import svgIcon from 'svg-icon';
 
 <template>
     <div>
-        <h1>svg-icon</h1>
+        <h1>DEMO</h1>
+        <div class="install">
+            <h4 style="color:rgb(253, 169, 169);display: flex;align-items: center;justify-content: center;">
+                <span style="padding-right:15px;">vite-plugin-vue-svg-icons 文档 👉👉👉</span> 
+                <a href="https://github.com/335296558/vite-plugin-vue-svg-icons/blob/main/README.md" target="_blank"><svgIcon name="github" size="30"></svgIcon></a>
+            </h4>
+        </div>
         <h4>
             针对<a href="https://www.iconfont.cn/" target="_blank">iconfont.cn</a> 
             上的svg 写了一个可以修改color、size vue组件

@@ -28,7 +28,7 @@
 
 | 参数名 | 类型 | 描述 | 默认值 |
 | -------- | -------- | -------- | -------- |
-|dir|String|存放svg图标的目录|`${process.cwd()}/src/assets/svg`|
+|dir|String|存放svg图标的目录|path.resolve(__dirname, 'src', 'assets', 'svg')|
 |moduleId|String|定义导入名称|svg-icon|
 ```js
     // 目录，注意

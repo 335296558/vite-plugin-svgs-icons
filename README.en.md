@@ -29,7 +29,7 @@ v3.0.0 English
 
 | param name | type | description | default |
 | -------- | -------- | -------- | -------- |
-|dir|String|SVG icon directory|`${process.cwd()}/src/assets/svg`|
+|dir|String|SVG icon directory|path.resolve(__dirname, 'src', 'assets', 'svg')|
 |moduleId|String|define import name|svg-icon|
 ```js
     // Directory, pay attention to
