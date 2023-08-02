@@ -27,6 +27,7 @@ import svgIcon from 'svg-icon';
         <svgIcon name="shop" :color="color" :size="size"></svgIcon>
         <svgIcon name="voice" :color="color" :size="size"></svgIcon>
         <svgIcon name="testColor" :size="size"></svgIcon>
+        <svgIcon name="pos" :size="size"></svgIcon>
         <svgIcon name="moer" :size="size"></svgIcon>
         <svgIcon name="customerService" :color="color" :size="size"></svgIcon>
         <svgIcon name="chat" :color="color" :size="size"></svgIcon>
