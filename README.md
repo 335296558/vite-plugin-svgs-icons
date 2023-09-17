@@ -4,7 +4,8 @@
 [Nuxt3 nuxt-svg-icon](https://github.com/335296558/nuxt-svg-icon)
 
 #### 介绍
-    一个svg图标的插件，无需每个svg都发起http请求, 组件可以改变color、size【仅支持单色】, 支持全部iconfont.cn上的svg
+    一个svg图标的插件，无需每个svg都发起http请求, 组件可以改变color、size【仅支持单色
+    支持全部iconfont.cn上的svg, [没测试过其它的svg]!
     
 
 <img src="./demo/src/assets/demo_git_svgo.gif" width="400px">
