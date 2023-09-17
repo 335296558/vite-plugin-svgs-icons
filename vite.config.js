@@ -1,5 +1,6 @@
 import { resolve } from 'path';
 import { defineConfig } from 'vite';
+import dts from 'vite-plugin-dts'
 export default defineConfig({
     build: {
         lib: {
@@ -12,7 +13,8 @@ export default defineConfig({
             formats:['es','cjs']
         },
         rollupOptions: {
-            external: ['vue', 'fs', 'path','url','node:fs', 'node:url'],
+            external: ['vue', 'fs', 'path','url','node:fs', 'node:url']
         }
-    }
+    },
+    plugins: [dts()]
 })
