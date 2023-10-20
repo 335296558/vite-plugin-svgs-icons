@@ -1,30 +1,13 @@
-import { h } from 'vue';
-export default {
-    render() {
-        let domAttr = {
-            width: this.width || this.size,
-            height: this.height || this.size,
-            innerHTML: `<use xlink:href="#ei-${this.name}" />`
-        }
-        if (this.class) {
-            domAttr.class = [this.class]
-        }
-        if (this.color) {
-            domAttr.fill = this.color
-        }
-        return h(
-            'svg',
-            {
-                ...domAttr
-            },
-        )
-    },
+
+import { defineComponent } from 'vue';
+
+export const SvgIcon = defineComponent({
     props: {
         name:{ 
             type: String, 
             default: '',
         },
-        size: {
+        size: { // 将要放弃
             type: [String, Number, Boolean], 
             default: 20
         },
@@ -44,5 +27,9 @@ export default {
             type: [String, Number], 
             default: '' 
         },
+    },
+    setup(props) {
+        const { name, width, height, color } = props;
+        return () => (<svg width={width} height={height} fill={color}><use xlink:href={name} /></svg>);
     }
-}
+})

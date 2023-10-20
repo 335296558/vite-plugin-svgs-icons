@@ -1,6 +1,6 @@
 import { resolve } from 'path';
 import { defineConfig } from 'vite';
-import dts from 'vite-plugin-dts'
+// import vueJsx from '@vitejs/plugin-vue-jsx';
 export default defineConfig({
     build: {
         lib: {
@@ -16,5 +16,5 @@ export default defineConfig({
             external: ['vue', 'fs', 'path','url','node:fs', 'node:url']
         }
     },
-    plugins: [dts()]
+    // plugins: [vueJsx({})]
 })

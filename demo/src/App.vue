@@ -1,8 +1,8 @@
 <script setup>
 import { ref } from 'vue';
 const color = ref('#ff9c00');
-const size = ref(128);
-import svgIcon from 'svg-icon';
+const size = ref(42);
+import svgIcon, { svgIconNames } from 'svg-icon';
 </script>
 
 <template>
@@ -27,7 +27,6 @@ import svgIcon from 'svg-icon';
         <svgIcon name="shop" :color="color" :size="size"></svgIcon>
         <svgIcon name="voice" :color="color" :size="size"></svgIcon>
         <svgIcon name="testColor" :size="size"></svgIcon>
-        <svgIcon name="pos" :size="size"></svgIcon>
         <svgIcon name="moer" :size="size"></svgIcon>
         <svgIcon name="customerService" :color="color" :size="size"></svgIcon>
         <svgIcon name="chat" :color="color" :size="size"></svgIcon>
@@ -35,20 +34,20 @@ import svgIcon from 'svg-icon';
             <div class="title"><b>修改大小</b></div>
             <br />
             <label class="label">
-                <span>大小40</span>
-                <input type="radio" value="40" v-model="size" />
+                <span>大小18</span>
+                <input type="radio" value="18" v-model="size" />
             </label>
             <label class="label">
-                <span>大小60</span>
-                <input type="radio" value="60" v-model="size" />
+                <span>大小26</span>
+                <input type="radio" value="26" v-model="size" />
             </label>
             <label class="label">
-                <span>大小120</span>
-                <input type="radio" value="120" v-model="size" />
+                <span>大小34</span>
+                <input type="radio" value="34" v-model="size" />
             </label>
             <label class="label">
-                <span>大小168</span>
-                <input type="radio" value="168" v-model="size" />
+                <span>大小42</span>
+                <input type="radio" value="42" v-model="size" />
             </label>
         </div>
         <div class="box">
@@ -75,6 +74,14 @@ import svgIcon from 'svg-icon';
             <span style="padding-right:15px;">Nuxt3用法👉👉👉</span> <a href="https://github.com/335296558/nuxt-svg-icon" target="_blank"><svgIcon name="github" size="30"></svgIcon></a>
         </h4>
     </div>
+    <div>以下复制其它网站上的一些svg icon 测试</div>
+    <div class="svg-icon-box">
+        <ul>
+            <li v-for="(name, i) in svgIconNames" :key="i">
+                <svgIcon :style="`width: ${size}px;height: ${size}px`" :name="name"></svgIcon>
+            </li>
+        </ul>
+    </div>
 </template>
 
 <style>
@@ -97,5 +104,21 @@ import svgIcon from 'svg-icon';
 }
 .icon {
     font-size: 200px;
+}
+ul ,.li{
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+.svg-icon-box{
+    background: #dcdcdc;
+    overflow: hidden;
+    border-radius: 10px;
+    padding: 10px;
+}
+.svg-icon-box ul li{
+    /* display: flex;
+    align-items: center; */
+    float: left;
 }
 </style>

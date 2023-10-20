@@ -16,7 +16,6 @@ function getStringUrls(htmlString) {
     let urls = [];
     let start = 0;
     let end = 0;
-
     while (true) {
         start = htmlString.indexOf("http", end);
         if (start === -1) {
@@ -35,11 +34,18 @@ function getStringUrls(htmlString) {
     return urls;
 }
 
+// 判断svg是否是多色的
+function isMultiColor(svg) {
+    const colorRegex = /#[0-9A-Fa-f]{6}/g;
+    const colors = new Set(svg.match(colorRegex));
+    return colors.size > 1;
+}
+
 // svg初始化源码
 const transformSvgHTML = (svgStr, option={})=> {
     option = Object.assign({
         protect: true,
-        multicolor: false,
+        // multicolor: false,
     }, option)
     if (!svgStr) return
     // 限制危险标签，比如script、foreignObject等
@@ -67,22 +73,30 @@ const transformSvgHTML = (svgStr, option={})=> {
     
     // 清空原码设置的宽高 
     let svgStartTag = svgStr.match(/<svg([^>]+)/g)[0]
-    if (svgStartTag.match(/\width="[0-9]*"/g)) {
-        svgStr = svgStr.replace(/\width="[0-9]*"/g, '')
+    const w_reg = /\width=".+?"/g;
+    const h_reg = /\height=".+?"/g;
+    const class_reg = /\class=".+?"/g;
+    if (svgStartTag.match(w_reg)) {
+        svgStr = svgStr.replace(w_reg, '')
     }
-    if (svgStartTag.match(/\height="[0-9]*"/g)) {
-        svgStr = svgStr.replace(/\height="[0-9]*"/g, '')
+    if (svgStartTag.match(h_reg)) {
+        svgStr = svgStr.replace(h_reg, '')
+    }
+    if (svgStartTag.match(class_reg)) {
+        svgStr = svgStr.replace(class_reg, '')
     }
     // 区分单色还是多色
-    if (option.multicolor) {
-        svgStr = svgStr.replace(/<svg/g, `<svg data-multicolor`)
-    } else {
-        svgStr = svgStr.replace(/<svg/g, `<svg data-singlecolor`)
-    }
+    // console.log(isMultiColor(svgStr), '==')
+    // if (option.multicolor) {
+    //     svgStr = svgStr.replace(/<svg/g, `<svg data-multicolor`)
+    // } else {
+    //     svgStr = svgStr.replace(/<svg/g, `<svg data-singlecolor`)
+    // }
     return svgStr
 }
 
 export default async function vitePluginVueSvgIcons(options={}) {
+    let svgs = [];
     defaultOptions = Object.assign({
         moduleId: 'svg-icon',
         ssr: false,
@@ -126,15 +140,17 @@ export default async function vitePluginVueSvgIcons(options={}) {
         }
         const files = await loopReaddir(FilePath);
         let symbolMaps = '';
+        svgs = [];
         files.forEach(item => {
             let svgText = fs.readFileSync(item.path, 'utf8');
-            const name = item.filename.replace(/.svg/g, '')
+            const name = item.filename.replace(/.svg/g, '');
+            svgs.push(name);
             const newSvgText = transformSvgHTML(svgText, { 
-                multicolor: item.path.indexOf('multicolor')>=0,
+                // multicolor: item.path.indexOf('multicolor')>=0, // 放弃
                 name
-            })
+            });
             let svgHtml = `<symbol id="${defaultOptions.iconPrefix}-${name}">${newSvgText}</symbol>`;
-            symbolMaps+=svgHtml
+            symbolMaps+=svgHtml;
         });
         const svgHtmlMaps = `<svg id="${defaultOptions.svgId}" xmlns="http://www.w3.org/2000/svg"><def>${symbolMaps} </def></svg>`;
         const tgHtmlStr = `${html}${svgHtmlMaps}<style>#${defaultOptions.svgId} {position: fixed;left: -100%;bottom: -100%;display: none;}[data-singlecolor] path{fill: inherit;}</style>`;
@@ -151,7 +167,7 @@ export default async function vitePluginVueSvgIcons(options={}) {
         },
         async load(id, code) {
             if (id === resolvedModuleId) {
-                return `${svgIconString}`;
+                return `${svgIconString};\n // svg目录的svg名称集合的数组 \n export const svgIconNames = ${JSON.stringify(svgs)};`;
             }
             return
         },
