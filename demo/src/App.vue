@@ -1,8 +1,8 @@
 <script setup>
 import { ref } from 'vue';
+import svgIcon, { svgIconNames } from 'svg-icon';
 const color = ref('#ff9c00');
 const size = ref(42);
-import svgIcon, { svgIconNames } from 'svg-icon';
 </script>
 
 <template>
@@ -26,7 +26,7 @@ import svgIcon, { svgIconNames } from 'svg-icon';
         <svgIcon name="logo" :color="color" :size="size"></svgIcon>
         <svgIcon name="shop" :color="color" :size="size"></svgIcon>
         <svgIcon name="voice" :color="color" :size="size"></svgIcon>
-        <svgIcon name="testColor" :size="size"></svgIcon>
+        <svgIcon name="testColor" :size="40"></svgIcon>
         <svgIcon name="moer" :size="size"></svgIcon>
         <svgIcon name="customerService" :color="color" :size="size"></svgIcon>
         <svgIcon name="chat" :color="color" :size="size"></svgIcon>
@@ -71,14 +71,17 @@ import svgIcon, { svgIconNames } from 'svg-icon';
             </label>
         </div>
         <h4 style="color:rgb(253, 169, 169);display: flex;align-items: center;justify-content: center;">
-            <span style="padding-right:15px;">Nuxt3用法👉👉👉</span> <a href="https://github.com/335296558/nuxt-svg-icon" target="_blank"><svgIcon name="github" size="30"></svgIcon></a>
+            <span style="padding-right:15px;">Nuxt3用法👉👉👉</span>
+            <a href="https://github.com/335296558/nuxt-svg-icon" target="_blank">
+                <svgIcon name="github" size="30"></svgIcon>
+            </a>
         </h4>
     </div>
     <div>以下复制其它网站上的一些svg icon 测试</div>
     <div class="svg-icon-box">
         <ul>
             <li v-for="(name, i) in svgIconNames" :key="i">
-                <svgIcon :style="`width: ${size}px;height: ${size}px`" :name="name"></svgIcon>
+                <svgIcon :style="`width: ${size}px;height: ${size}px`" :color="color" :name="name"></svgIcon>
             </li>
         </ul>
     </div>

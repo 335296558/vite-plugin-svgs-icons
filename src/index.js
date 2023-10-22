@@ -34,6 +34,32 @@ function getStringUrls(htmlString) {
     return urls;
 }
 
+
+// 它将返回一个布尔值，指示SVG是否具有多个颜色，并且这些颜色是否相同。
+function isMultiColorSVG(svgCode) {
+    // 使用正则表达式匹配所有颜色代码
+    const colorRegex = /#[0-9a-fA-F]{3,6}/g;
+    const colors = svgCode.match(colorRegex);
+    // 如果没有颜色代码，返回false
+    // 如果只有一个颜色代码，返回false
+    if (!colors || colors.length === 1) {
+        return { bool: false, colors };
+    }
+
+    // 检查所有颜色是否相同
+    const firstColor = colors[0];
+    let sameIndex = 1;
+    for (let i = 1; i < colors.length; i++) {
+        if (colors[i] === firstColor) {
+            sameIndex++;
+        }
+    }
+    if (sameIndex===colors.length) { // 条件成立则是多个色，但是属于相同的色，就当作单色处理
+        return { bool: false, colors };
+    }
+    return { bool: true, colors };
+}
+
 // 判断svg是否是多色的
 function isMultiColor(svg) {
     const colorRegex = /#[0-9A-Fa-f]{6}/g;
@@ -76,6 +102,7 @@ const transformSvgHTML = (svgStr, option={})=> {
     const w_reg = /\width=".+?"/g;
     const h_reg = /\height=".+?"/g;
     const class_reg = /\class=".+?"/g;
+    const fill_url_reg = /fill="url\(#(\w+)\)"/g;
     if (svgStartTag.match(w_reg)) {
         svgStr = svgStr.replace(w_reg, '')
     }
@@ -85,17 +112,30 @@ const transformSvgHTML = (svgStr, option={})=> {
     if (svgStartTag.match(class_reg)) {
         svgStr = svgStr.replace(class_reg, '')
     }
-    // 区分单色还是多色
-    // console.log(isMultiColor(svgStr), '==')
-    // if (option.multicolor) {
-    //     svgStr = svgStr.replace(/<svg/g, `<svg data-multicolor`)
-    // } else {
-    //     svgStr = svgStr.replace(/<svg/g, `<svg data-singlecolor`)
-    // }
-    return svgStr
-}
 
-export default async function vitePluginVueSvgIcons(options={}) {
+    // 区分单色还是多色
+    const singleColors = isMultiColorSVG(svgStr);
+    if (singleColors.bool) {
+        svgStr = svgStr.replace(/<svg/g, `<svg data-multicolor`);
+    } else if (!fill_url_reg.test(svgStr)){
+        svgStr = svgStr.replace(/fill="(\w+)"/g, '');
+        svgStr = svgStr.replace(/<svg/g, `<svg data-singlecolor`);
+    }
+    return svgStr
+} 
+
+// 获取svg viewBox属性值
+function getViewBox(svgHTMLText) {
+    const viewBoxRegex = /viewBox="([^"]*)"/;
+    const viewBoxMatch = viewBoxRegex.exec(svgHTMLText);
+    if (viewBoxMatch) {
+        return viewBoxMatch[1];
+    }
+    return null;
+}
+  
+
+export default function vitePluginVueSvgIcons(options={}) {
     let svgs = [];
     defaultOptions = Object.assign({
         moduleId: 'svg-icon',
@@ -149,11 +189,16 @@ export default async function vitePluginVueSvgIcons(options={}) {
                 // multicolor: item.path.indexOf('multicolor')>=0, // 放弃
                 name
             });
+            const viewBox = getViewBox(newSvgText); // 取viewBox的值
+            // viewBox="${viewBox}" // 不设置也可以
             let svgHtml = `<symbol id="${defaultOptions.iconPrefix}-${name}">${newSvgText}</symbol>`;
             symbolMaps+=svgHtml;
         });
-        const svgHtmlMaps = `<svg id="${defaultOptions.svgId}" xmlns="http://www.w3.org/2000/svg"><def>${symbolMaps} </def></svg>`;
-        const tgHtmlStr = `${html}${svgHtmlMaps}<style>#${defaultOptions.svgId} {position: fixed;left: -100%;bottom: -100%;display: none;}[data-singlecolor] path{fill: inherit;}</style>`;
+        const xmlns = 'http://www.w3.org/2000/svg';
+        const xlink = 'http://www.w3.org/1999/xlink';
+        const style = '<style>#'+defaultOptions.svgId+' {position: absolute; left: -100%;bottom: -100%; width: 0; height: 0;}</style>';
+        const svgHtmlMaps = `<svg id="${defaultOptions.svgId}" xmlns="${xmlns}" xmlns:link="${xlink}"><defs>${symbolMaps}</defs></svg>`;
+        const tgHtmlStr = `${html}${svgHtmlMaps} ${style}`;
         const rsHtmlString = tgHtmlStr;
         return rsHtmlString;
     }

@@ -32,17 +32,14 @@
 |dir|String|存放svg图标的目录|path.resolve(__dirname, 'src', 'assets', 'svg')|
 |moduleId|String|定义导入名称|svg-icon|
 ```js
-    // 目录，注意
-    // 多色的svg 请放在multicolor这个目录，多色无法修改color, 
-    // 如果多色的svg不放在multicolor这个目录，就会被修改为单色
-    // 没有multicolor目录你就自已建
+    // 目录，注意 multicolor相关的 v3.1.4开始，废弃
+    // 多色无法修改color
     |assets
         |svg
-            |multicolor
+            |xxx 可多级目录
                 xxx.svg
                 xxx.svg
                 xxx.svg
-
             xxx.svg
             xxx.svg
             xxx.svg
@@ -68,16 +65,17 @@
 
 #### 组件参数说明
 | 参数名 | 类型 | 默认值 |
-| -------- | -------- | -------- |
+| -------- | ------- | -------- |
 |name|String|必需设置name，与文件名称一样， 否则不显示哦。name参数是svg文件名称，比如：svg/logo.svg 那么你引用这个svg 只需要name="logo"|
-|color|String| inherit，请设置上你理想的color, 仅支持单色svg|
-|size|Number|默认20, 设置为false, 无默认值，svg也不会被设置上大小|
+|color|String| 设置颜色 仅支持单色svg|
+|size|String、Number、Array|默认0, 设置为false, 无默认值，svg也不会被设置上大小，废弃|
 |class|String| - |
 
 <!-- [示列图像]() -->
 
 
 #### 版本描述：
+    v >= v3.1.5 优化与修复有些svg无法显示问题，并从网站搬了大量的svg进行测试正常
     v3.1.2 > 优化了build配置, 优化导入方式!
     v3.1.0 > 升级新版, 更换构建工具vite
     v3.0.21 < 小于这个版本的放弃与删除了！升级新版
