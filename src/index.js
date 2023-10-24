@@ -203,11 +203,10 @@ export default function vitePluginVueSvgIcons(options={}) {
             const name = item.filename.replace(/.svg/g, '');
             svgs.push(name);
             const newSvgText = transformSvgHTML(svgText, { 
-                // multicolor: item.path.indexOf('multicolor')>=0, // 放弃
                 name,
                 clearOriginFill: defaultOptions.clearOriginFill
             });
-            const viewBox = getViewBox(newSvgText); // 取viewBox的值
+            // const viewBox = getViewBox(newSvgText); // 取viewBox的值
             // viewBox="${viewBox}" // 不设置也可以
             let svgHtml = `<symbol id="${defaultOptions.iconPrefix}-${name}">${newSvgText}</symbol>`;
             symbolMaps+=svgHtml;
