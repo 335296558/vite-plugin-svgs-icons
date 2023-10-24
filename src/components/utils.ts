@@ -198,3 +198,33 @@ export function getSvgHtmlMaps(container: string, symbolMaps: string) {
     const xlink = 'http://www.w3.org/1999/xlink';
     return `<svg id="${container}" xmlns="${xmlns}" xmlns:link="${xlink}"><defs>${symbolMaps}</defs></svg>`;
 }
+
+/**
+ * @description 替换前缀
+ * @param code 
+ * @param iconPrefix 
+ */
+export function svgIconStringReplace(code: string, iconPrefix: string) {
+    const reg = /\[--iconPrefix--\]/g;
+    return code.replace(reg, `${iconPrefix}`);
+}
+
+/**
+ * @description 判断是否存在base64的图像数据
+ * @param str 
+ * @return {boolean}
+ */
+export function hasBase64AndImage(str) {
+    // 判断字符串中是否存在base64格式的数据
+    const base64Regex = /^data:image\/(png|jpeg|gif);base64,/;
+    const hasBase64 = base64Regex.test(str);
+  
+    // 判断是否存在image标签
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = str;
+    const images = tempDiv.getElementsByTagName('img');
+    const hasImage = images.length > 0;
+  
+    return hasBase64 && hasImage;
+  }
+  

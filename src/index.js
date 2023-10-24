@@ -125,13 +125,15 @@ const transformSvgHTML = (svgStr, option={})=> {
 
     // 区分单色还是多色
     const objs = isMultiColorSVG(svgStr);
+    const ss = fill_url_reg.test(svgStr);
+    console.log(objs, '<==========>', option.name);
     if (objs.bool) {
         svgStr = svgStr.replace(/<svg/g, `<svg multicolor="true"`);
     } else if (!fill_url_reg.test(svgStr)){ // 单色
-        console.log(objs, 'objs', option.name);
         svgStr = svgStr.replace(/<svg/g, `<svg multicolor="false"`);
-        console.log(countPathTags(svgStr), option.clearOriginFill, '====', objs.colors?.length);
-        if ((countPathTags(svgStr)===objs.colors?.length || countPathTags(svgStr)===1) && option.clearOriginFill) { // 为了处理一些单色的svg 无法在外部use时修改它的color的问题
+        const pathLength = countPathTags(svgStr);
+        console.log(pathLength, option.clearOriginFill, '====', objs.colors?.length);
+        if ((pathLength===objs.colors?.length || pathLength===1) && option.clearOriginFill) { // 为了处理一些单色的svg 无法在外部use时修改它的color的问题
             // 清除掉它原来的color, 
             // 并且不能给默认color, 不然外部无法修改color
             svgStr = svgStr.replace(/fill="([^"]+)"/g, ''); 
@@ -232,7 +234,7 @@ export default function vitePluginVueSvgIcons(options={}) {
                 return `${svgIconString};\n // svg目录的svg名称集合的数组 \n export const svgIconNames = ${JSON.stringify(svgs)};`;
             }
             return
-        },
+        }
     }
     return pluginOptions;
 }
