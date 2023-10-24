@@ -23,9 +23,10 @@ export default {
         if (this.class) {
             domAttr.class = [this.class];
         }
-        if (this.color) {
-            domAttr.fill = this.color;
-        }
+        // if (this.color) {
+        //     domAttr.fill = this.color
+        // }
+        domAttr.fill = this.color || '#718190';
         domAttr['aria-hidden'] = true;
         return h(
             'svg',

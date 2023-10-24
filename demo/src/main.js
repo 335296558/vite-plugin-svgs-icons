@@ -1,6 +1,9 @@
 import { createApp } from 'vue';
 import './style.css';
 import App from './App.vue';
+import directive from '@/directive/index.js';
 // import 'virtual:svg-icons-register';
 
-createApp(App).mount('#app')
+const app = createApp(App);
+app.use(directive);
+app.mount('#app');

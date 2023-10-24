@@ -67,11 +67,21 @@ function isMultiColor(svg) {
     return colors.size > 1;
 }
 
-// svg初始化源码
+// 判断svg
+function countPathTags(svgCode) {
+    const regex = /<path/g;
+    const matches = svgCode.match(regex);
+    return matches ? matches.length : 0;
+}
+
+/**
+ * @description svg初始化源码、过滤等
+ * @param {*} svgStr 
+ * @param {*} option 
+ */
 const transformSvgHTML = (svgStr, option={})=> {
     option = Object.assign({
         protect: true,
-        // multicolor: false,
     }, option)
     if (!svgStr) return
     // 限制危险标签，比如script、foreignObject等
@@ -104,22 +114,28 @@ const transformSvgHTML = (svgStr, option={})=> {
     const class_reg = /\class=".+?"/g;
     const fill_url_reg = /fill="url\(#(\w+)\)"/g;
     if (svgStartTag.match(w_reg)) {
-        svgStr = svgStr.replace(w_reg, '')
+        svgStr = svgStr.replace(w_reg, '');
     }
     if (svgStartTag.match(h_reg)) {
-        svgStr = svgStr.replace(h_reg, '')
+        svgStr = svgStr.replace(h_reg, '');
     }
     if (svgStartTag.match(class_reg)) {
-        svgStr = svgStr.replace(class_reg, '')
+        svgStr = svgStr.replace(class_reg, '');
     }
 
     // 区分单色还是多色
-    const singleColors = isMultiColorSVG(svgStr);
-    if (singleColors.bool) {
-        svgStr = svgStr.replace(/<svg/g, `<svg data-multicolor`);
-    } else if (!fill_url_reg.test(svgStr)){
-        svgStr = svgStr.replace(/fill="(\w+)"/g, '');
-        svgStr = svgStr.replace(/<svg/g, `<svg data-singlecolor`);
+    const objs = isMultiColorSVG(svgStr);
+    if (objs.bool) {
+        svgStr = svgStr.replace(/<svg/g, `<svg multicolor="true"`);
+    } else if (!fill_url_reg.test(svgStr)){ // 单色
+        console.log(objs, 'objs', option.name);
+        svgStr = svgStr.replace(/<svg/g, `<svg multicolor="false"`);
+        console.log(countPathTags(svgStr), option.clearOriginFill, '====', objs.colors?.length);
+        if ((countPathTags(svgStr)===objs.colors?.length || countPathTags(svgStr)===1) && option.clearOriginFill) { // 为了处理一些单色的svg 无法在外部use时修改它的color的问题
+            // 清除掉它原来的color, 
+            // 并且不能给默认color, 不然外部无法修改color
+            svgStr = svgStr.replace(/fill="([^"]+)"/g, ''); 
+        }
     }
     return svgStr
 } 
@@ -143,6 +159,7 @@ export default function vitePluginVueSvgIcons(options={}) {
         dir: join(`${process.cwd()}/src/assets/svg`),
         svgId: '__v__svg__icons',
         iconPrefix: 'ei',
+        clearOriginFill: true
     }, options);
     const ModuleId = defaultOptions.moduleId;
     const resolvedModuleId = '\0' + ModuleId;
@@ -187,7 +204,8 @@ export default function vitePluginVueSvgIcons(options={}) {
             svgs.push(name);
             const newSvgText = transformSvgHTML(svgText, { 
                 // multicolor: item.path.indexOf('multicolor')>=0, // 放弃
-                name
+                name,
+                clearOriginFill: defaultOptions.clearOriginFill
             });
             const viewBox = getViewBox(newSvgText); // 取viewBox的值
             // viewBox="${viewBox}" // 不设置也可以
