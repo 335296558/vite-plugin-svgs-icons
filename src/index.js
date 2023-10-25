@@ -112,7 +112,7 @@ const transformSvgHTML = (svgStr, option={})=> {
     const w_reg = /\width=".+?"/g;
     const h_reg = /\height=".+?"/g;
     const class_reg = /\class=".+?"/g;
-    const fill_url_reg = /fill="url\(#(\w+)\)"/g;
+    
     if (svgStartTag.match(w_reg)) {
         svgStr = svgStr.replace(w_reg, '');
     }
@@ -125,14 +125,13 @@ const transformSvgHTML = (svgStr, option={})=> {
 
     // 区分单色还是多色
     const objs = isMultiColorSVG(svgStr);
-    const ss = fill_url_reg.test(svgStr);
+    const fill_url_reg = /fill="url\(#(\w+)\)"/g;
     console.log(objs, '<==========>', option.name);
     if (objs.bool) {
         svgStr = svgStr.replace(/<svg/g, `<svg multicolor="true"`);
     } else if (!fill_url_reg.test(svgStr)){ // 单色
         svgStr = svgStr.replace(/<svg/g, `<svg multicolor="false"`);
         const pathLength = countPathTags(svgStr);
-        console.log(pathLength, option.clearOriginFill, '====', objs.colors?.length);
         if ((pathLength===objs.colors?.length || pathLength===1) && option.clearOriginFill) { // 为了处理一些单色的svg 无法在外部use时修改它的color的问题
             // 清除掉它原来的color, 
             // 并且不能给默认color, 不然外部无法修改color
@@ -161,7 +160,8 @@ export default function vitePluginVueSvgIcons(options={}) {
         dir: join(`${process.cwd()}/src/assets/svg`),
         svgId: '__v__svg__icons',
         iconPrefix: 'ei',
-        clearOriginFill: true
+        clearOriginFill: true, // 可以设置初始化时不要清除原来svg的fill, =true也是仅针对单色处理
+        isNameVars: false, // 是否生成svg名称，Array
     }, options);
     const ModuleId = defaultOptions.moduleId;
     const resolvedModuleId = '\0' + ModuleId;
