@@ -29,8 +29,10 @@
     "vue": "^3.3.4"
   },
   "devDependencies": {
+    "@types/node": "^20.8.8",
     "@vitejs/plugin-vue": "^4.4.0",
     "fast-glob": "^3.3.1",
+    "path": "^0.12.7",
     "vite": "^4.4.11",
     "vite-plugin-node": "^3.0.2",
     "vite-plugin-svg-icons": "^2.0.1"
