@@ -1,5 +1,12 @@
 'use strict';
 
+const clc = {
+    // green: (text: string) => `\x1B[32m${text}\x1B[0m`,
+    yellow: (text: string) => `\x1B[33m${text}\x1B[0m`,
+    // red: (text: string) => `\x1B[31m${text}\x1B[0m`,
+    // BgRed: (text: string)=> `\x1b[41m${text}`,
+};
+
 let otherUrls: string[] = [];
 
 /**
@@ -140,13 +147,17 @@ export function svgIconStringReplace(code: string, iconPrefix: string) {
  * @param str 
  * @return {boolean}
  */
-export function hasBase64AndImage(str: string) {
+export function hasBase64AndImage(svgHtmlString: string) {
     // 判断字符串中是否存在base64格式的数据
-    const base64Regex = /^data:image\/(png|jpeg|gif);base64,/;
-    const hasBase64 = base64Regex.test(str);
-    console.log(hasBase64, 'hasBase64', str);
-    return hasBase64;
-  }
+    const regex = /data:(image|audio|video)\/[^;]+;base64,([^"]+)/g;
+    const match = regex.exec(svgHtmlString);
+    while (match !== null) {
+        if (match[1]) {
+            return true;
+        }
+    }
+    return false;
+}
   
 /**
  * @description 初始化svg源码、过滤等...
@@ -158,11 +169,12 @@ export interface IOption {
     protect?: boolean;
     clearOriginFill?: boolean;
     name: string;
+    isWarn: boolean;
 }
   export function transformSvgHTML(svgStr: string, option: IOption){
     option = Object.assign({
         protect: true,
-        clearOriginFill: true
+        clearOriginFill: true,
     }, option);
     if (!svgStr) return;
     // 限制危险标签，比如script、foreignObject等
@@ -184,13 +196,13 @@ export interface IOption {
     ) {
         // 安全保护机制
         // 你的SVG中可能存XSS 攻击的风险！插件进行了阻断，此时你的svg无法显示，强制开启 设置 可在调用插件处设置protect为true
-        console.error(option.name+'.svg There is a risk of XSS attacks in your SVG! The plug-in is blocked, at this time your svg cannot be displayed, forcibly open');
-        console.error('SVG图标中可能存XSS 攻击的风险！');
+        option.isWarn && console.warn(clc.yellow('➜ '+option.name+'.svg There is a risk of XSS attacks in your SVG! The plug-in is blocked, at this time your svg cannot be displayed, forcibly open'));
+        option.isWarn && console.warn(clc.yellow('➜ '+'SVG图标中可能存XSS 攻击的风险！'));
     }
 
     // 不建议svg中包含base64的图标
     if (hasBase64AndImage(svgStr)) {
-        console.error(option.name+'.svg 这是一个包含base64的图标！ 不建议把它当作svg使用!');
+        option.isWarn && console.warn(clc.yellow('➜ '+option.name+'.svg 这是一个包含base64格式的数据图标！ 不建议把它当作svg使用!'));
     }
     
     // 清空原码设置的宽高 

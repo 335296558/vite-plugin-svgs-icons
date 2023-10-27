@@ -10,7 +10,7 @@ export default defineConfig({
             },
             name: 'vitePluginVueSvgIcons',
             // fileName: 'index', // 如果开启所以打包的文件都会变成index，但不会重复，它会index.js、index2.js
-            formats:['es','cjs']
+            formats:['es'],
         },
         rollupOptions: {
             external: ['vue', 'fs', 'path','url','node:fs', 'node:url']

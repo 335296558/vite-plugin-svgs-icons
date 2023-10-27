@@ -27,7 +27,7 @@ const size = ref(42);
         <svgIcon name="logo" :color="color" :size="size"></svgIcon>
         <svgIcon name="shop" :color="color" :size="size"></svgIcon>
         <svgIcon name="voice" :color="color" :size="size"></svgIcon>
-        <svgIcon name="testColor" :size="40"></svgIcon>
+        <svgIcon name="testColor" :size="size"></svgIcon>
         <svgIcon name="moer" :size="size"></svgIcon>
         <svgIcon name="customerService" :color="color" :size="size"></svgIcon>
         <svgIcon name="chat" :color="color" :size="size"></svgIcon>

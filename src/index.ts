@@ -11,7 +11,7 @@ import { join } from 'path';
 
 import fs from 'fs';
 
-import { transformSvgHTML, createSymbol, getSvgHtmlMaps, setSvgMapHideStyle  } from './utils';
+import { transformSvgHTML, createSymbol, getSvgHtmlMaps, setSvgMapHideStyle, svgIconStringReplace } from './utils';
 
 import svgIconString from './components/svgIcon.js?raw';
 
@@ -27,6 +27,8 @@ export interface IOptions {
     clearOriginFill?: boolean; 
     // 是否生成svg名称，Array
     isNameVars?: boolean; 
+    // 关闭所有警告
+    isWarn: boolean;
 }
 
 interface IPaths {
@@ -39,9 +41,10 @@ let defaultOptions: IOptions = {
     ssr: false,
     dir: join(`${process.cwd()}/src/assets/svg`),
     svgId: '__v__svg__icons',
-    iconPrefix: 'ei',
+    iconPrefix: 'icona',
     clearOriginFill: true,
     isNameVars: false,
+    isWarn: true
 };
 
 export default function vitePluginVueSvgIcons(options: IOptions) {
@@ -93,7 +96,8 @@ export default function vitePluginVueSvgIcons(options: IOptions) {
             svgs.push(name);
             const newSvgText = transformSvgHTML(svgText, { 
                 name,
-                clearOriginFill: defaultOptions.clearOriginFill
+                clearOriginFill: defaultOptions.clearOriginFill,
+                isWarn: defaultOptions.isWarn            
             });
 
             // const viewBox = getViewBox(newSvgText); // 取viewBox的值
@@ -118,7 +122,7 @@ export default function vitePluginVueSvgIcons(options: IOptions) {
         },
         async load(id: string) {
             if (id === resolvedModuleId) {
-                return `${svgIconString};\n // svg目录的svg名称集合的数组 \n export const svgIconNames = ${JSON.stringify(svgs)};`;
+                return `${svgIconStringReplace(svgIconString, defaultOptions.iconPrefix)};\n // svg目录的svg名称集合的数组 \n export const svgIconNames = ${JSON.stringify(svgs)};`;
             }
             return
         }

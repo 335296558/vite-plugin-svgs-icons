@@ -2,7 +2,7 @@ import { h } from 'vue';
 export default {
     render() {
         let domAttr = {
-            innerHTML: `<use href="#ei-${this.name}" />`
+            innerHTML: `<use href="#[--iconPrefix--]-${this.name}" />`
         }
         let width = this.size;
         let height = this.size;
