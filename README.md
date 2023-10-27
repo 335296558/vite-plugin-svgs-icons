@@ -4,12 +4,12 @@
 [Nuxt3 nuxt-svg-icon](https://github.com/335296558/nuxt-svg-icon)
 
 #### 介绍
-    一个svg图标的插件，无需每个svg都发起http请求, 组件可以改变color、size【仅支持单色
-    支持全部iconfont.cn上的svg, [没测试过其它的svg]!
+    一个svg图标的插件，无需每个svg都发起http请求, 内置组件可以改变svg color、size【仅支持单色】
     
 
 <img src="./demo/src/assets/demo_git_svgo.gif" width="400px">
-#### 安装
+
+#### installation
     yarn add vite-plugin-vue-svg-icons -D
 
     npm i vite-plugin-vue-svg-icons -D
@@ -34,9 +34,10 @@
 ```js
     // 目录，注意 multicolor相关的 v3.1.4开始，废弃
     // 多色无法修改color
+    // 可多级目录，但不会把目录名称加在svg名称中，所以svg 名称要是唯一的喔
     |assets
         |svg
-            |xxx 可多级目录
+            |xxx
                 xxx.svg
                 xxx.svg
                 xxx.svg
@@ -53,12 +54,15 @@
     // name参数是svg文件名称，比如：svg/logo.svg
     // 那么你引用这个svg 只需要name="logo"
     <template>
+        // 可以这样
         <svgIcon name="logo" color="#f00" size="80" />
+        // 也可以这样，如果你是H5，推荐这种喔
+        <svgIcon name="logo" style="color:#f00;width: 80px;height:80px" />
     </template>
 ```
 
 ```js
-    // main.js 全部注册
+    // main.js 全局注册，不推荐哈，推荐局部导入即可
     import svgIcon from 'svg-icon'
     VueApp.component('svg-icon', svgIcon);
 ```
@@ -68,14 +72,13 @@
 | -------- | ------- | -------- |
 |name|String|必需设置name，与文件名称一样， 否则不显示哦。name参数是svg文件名称，比如：svg/logo.svg 那么你引用这个svg 只需要name="logo"|
 |color|String| 设置颜色 仅支持单色svg|
-|size|String、Number、Array|默认0, 设置为false, 无默认值，svg也不会被设置上大小，废弃|
-|class|String| - |
+|size|String、Number、Array| - |
 
 <!-- [示列图像]() -->
 
 
 #### 版本描述：
-    v >= v3.1.5 优化与修复有些svg无法显示问题，并从网站搬了大量的svg进行测试正常
+    v >= v3.1.5 优化与修复有些svg无法显示问题【但依然是会有些特殊的svg无法使用】，并从网站搬了一些svg进行测试 ☑
     v3.1.2 > 优化了build配置, 优化导入方式!
     v3.1.0 > 升级新版, 更换构建工具vite
     v3.0.21 < 小于这个版本的放弃与删除了！升级新版
