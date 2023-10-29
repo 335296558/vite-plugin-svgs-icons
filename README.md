@@ -30,7 +30,7 @@
 | 参数名 | 类型 | 描述 | 默认值 |
 | -------- | -------- | -------- | -------- |
 |dir|String|存放svg图标的目录|path.resolve(__dirname, 'src', 'assets', 'svg')|
-|moduleId|String|定义导入名称|svg-icon|
+<!-- |moduleId|String|定义导入名称|virtual:svg-icon| -->
 ```js
     // 目录，注意 multicolor相关的 v3.1.4开始，废弃
     // 多色无法修改color
