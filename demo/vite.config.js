@@ -10,7 +10,8 @@ export default defineConfig({
     plugins: [
         vue(), 
         vitePluginVueSvgIcons({
-            dir: path.resolve(__dirname, 'src', 'assets', 'svg')
+            dir: path.resolve(__dirname, 'src', 'assets', 'svg'),
+            isNameVars: true
         }),
         createSvgIconsPlugin({
             iconDirs: [path.resolve(__dirname, 'src/assets/svg')],

@@ -1,4 +1,5 @@
 'use strict';
+import type { IOptions, IPaths } from './types.d.ts';
 /**
  * @author 忘情上人
  * @date 2022/02
@@ -7,9 +8,9 @@
  * @name vite-plugin-vue-svg-icons || vitePluginVueSvgIcons
  */
 
-import { join } from 'path';
+import { join, resolve } from 'path';
 
-import fs from 'fs';
+import fs from 'node:fs';
 
 import { transformSvgHTML, createSymbol, getSvgHtmlMaps, setSvgMapHideStyle, svgIconStringReplace } from './utils';
 
@@ -17,27 +18,8 @@ import svgIconString from './components/svgIcon.js?raw';
 
 const PluginName: string = 'vite-plugin-vue-svg-icons';
 
-export interface IOptions {
-    moduleId: string;
-    ssr: boolean;
-    dir: any;
-    svgId: string;
-    iconPrefix: string;
-    // 可以设置初始化时不要清除原来svg的fill, =true也是仅针对单色处理
-    clearOriginFill?: boolean; 
-    // 是否生成svg名称，Array
-    isNameVars?: boolean; 
-    // 关闭所有警告
-    isWarn: boolean;
-}
-
-interface IPaths {
-    path: any;
-    filename: string;
-}
-
 let defaultOptions: IOptions = {
-    moduleId: 'svg-icon',
+    moduleId: 'virtual:svg-icon',
     ssr: false,
     dir: join(`${process.cwd()}/src/assets/svg`),
     svgId: '__v__svg__icons',
@@ -49,11 +31,13 @@ let defaultOptions: IOptions = {
 
 export default function vitePluginVueSvgIcons(options: IOptions) {
     let svgs: string[] = [];
+    let symbolMaps: string = '';
+    let svgIconMaps: { [key: string]: string } = {};
 
     defaultOptions = Object.assign(defaultOptions, options);
 
     const ModuleId = defaultOptions.moduleId;
-
+    // virtual
     const resolvedModuleId = '\0' + ModuleId;
 
     // 递归读取目录并返回一个path集合
@@ -81,15 +65,15 @@ export default function vitePluginVueSvgIcons(options: IOptions) {
         return paths;
     }
 
-    async function transformIndexHtml(html: string) {
-        const FilePath: string = `${defaultOptions.dir}`;
+    async function handleSvgMaps(RootPath: string) { // RootPath=使用插件的项目根目录的path
+        const FilePath: string = RootPath;
         if (!fs.existsSync(FilePath)) {
-            console.warn(PluginName+':The directory does not exist ----> '+FilePath);
-            return html;
+            console.warn(`\x1B[31m${PluginName}:The directory does not exist ---->${FilePath}\x1B[0m`);
+            return null;
         }
         const files = await loopReaddir(FilePath);
-        let symbolMaps = '';
         svgs = [];
+        symbolMaps = '';
         files.forEach(item => {
             let svgText = fs.readFileSync(item.path, 'utf8');
             const name = item.filename.replace(/.svg/g, '');
@@ -99,21 +83,33 @@ export default function vitePluginVueSvgIcons(options: IOptions) {
                 clearOriginFill: defaultOptions.clearOriginFill,
                 isWarn: defaultOptions.isWarn            
             });
-
+            svgIconMaps[name] = newSvgText as string;
             // const viewBox = getViewBox(newSvgText); // 取viewBox的值
             // viewBox="${viewBox}" // 不设置也可以
-
+            
             let svgHtml = createSymbol(defaultOptions?.iconPrefix, name, newSvgText as string);
             symbolMaps+=svgHtml;
         });
+        return symbolMaps;
+    }
+
+    function transformIndexHtml(html: string) {
         const style = setSvgMapHideStyle(defaultOptions.svgId);
         const svgHtmlMaps = getSvgHtmlMaps(defaultOptions.svgId, symbolMaps);
         const tgHtmlStr = `${html}${svgHtmlMaps} ${style}`;
         const rsHtmlString = tgHtmlStr;
         return rsHtmlString;
     }
+    let svgMapPath = '';
+    let configs = {};
     const pluginOptions = {
-        name: 'vite:vue-svg-icons',
+        name: 'vite:svg-map-icons',
+        apply: 'serve',
+        configResolved(config: any) {
+            configs = config;
+            svgMapPath = resolve(config.root, `${defaultOptions.dir}`);
+            handleSvgMaps(svgMapPath);
+        },
         transformIndexHtml,
         resolveId(id: string) {
             if (id === ModuleId) {
@@ -122,10 +118,46 @@ export default function vitePluginVueSvgIcons(options: IOptions) {
         },
         async load(id: string) {
             if (id === resolvedModuleId) {
-                return `${svgIconStringReplace(svgIconString, defaultOptions.iconPrefix)};\n // svg目录的svg名称集合的数组 \n export const svgIconNames = ${JSON.stringify(svgs)};`;
+                return `${svgIconStringReplace(svgIconString, defaultOptions.iconPrefix)};
+                \n// svg目录的svg名称集合的数组, 新加、删除svg文件时该变量还不支持热更
+                \n ${ defaultOptions.isNameVars?'export const svgIconNames ='+ JSON.stringify(svgs): '' }
+                `;
             }
             return
-        }
+        },
+        // transform(code, id) {
+        //     if (id === resolvedModuleId) {
+        //         console.log(code, '===', id);
+        //     }
+        // },
+        async handleHotUpdate(ctx: any) { // 热更新处理
+            const svgMapPath = resolve(ctx.server.config.root, `${defaultOptions.dir}`);
+            async function update(filePath: string) {
+                if (ctx.file.indexOf(filePath) >= 0 || ctx.file.indexOf('.svg') >=0) {
+                    await handleSvgMaps(svgMapPath);
+                    try {
+                        const { moduleGraph } = ctx.server;
+                        const module = moduleGraph.getModuleById(resolvedModuleId);
+                        ctx.server.ws.send({
+                            type: 'full-reload',
+                            path: '*',
+                        });
+                        return module?[...module]: true;
+                    } catch (error) {}
+                }
+                return true;
+            }
+          
+            // ctx.server.watcher.on('add', async (path: string) => {
+            //     await update(path);
+            // });
+
+            ctx.server.watcher.on('unlink', async (path: string) => {
+                await update(path);
+            });
+
+            return await update(svgMapPath);
+        },
     }
     return pluginOptions;
 }

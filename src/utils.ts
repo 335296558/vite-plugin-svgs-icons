@@ -204,9 +204,11 @@ export interface IOption {
     if (hasBase64AndImage(svgStr)) {
         option.isWarn && console.warn(clc.yellow('➜ '+option.name+'.svg 这是一个包含base64格式的数据图标！ 不建议把它当作svg使用!'));
     }
-    
+    const svgReg = /<svg([^>]+)/g;
+    if (!svgStr.match(svgReg)) return null;
+
     // 清空原码设置的宽高 
-    let svgStartTag = svgStr.match(/<svg([^>]+)/g)[0];
+    let svgStartTag = svgStr.match(svgReg)[0];
     const w_reg = /\width=".+?"/g;
     const h_reg = /\height=".+?"/g;
     const class_reg = /\class=".+?"/g;

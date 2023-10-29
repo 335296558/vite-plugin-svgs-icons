@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue';
-import svgIcon, { svgIconNames } from 'svg-icon';
+import svgIcon, { svgIconNames } from 'virtual:svg-icon';
 import SvgIcons from '@/components/SvgIcon.vue';
 const color = ref('#ff9c00');
 const size = ref(42);
