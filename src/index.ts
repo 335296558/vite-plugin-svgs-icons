@@ -105,7 +105,7 @@ export default function vitePluginVueSvgIcons(options: IOptions) {
     let configs = {};
     const pluginOptions = {
         name: 'vite:svg-map-icons',
-        apply: 'serve',
+        // apply: 'serve',
         configResolved(config: any) {
             configs = config;
             svgMapPath = resolve(config.root, `${defaultOptions.dir}`);
@@ -136,7 +136,7 @@ export default function vitePluginVueSvgIcons(options: IOptions) {
         },
         // transform(code, id) {
         //     if (id === resolvedModuleId) {
-        //         console.log(code, '===', id);
+        //         console.log('===', id);
         //     }
         // },
         async handleHotUpdate(ctx: any) { // 热更新处理
