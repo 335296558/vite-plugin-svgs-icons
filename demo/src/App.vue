@@ -1,13 +1,16 @@
 <script setup>
 import { ref } from 'vue';
 import svgIcon, { svgIconNames } from 'virtual:svg-icon';
-import SvgIcons from '@/components/SvgIcon.vue';
+import svgIcona from '@/components/SvgIcon.vue';
+import HelloWorld from '@/components/HelloWorld.vue';
 const color = ref('#ff9c00');
 const size = ref(42);
+console.log(svgIcon, 'svgIconNames');
 </script>
 
 <template>
     <div>
+        <HelloWorld />
         <h1 :style="`color: ${color}`">DEMO</h1>
         <div class="install">
             <h4 style="color:rgb(253, 169, 169);display: flex;align-items: center;justify-content: center;">
@@ -22,6 +25,7 @@ const size = ref(42);
         <h4 style="color:rgb(253, 169, 169)">
             多色图标不支持修改color
         </h4>
+        <svgIcona name="icona-auidr" />
         <!-- <svgIcon name="test1" :color="color" :size="size"></svgIcon>
         <svgIcon name="aa" :color="color" :size="size"></svgIcon> -->
         <svgIcon name="logo" :color="color" :size="size"></svgIcon>

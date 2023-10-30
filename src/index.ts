@@ -12,7 +12,7 @@ import { join, resolve } from 'path';
 
 import fs from 'node:fs';
 
-import { transformSvgHTML, createSymbol, getSvgHtmlMaps, setSvgMapHideStyle, svgIconStringReplace } from './utils';
+import { transformSvgHTML, createSymbol, getSvgHtmlMaps, setSvgMapHideStyle, svgIconStringReplace, createLoadSvgIconsCode, compressHtml, escapeHtml } from './utils';
 
 import svgIconString from './components/svgIcon.js?raw';
 
@@ -94,6 +94,7 @@ export default function vitePluginVueSvgIcons(options: IOptions) {
     }
 
     function transformIndexHtml(html: string) {
+        if (!defaultOptions.ssr) return html;
         const style = setSvgMapHideStyle(defaultOptions.svgId);
         const svgHtmlMaps = getSvgHtmlMaps(defaultOptions.svgId, symbolMaps);
         const tgHtmlStr = `${html}${svgHtmlMaps} ${style}`;
@@ -101,12 +102,12 @@ export default function vitePluginVueSvgIcons(options: IOptions) {
         return rsHtmlString;
     }
     let svgMapPath = '';
-    let configs = {};
+    // let configs = {};
     const pluginOptions = {
         name: 'vite:svg-map-icons',
         apply: 'serve',
         configResolved(config: any) {
-            configs = config;
+            // configs = config;
             svgMapPath = resolve(config.root, `${defaultOptions.dir}`);
             handleSvgMaps(svgMapPath);
         },
@@ -118,12 +119,20 @@ export default function vitePluginVueSvgIcons(options: IOptions) {
         },
         async load(id: string) {
             if (id === resolvedModuleId) {
-                return `${svgIconStringReplace(svgIconString, defaultOptions.iconPrefix)};
-                \n// svg目录的svg名称集合的数组, 新加、删除svg文件时该变量还不支持热更
-                \n ${ defaultOptions.isNameVars?'export const svgIconNames ='+ JSON.stringify(svgs): '' }
+                const varNamesCodes = `${ defaultOptions.isNameVars?'export const svgIconNames ='+ JSON.stringify(svgs): '' }`;
+                if (defaultOptions.ssr) {
+                    return `${svgIconStringReplace(svgIconString, defaultOptions.iconPrefix)};
+                    \n// svg目录的svg名称集合的数组, 新加、删除svg文件时该变量还不支持热更
+                    \n ${ varNamesCodes }
+                    `;
+                }
+                const svgHtmlMaps = escapeHtml(compressHtml(getSvgHtmlMaps(defaultOptions.svgId, symbolMaps, true)));
+                return `
+                    ${svgIconStringReplace(svgIconString, defaultOptions.iconPrefix)};\n
+                    ${createLoadSvgIconsCode(defaultOptions.svgId, svgHtmlMaps)}\n
+                    ${varNamesCodes};
                 `;
             }
-            return
         },
         // transform(code, id) {
         //     if (id === resolvedModuleId) {

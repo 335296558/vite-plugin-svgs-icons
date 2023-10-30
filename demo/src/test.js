@@ -1,3 +1,4 @@
+
 // const modules = import.meta.glob('../src/assets/*/*.svg');
 
 // const filterAssets = /\/assets\//g;

@@ -126,7 +126,10 @@ export function createSymbol(iconPrefix: string, name: string, newSvgText: strin
  * @param {string} symbolMaps svg html string
  * @return {string} svg maps html
  */
-export function getSvgHtmlMaps(container: string, symbolMaps: string) {
+export function getSvgHtmlMaps(container: string, symbolMaps: string, noSvg: boolean = false) {
+    if (noSvg) {
+        return `<defs>${symbolMaps}</defs>`;
+    }
     const xmlns = 'http://www.w3.org/2000/svg';
     const xlink = 'http://www.w3.org/1999/xlink';
     return `<svg id="${container}" xmlns="${xmlns}" xmlns:link="${xlink}"><defs>${symbolMaps}</defs></svg>`;
@@ -241,3 +244,51 @@ export interface IOption {
     }
     return svgStr
 } 
+
+
+/**
+ * @description 就生成一份创建svg集合的js
+ * @param svgId 
+ * @param svgHtmlMaps 
+ */
+export function createLoadSvgIconsCode(svgId: string, svgHtmlMaps: string) {
+    return `
+        if (typeof window !== 'undefined') {
+            function loadSvgIcons() {
+                var body = document.body;
+                var svgEl = document.createElement('svg');
+                svgEl.id = '${svgId}';
+                svgEl.style.position = 'absolute';
+                svgEl.style.top = '-100%';
+                svgEl.style.left = '-100%';
+                svgEl.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+                svgEl.setAttribute('xmlns:link', 'http://www.w3.org/1999/xlink');
+                svgEl.innerHTML = "${svgHtmlMaps}";
+                body.insertBefore(svgEl, body.lastChild);
+            }
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', loadSvgIcons);
+            } else {
+                loadSvgIcons()
+            }
+        }
+    `;
+}
+
+/**
+ * @description 压缩为一行
+ * @param {string} html 
+ * @return html
+ */
+export function compressHtml(html: string) {
+    return html.replace(/\s+/g, ' ').replace(/<!--[\s\S]*?-->/g, '').replace(/>\s+</g, '><');
+}
+
+/**
+ * @description 处理转义
+ * @param {string} html 
+ * @return html
+ */
+export function escapeHtml(html: string) {
+    return html.replace(/"/g, '\\"');
+}

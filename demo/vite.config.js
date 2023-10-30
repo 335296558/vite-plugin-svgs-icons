@@ -11,12 +11,13 @@ export default defineConfig({
         vue(), 
         vitePluginVueSvgIcons({
             dir: path.resolve(__dirname, 'src', 'assets', 'svg'),
-            isNameVars: true
+            isNameVars: true,
+            ssr: false
         }),
-        createSvgIconsPlugin({
-            iconDirs: [path.resolve(__dirname, 'src/assets/svg')],
-            symbolId: 'icon-[dir]-[name]',
-        }),
+        // createSvgIconsPlugin({
+        //     iconDirs: [path.resolve(__dirname, 'src/assets/svg')],
+        //     symbolId: 'icon-[dir]-[name]',
+        // }),
     ],
     resolve: {
         alias: [{
