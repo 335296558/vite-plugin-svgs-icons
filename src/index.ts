@@ -12,7 +12,7 @@ import { join, resolve } from 'path';
 
 import fs from 'node:fs';
 
-import { transformSvgHTML, createSymbol, getSvgHtmlMaps, setSvgMapHideStyle, svgIconStringReplace, createLoadSvgIconsCode, compressHtml, escapeHtml } from './utils';
+import { transformSvgHTML, createSymbol, getSvgHtmlMaps, setSvgMapHideStyle, svgIconStringReplace, createLoadSvgIconsCode, escapeHtml, compressHtml } from './utils';
 
 import svgIconString from './components/svgIcon.js?raw';
 
@@ -102,12 +102,12 @@ export default function vitePluginVueSvgIcons(options: IOptions) {
         return rsHtmlString;
     }
     let svgMapPath = '';
-    // let configs = {};
+    let configs = {};
     const pluginOptions = {
         name: 'vite:svg-map-icons',
         apply: 'serve',
         configResolved(config: any) {
-            // configs = config;
+            configs = config;
             svgMapPath = resolve(config.root, `${defaultOptions.dir}`);
             handleSvgMaps(svgMapPath);
         },
@@ -126,7 +126,7 @@ export default function vitePluginVueSvgIcons(options: IOptions) {
                     \n ${ varNamesCodes }
                     `;
                 }
-                const svgHtmlMaps = escapeHtml(compressHtml(getSvgHtmlMaps(defaultOptions.svgId, symbolMaps, true)));
+                const svgHtmlMaps = escapeHtml(compressHtml(getSvgHtmlMaps(defaultOptions.svgId, symbolMaps)));
                 return `
                     ${svgIconStringReplace(svgIconString, defaultOptions.iconPrefix)};\n
                     ${createLoadSvgIconsCode(defaultOptions.svgId, svgHtmlMaps)}\n

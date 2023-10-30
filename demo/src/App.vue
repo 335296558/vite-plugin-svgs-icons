@@ -1,16 +1,12 @@
 <script setup>
 import { ref } from 'vue';
 import svgIcon, { svgIconNames } from 'virtual:svg-icon';
-import svgIcona from '@/components/SvgIcon.vue';
-import HelloWorld from '@/components/HelloWorld.vue';
 const color = ref('#ff9c00');
 const size = ref(42);
-console.log(svgIcon, 'svgIconNames');
 </script>
 
 <template>
     <div>
-        <HelloWorld />
         <h1 :style="`color: ${color}`">DEMO</h1>
         <div class="install">
             <h4 style="color:rgb(253, 169, 169);display: flex;align-items: center;justify-content: center;">
@@ -25,7 +21,6 @@ console.log(svgIcon, 'svgIconNames');
         <h4 style="color:rgb(253, 169, 169)">
             多色图标不支持修改color
         </h4>
-        <svgIcona name="icona-auidr" />
         <!-- <svgIcon name="test1" :color="color" :size="size"></svgIcon>
         <svgIcon name="aa" :color="color" :size="size"></svgIcon> -->
         <svgIcon name="logo" :color="color" :size="size"></svgIcon>
@@ -70,14 +65,6 @@ console.log(svgIcon, 'svgIconNames');
             </a>
         </h4>
     </div>
-    <!-- <div class="svg-testing-icon-box">
-        <ul>
-            <li v-for="(name, i) in svgIconNames" :key="i"  style="padding: 8px">
-                <SvgIcons :style="`width: ${size}px;height: ${size}px`" :name="name" />
-            </li>
-        </ul>
-    </div> -->
-    
     
     <div :style="`padding: 8px;color: ${color}`">以下复制其它网站上的一些svg icon 测试, 但并不是所有svg icon都支持换色哦！</div>
     <div class="svg-testing-icon-box">

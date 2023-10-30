@@ -126,10 +126,7 @@ export function createSymbol(iconPrefix: string, name: string, newSvgText: strin
  * @param {string} symbolMaps svg html string
  * @return {string} svg maps html
  */
-export function getSvgHtmlMaps(container: string, symbolMaps: string, noSvg: boolean = false) {
-    if (noSvg) {
-        return `<defs>${symbolMaps}</defs>`;
-    }
+export function getSvgHtmlMaps(container: string, symbolMaps: string) {
     const xmlns = 'http://www.w3.org/2000/svg';
     const xlink = 'http://www.w3.org/1999/xlink';
     return `<svg id="${container}" xmlns="${xmlns}" xmlns:link="${xlink}"><defs>${symbolMaps}</defs></svg>`;
@@ -251,18 +248,15 @@ export interface IOption {
  * @param svgId 
  * @param svgHtmlMaps 
  */
-export function createLoadSvgIconsCode(svgId: string, svgHtmlMaps: string) {
+export function createLoadSvgIconsCode(_svgId: string, svgHtmlMaps: string) {
     return `
         if (typeof window !== 'undefined') {
             function loadSvgIcons() {
                 var body = document.body;
                 var svgEl = document.createElement('svg');
-                svgEl.id = '${svgId}';
                 svgEl.style.position = 'absolute';
                 svgEl.style.top = '-100%';
                 svgEl.style.left = '-100%';
-                svgEl.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
-                svgEl.setAttribute('xmlns:link', 'http://www.w3.org/1999/xlink');
                 svgEl.innerHTML = "${svgHtmlMaps}";
                 body.insertBefore(svgEl, body.lastChild);
             }
