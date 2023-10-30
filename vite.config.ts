@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite';
 import path from 'path';
+import UglifyJS from 'uglify-js';
 const __dirname = path.resolve();
 // import vueJsx from '@vitejs/plugin-vue-jsx';
 export default defineConfig({
@@ -15,7 +16,7 @@ export default defineConfig({
         },
         rollupOptions: {
             external: ['vue', 'fs', 'path','url','node:fs', 'node:url']
-        }
+        },
     },
     // plugins: [vueJsx({})]
 })
