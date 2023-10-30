@@ -102,12 +102,13 @@ export default function vitePluginVueSvgIcons(options: IOptions) {
         return rsHtmlString;
     }
     let svgMapPath = '';
-    let configs = {};
+    // let configs = {};
     const pluginOptions = {
-        name: 'vite:svg-map-icons',
+        // name: 'vite:svg-map-icons',
+        name: 'virtual:svg-icon',
         // apply: 'serve',
         configResolved(config: any) {
-            configs = config;
+            // configs = config;
             svgMapPath = resolve(config.root, `${defaultOptions.dir}`);
             handleSvgMaps(svgMapPath);
         },
