@@ -238,14 +238,13 @@ export interface IOption {
             // 清除掉它原来的color
             // 并且不能给默认color, 不然外部无法修改color
             svgStr = svgStr.replace(/fill="([^"]+)"/g, ''); 
-        }
-        if (stroke_reg.test(svgStr)) {
+        } else if (stroke_reg.test(svgStr)) {
             svgStr = svgStr.replace(stroke_reg, `stroke="var(--${option.name}-svg-color)"`); 
             if (objs.colors?.length) {
                 // 处理无法在外部通过color 改色的
                 svgStr = svgStr.replace(/<svg/g, `<style>:root{ --${option.name}-svg-color: ${objs.colors[0]} }</style> <svg`);
             }
-        } 
+        }
     }
     return svgStr
 } 

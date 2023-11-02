@@ -70,11 +70,19 @@ const size = ref(42);
     <div class="svg-testing-icon-box">
         <ul>
             <li v-for="(name, i) in svgIconNames" :key="i"  style="padding: 8px">
-                <svgIcon :style="`width: ${size}px;height: ${size}px`" :color="color" :name="name"></svgIcon>
+                <svgIcon 
+                    :style="`width: ${size}px;height: ${size}px;--${name}-svg-color: ${color}`" 
+                    :color="color"
+                    :name="name"
+                ></svgIcon>
             </li>
         </ul>
     </div>
     <svgIcon :style="`--sex-svg-color: ${color}`" name="sex"></svgIcon>
+    <svgIcon style="width: 40px; height: 40px" name="confounded-facerepo-com-2"></svgIcon>
+    <svg>
+        <use href="#icona-confounded-facerepo-com-2"></use>
+    </svg>
 </template>
 
 <style>
