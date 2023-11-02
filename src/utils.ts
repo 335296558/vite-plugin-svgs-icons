@@ -213,6 +213,7 @@ export interface IOption {
     const h_reg = /\height=".+?"/g;
     const class_reg = /\class=".+?"/g;
     const fill_url_reg = /fill="url\(#(\w+)\)"/g;
+    const stroke_reg = /stroke="([^"]+)"/g;
     if (svgStartTag.match(w_reg)) {
         svgStr = svgStr.replace(w_reg, '');
     }
@@ -225,19 +226,26 @@ export interface IOption {
 
     // 区分单色还是多色
     const objs = isMultiColorSVG(svgStr);
+    // console.log(objs, option.name, '==name')
     if (objs.bool) {
         svgStr = svgStr.replace(/<svg/g, `<svg multicolor="true"`);
 
     } else if (!fill_url_reg.test(svgStr)){ // 单色
         svgStr = svgStr.replace(/<svg/g, `<svg multicolor="false"`);
-
+        // console.log(objs, option.name, '==name')
         if ((countPathTags(svgStr)===objs.colors?.length || countPathTags(svgStr)===1) && option.clearOriginFill) { 
-
             // 为了处理一些单色的svg 无法在外部use时修改它的color的问题
-            // 清除掉它原来的color, 
+            // 清除掉它原来的color
             // 并且不能给默认color, 不然外部无法修改color
             svgStr = svgStr.replace(/fill="([^"]+)"/g, ''); 
         }
+        if (stroke_reg.test(svgStr)) {
+            svgStr = svgStr.replace(stroke_reg, `stroke="var(--${option.name}-svg-color)"`); 
+            if (objs.colors?.length) {
+                // 处理无法在外部通过color 改色的
+                svgStr = svgStr.replace(/<svg/g, `<style>:root{ --${option.name}-svg-color: ${objs.colors[0]} }</style> <svg`);
+            }
+        } 
     }
     return svgStr
 } 

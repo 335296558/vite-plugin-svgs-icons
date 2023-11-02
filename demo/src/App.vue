@@ -74,9 +74,11 @@ const size = ref(42);
             </li>
         </ul>
     </div>
+    <svgIcon :style="`--sex-svg-color: ${color}`" name="sex"></svgIcon>
 </template>
 
 <style>
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
