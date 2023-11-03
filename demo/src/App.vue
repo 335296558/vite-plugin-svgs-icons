@@ -85,9 +85,9 @@ const size = ref(42);
     <svg :style="`--svg-color: blue`" >
         <use href="#icona-sex"></use>
     </svg>
-    <symbol id="icona-aaa">
-        
-    </symbol>
+    <svg style="--svg-color: blue;">
+        <use href="#icona-sex1"></use>
+    </svg>
 </template>
 
 <style>

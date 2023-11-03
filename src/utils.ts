@@ -254,18 +254,19 @@ export function transformSvgHTML(svgStr: string, option: IOption){
 
     // 区分单色还是多色
     const objs = isMultiColorSVG(svgStr);
-    const colorVarName: string = `color-var-name="${option.name}"`;
+    // const colorVarName: string = `color-var-name="${option.name}"`;
+    const styleVarName = `--svg-color`;
     if (objs.bool) {
-        svgStr = svgStr.replace(/<svg/g, `<svg ${colorVarName} multicolor="true" `);
+        svgStr = svgStr.replace(/<svg/g, `<svg multicolor="true" `);
         if (option.isMultiColor) { // 处理多色修改color 公支持css var 修改
             const colors = filterColors(objs.colors as string[]);
             svgStr = svgStr.replace(/<svg/g, `<svg color-length="${colors.length}" `);
             console.log(colors, 'colors');
-            let styles = `<style>[${colorVarName}]{`;
+            let styles = `<style>:root {`;
             for (let i=0; i<colors.length; i++) {
                 const color = colors[i];
                 const regex = new RegExp(`\\w+\\s*?=\\s*?["']${color}["']`, 'i');
-                styles+= `--svg-color-${i}: ${color};`;
+                styles+= styleVarName+`-${i}: ${color};`;
                 console.log(regex, 'regex');
             }
             styles+= '}</style>';
@@ -273,7 +274,7 @@ export function transformSvgHTML(svgStr: string, option: IOption){
         }
 
     } else if (!fill_url_reg.test(svgStr)){ // 单色
-        svgStr = svgStr.replace(/<svg/g, `<svg ${colorVarName} multicolor="false"`);
+        svgStr = svgStr.replace(/<svg/g, `<svg multicolor="false"`);
         // console.log(objs, option.name, '==name')
         if ((countPathTags(svgStr)===objs.colors?.length || countPathTags(svgStr)===1) && option.clearOriginFill) { 
             // 为了处理一些单色的svg 无法在外部use时修改它的color的问题
@@ -281,11 +282,10 @@ export function transformSvgHTML(svgStr: string, option: IOption){
             // 并且不能给默认color, 不然外部无法修改color
             svgStr = svgStr.replace(/fill="([^"]+)"/g, ''); 
         } else if (stroke_reg.test(svgStr)) { // 处理的还是单色的情况，只是通过css var 去更改
-            const styleVarName = `--svg-color`;
             svgStr = svgStr.replace(stroke_reg, ` stroke="var(${styleVarName})"`); 
             if (objs.colors?.length) {
                 // 处理无法在外部通过color 改色的
-                svgStr = svgStr.replace(/<svg/g, `<style>[${colorVarName}]{ ${styleVarName}: ${objs.colors[0]} }</style> <svg`);
+                svgStr = svgStr.replace(/<svg/g, `<style>:root{ ${styleVarName}: ${objs.colors[0]} }</style> <svg`);
             }
         }
     }
