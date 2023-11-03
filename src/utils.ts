@@ -43,6 +43,12 @@ export function getStringUrls(htmlString: string) {
 export function isMultiColorSVG(svgCode: string) {
     // 使用正则表达式匹配所有颜色代码
     const colorRegex = /#[0-9a-fA-F]{3,6}/g;
+    const regex = /(?:color|fill|stroke)="([^"]+)"/g;
+    let match;
+    let colorAttrNames = [];
+    while ((match = regex.exec(svgCode)) !== null) {
+        colorAttrNames.push(match[0]);
+    }
     const colors = svgCode.match(colorRegex);
     // 如果没有颜色代码，返回false
     // 如果只有一个颜色代码，返回false
@@ -59,9 +65,9 @@ export function isMultiColorSVG(svgCode: string) {
         }
     }
     if (sameIndex===colors.length) { // 条件成立则是多个色，但是属于相同的色，就当作单色处理
-        return { bool: false, colors };
+        return { bool: false, colors, colorAttrNames };
     }
-    return { bool: true, colors };
+    return { bool: true, colors, colorAttrNames };
 }
 
 /**
@@ -258,16 +264,29 @@ export function transformSvgHTML(svgStr: string, option: IOption){
     const styleVarName = `--svg-color`;
     if (objs.bool) {
         svgStr = svgStr.replace(/<svg/g, `<svg multicolor="true" `);
-        if (option.isMultiColor) { // 处理多色修改color 公支持css var 修改
+        // 还没有写好！！！！！
+        const len: number = objs.colors?.length as number;
+        if (option.isMultiColor && len > 10000) { // 处理多色修改color 公支持css var 修改
+            // console.log(objs, 'objs');
             const colors = filterColors(objs.colors as string[]);
             svgStr = svgStr.replace(/<svg/g, `<svg color-length="${colors.length}" `);
-            console.log(colors, 'colors');
             let styles = `<style>:root {`;
             for (let i=0; i<colors.length; i++) {
                 const color = colors[i];
-                const regex = new RegExp(`\\w+\\s*?=\\s*?["']${color}["']`, 'i');
-                styles+= styleVarName+`-${i}: ${color};`;
-                console.log(regex, 'regex');
+                const attrColor = objs.colorAttrNames?.find(c=>c.indexOf(color));
+                const cssVar = styleVarName+'-'+i;
+                if (attrColor && attrColor !== 'fill="none"') {
+                    const attrName = attrColor.split('=')[0];
+                    const regex = new RegExp(`/${attrColor}/`, 'g');
+                    console.log(regex, 'regex');
+                    svgStr = svgStr.replace(regex, `${attrName}="var(${cssVar})"`);
+                }
+                // console.log(attrColor, '-=-=-=');
+                // const attrName = attrColor.split('=')[0];
+                
+                // const regex = new RegExp(`\\w+\\s*?=\\s*?["']${color}["']`, 'i');
+                // svgStr = svgStr.replace(regex, `${attrName}="var(${cssVar})"`);
+                styles+= `${cssVar}: ${color};`;
             }
             styles+= '}</style>';
             svgStr = svgStr.replace(/<svg/g, `${styles} <svg`);
@@ -275,7 +294,6 @@ export function transformSvgHTML(svgStr: string, option: IOption){
 
     } else if (!fill_url_reg.test(svgStr)){ // 单色
         svgStr = svgStr.replace(/<svg/g, `<svg multicolor="false"`);
-        // console.log(objs, option.name, '==name')
         if ((countPathTags(svgStr)===objs.colors?.length || countPathTags(svgStr)===1) && option.clearOriginFill) { 
             // 为了处理一些单色的svg 无法在外部use时修改它的color的问题
             // 清除掉它原来的color
