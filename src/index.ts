@@ -26,7 +26,8 @@ let defaultOptions: IOptions = {
     iconPrefix: 'icona',
     clearOriginFill: true,
     isNameVars: false,
-    isWarn: true
+    isWarn: true,
+    isMultiColor: true
 };
 
 export default function vitePluginVueSvgIcons(options: IOptions) {
@@ -81,7 +82,8 @@ export default function vitePluginVueSvgIcons(options: IOptions) {
             const newSvgText = transformSvgHTML(svgText, { 
                 name,
                 clearOriginFill: defaultOptions.clearOriginFill,
-                isWarn: defaultOptions.isWarn            
+                isWarn: Boolean(defaultOptions.isWarn),         
+                isMultiColor: Boolean(defaultOptions.isMultiColor),
             });
             svgIconMaps[name] = newSvgText as string;
             // const viewBox = getViewBox(newSvgText); // 取viewBox的值

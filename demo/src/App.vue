@@ -3,6 +3,7 @@ import { ref } from 'vue';
 import svgIcon, { svgIconNames } from 'virtual:svg-icon';
 const color = ref('#ff9c00');
 const size = ref(42);
+
 </script>
 
 <template>
@@ -71,18 +72,22 @@ const size = ref(42);
         <ul>
             <li v-for="(name, i) in svgIconNames" :key="i"  style="padding: 8px">
                 <svgIcon 
-                    :style="`width: ${size}px;height: ${size}px;--${name}-svg-color: ${color}`" 
+                    :style="`width: ${size}px;height: ${size}px;--svg-color: ${color}`" 
                     :color="color"
                     :name="name"
                 ></svgIcon>
             </li>
         </ul>
     </div>
-    <svgIcon :style="`--sex-svg-color: ${color}`" name="sex"></svgIcon>
-    <svgIcon style="width: 40px; height: 40px" name="confounded-facerepo-com-2"></svgIcon>
-    <svg>
-        <use href="#icona-confounded-facerepo-com-2"></use>
+    <svgIcon :style="`--svg-color: ${color}`" name="sex"></svgIcon>
+    <svgIcon :style="`--svg-color: blue`" name="sex"></svgIcon>
+    <svgIcon style="width: 40px; height: 40px" name="aaa"></svgIcon>
+    <svg :style="`--svg-color: blue`" >
+        <use href="#icona-sex"></use>
     </svg>
+    <symbol id="icona-aaa">
+        
+    </symbol>
 </template>
 
 <style>

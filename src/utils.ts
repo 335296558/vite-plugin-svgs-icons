@@ -170,8 +170,33 @@ export interface IOption {
     clearOriginFill?: boolean;
     name: string;
     isWarn: boolean;
+    isMultiColor: boolean;
 }
-  export function transformSvgHTML(svgStr: string, option: IOption){
+
+/**
+ * @description 处理数组中的值不能重复
+ * @param colors 
+ */
+export function filterColors(colors: string[]) {
+    const uniqueColors: string[] = [];
+    const uniqueValues: number[] = [];
+  
+    for (let i = 0; i < colors.length; i++) {
+      const color = colors[i];
+      const value = i;
+  
+      if (!uniqueColors.includes(color) && !uniqueValues.includes(value)) {
+        uniqueColors.push(color);
+        uniqueValues.push(value);
+      }
+    }
+  
+    return uniqueColors;
+}
+  
+  
+
+export function transformSvgHTML(svgStr: string, option: IOption){
     option = Object.assign({
         protect: true,
         clearOriginFill: true,
@@ -203,46 +228,64 @@ export interface IOption {
     // 不建议svg中包含base64的图标
     if (hasBase64AndImage(svgStr)) {
         option.isWarn && console.warn(clc.yellow('➜ '+option.name+'.svg 这是一个包含base64格式的数据图标！ 不建议把它当作svg使用!'));
+        return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 20">
+        <text x="40" y="15" font-size="12" fill="#f00000" text-anchor="middle">Not supported</text>
+      </svg>`;
     }
     const svgReg = /<svg([^>]+)/g;
     if (!svgStr.match(svgReg)) return null;
 
     // 清空原码设置的宽高 
     let svgStartTag = svgStr.match(svgReg)[0];
-    const w_reg = /\width=".+?"/g;
-    const h_reg = /\height=".+?"/g;
-    const class_reg = /\class=".+?"/g;
-    const fill_url_reg = /fill="url\(#(\w+)\)"/g;
-    const stroke_reg = /stroke="([^"]+)"/g;
+    const w_reg = /\s+width=".+?"/s; // 为什么给s， 因为只需要去掉SVG 标签上的width 属性
+    const h_reg = /\s+height=".+?"/s;
+    const class_reg = /\s+class=".+?"/g;
+    const fill_url_reg = /\s+fill="url\(#(\w+)\)"/g;
+    const stroke_reg = /\s+stroke="([^"]+)"/g;
     if (svgStartTag.match(w_reg)) {
-        svgStr = svgStr.replace(w_reg, '');
+        svgStr = svgStr.replace(w_reg, ' ');
     }
     if (svgStartTag.match(h_reg)) {
-        svgStr = svgStr.replace(h_reg, '');
+        svgStr = svgStr.replace(h_reg, ' ');
     }
     if (svgStartTag.match(class_reg)) {
-        svgStr = svgStr.replace(class_reg, '');
+        svgStr = svgStr.replace(class_reg, ' ');
     }
 
     // 区分单色还是多色
     const objs = isMultiColorSVG(svgStr);
-    // console.log(objs, option.name, '==name')
+    const colorVarName: string = `color-var-name="${option.name}"`;
     if (objs.bool) {
-        svgStr = svgStr.replace(/<svg/g, `<svg multicolor="true"`);
+        svgStr = svgStr.replace(/<svg/g, `<svg ${colorVarName} multicolor="true" `);
+        if (option.isMultiColor) { // 处理多色修改color 公支持css var 修改
+            const colors = filterColors(objs.colors as string[]);
+            svgStr = svgStr.replace(/<svg/g, `<svg color-length="${colors.length}" `);
+            console.log(colors, 'colors');
+            let styles = `<style>[${colorVarName}]{`;
+            for (let i=0; i<colors.length; i++) {
+                const color = colors[i];
+                const regex = new RegExp(`\\w+\\s*?=\\s*?["']${color}["']`, 'i');
+                styles+= `--svg-color-${i}: ${color};`;
+                console.log(regex, 'regex');
+            }
+            styles+= '}</style>';
+            svgStr = svgStr.replace(/<svg/g, `${styles} <svg`);
+        }
 
     } else if (!fill_url_reg.test(svgStr)){ // 单色
-        svgStr = svgStr.replace(/<svg/g, `<svg multicolor="false"`);
+        svgStr = svgStr.replace(/<svg/g, `<svg ${colorVarName} multicolor="false"`);
         // console.log(objs, option.name, '==name')
         if ((countPathTags(svgStr)===objs.colors?.length || countPathTags(svgStr)===1) && option.clearOriginFill) { 
             // 为了处理一些单色的svg 无法在外部use时修改它的color的问题
             // 清除掉它原来的color
             // 并且不能给默认color, 不然外部无法修改color
             svgStr = svgStr.replace(/fill="([^"]+)"/g, ''); 
-        } else if (stroke_reg.test(svgStr)) {
-            svgStr = svgStr.replace(stroke_reg, `stroke="var(--${option.name}-svg-color)"`); 
+        } else if (stroke_reg.test(svgStr)) { // 处理的还是单色的情况，只是通过css var 去更改
+            const styleVarName = `--svg-color`;
+            svgStr = svgStr.replace(stroke_reg, ` stroke="var(${styleVarName})"`); 
             if (objs.colors?.length) {
                 // 处理无法在外部通过color 改色的
-                svgStr = svgStr.replace(/<svg/g, `<style>:root{ --${option.name}-svg-color: ${objs.colors[0]} }</style> <svg`);
+                svgStr = svgStr.replace(/<svg/g, `<style>[${colorVarName}]{ ${styleVarName}: ${objs.colors[0]} }</style> <svg`);
             }
         }
     }
