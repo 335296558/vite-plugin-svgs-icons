@@ -165,19 +165,6 @@ export function hasBase64AndImage(svgHtmlString: string) {
     return false;
 }
   
-/**
- * @description 初始化svg源码、过滤等...
- * @param {*} svgStr 
- * @param {*} option 
- * @return {string} svg html string
- */
-export interface IOption {
-    protect?: boolean;
-    clearOriginFill?: boolean;
-    name: string;
-    isWarn: boolean;
-    isMultiColor: boolean;
-}
 
 /**
  * @description 处理数组中的值不能重复
@@ -200,7 +187,20 @@ export function filterColors(colors: string[]) {
     return uniqueColors;
 }
   
-  
+
+/**
+ * @description 初始化svg源码、过滤等...
+ * @param {*} svgStr 
+ * @param {*} option 
+ * @return {string} svg html string
+ */
+export interface IOption {
+    protect?: boolean;
+    clearOriginFill?: boolean;
+    name: string;
+    isWarn: boolean;
+    isMultiColor: boolean;
+}
 
 export function transformSvgHTML(svgStr: string, option: IOption){
     option = Object.assign({
@@ -260,32 +260,25 @@ export function transformSvgHTML(svgStr: string, option: IOption){
 
     // 区分单色还是多色
     const objs = isMultiColorSVG(svgStr);
-    // const colorVarName: string = `color-var-name="${option.name}"`;
-    const styleVarName = `--svg-color`;
+    const styleVarName = `--${option.name}-svg-color`;
     if (objs.bool) {
+        console.log(objs, 'objs');
         svgStr = svgStr.replace(/<svg/g, `<svg multicolor="true" `);
         // 还没有写好！！！！！
-        const len: number = objs.colors?.length as number;
-        if (option.isMultiColor && len > 10000) { // 处理多色修改color 公支持css var 修改
-            // console.log(objs, 'objs');
+        // const len: number = objs.colors?.length as number;
+        if (option.isMultiColor) { // 处理多色修改color 公支持css var 修改
             const colors = filterColors(objs.colors as string[]);
             svgStr = svgStr.replace(/<svg/g, `<svg color-length="${colors.length}" `);
             let styles = `<style>:root {`;
             for (let i=0; i<colors.length; i++) {
                 const color = colors[i];
-                const attrColor = objs.colorAttrNames?.find(c=>c.indexOf(color));
+                const attrColor = objs.colorAttrNames?.find(c=>c.indexOf(color)>=0);
                 const cssVar = styleVarName+'-'+i;
                 if (attrColor && attrColor !== 'fill="none"') {
                     const attrName = attrColor.split('=')[0];
-                    const regex = new RegExp(`/${attrColor}/`, 'g');
-                    console.log(regex, 'regex');
-                    svgStr = svgStr.replace(regex, `${attrName}="var(${cssVar})"`);
+                    const regex = new RegExp(`${attrColor}`, 'g');
+                    svgStr = svgStr.replace(regex, `${attrName}="var(${cssVar})" `);
                 }
-                // console.log(attrColor, '-=-=-=');
-                // const attrName = attrColor.split('=')[0];
-                
-                // const regex = new RegExp(`\\w+\\s*?=\\s*?["']${color}["']`, 'i');
-                // svgStr = svgStr.replace(regex, `${attrName}="var(${cssVar})"`);
                 styles+= `${cssVar}: ${color};`;
             }
             styles+= '}</style>';

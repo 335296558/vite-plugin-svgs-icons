@@ -3,7 +3,6 @@ import { ref } from 'vue';
 import svgIcon, { svgIconNames } from 'virtual:svg-icon';
 const color = ref('#ff9c00');
 const size = ref(42);
-
 </script>
 
 <template>
@@ -72,21 +71,32 @@ const size = ref(42);
         <ul>
             <li v-for="(name, i) in svgIconNames" :key="i"  style="padding: 8px">
                 <svgIcon 
-                    :style="`width: ${size}px;height: ${size}px;--svg-color: ${color}`" 
+                    :style="`width: ${size}px;height: ${size}px;`" 
                     :color="color"
                     :name="name"
                 ></svgIcon>
             </li>
         </ul>
     </div>
-    <svgIcon :style="`--svg-color: ${color}`" name="sex"></svgIcon>
-    <svgIcon :style="`--svg-color: blue`" name="sex"></svgIcon>
-    <svgIcon style="width: 40px; height: 40px" name="aaa"></svgIcon>
-    <svg :style="`--svg-color: blue`" >
+    <svgIcon :style="`--sex-svg-color: ${color}`" name="sex"></svgIcon>
+    <svgIcon :style="`--sex-svg-color: blue`" name="sex"></svgIcon>
+    <svgIcon 
+        style="--runningrepo-com-svg-color-0: #f00; --runningrepo-com-svg-color-1: #000;--runningrepo-com-svg-color-2: blue" 
+        name="runningrepo-com"
+        color="#dcdcdc"
+    ></svgIcon>
+    <svgIcon 
+        name="like"
+        color="#dcdcdc"
+    ></svgIcon>
+    <svg style="--sex-svg-color: #f00" >
         <use href="#icona-sex"></use>
     </svg>
-    <svg style="--svg-color: #000;">
+    <!-- <svg style="--svg-color: #000;">
         <use href="#icona-sex"></use>
+    </svg> -->
+    <svg style="width: 80px; height: 80px;--svg-color-0: #f74e00;">
+        <use href="#icona-2friesrepo-com-test"></use>
     </svg>
 </template>
 
@@ -118,7 +128,7 @@ ul ,.li{
     list-style: none;
 }
 .svg-testing-icon-box{
-    background: #ffffff;
+    background: #fafafa;
     overflow: hidden;
     border-radius: 10px;
     padding: 10px;
