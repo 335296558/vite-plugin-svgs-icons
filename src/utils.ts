@@ -261,11 +261,9 @@ export function transformSvgHTML(svgStr: string, option: IOption){
     // 区分单色还是多色
     const objs = isMultiColorSVG(svgStr);
     const styleVarName = `--${option.name}-svg-color`;
+    
     if (objs.bool) {
-        console.log(objs, 'objs');
         svgStr = svgStr.replace(/<svg/g, `<svg multicolor="true" `);
-        // 还没有写好！！！！！
-        // const len: number = objs.colors?.length as number;
         if (option.isMultiColor) { // 处理多色修改color 公支持css var 修改
             const colors = filterColors(objs.colors as string[]);
             svgStr = svgStr.replace(/<svg/g, `<svg color-length="${colors.length}" `);
@@ -286,6 +284,7 @@ export function transformSvgHTML(svgStr: string, option: IOption){
         }
 
     } else if (!fill_url_reg.test(svgStr)){ // 单色
+        console.log(objs, 'objs', option.name);
         svgStr = svgStr.replace(/<svg/g, `<svg multicolor="false"`);
         if ((countPathTags(svgStr)===objs.colors?.length || countPathTags(svgStr)===1) && option.clearOriginFill) { 
             // 为了处理一些单色的svg 无法在外部use时修改它的color的问题
@@ -293,6 +292,8 @@ export function transformSvgHTML(svgStr: string, option: IOption){
             // 并且不能给默认color, 不然外部无法修改color
             svgStr = svgStr.replace(/fill="([^"]+)"/g, ''); 
         } else if (stroke_reg.test(svgStr)) { // 处理的还是单色的情况，只是通过css var 去更改
+            // 这里还没写好
+            console.log(stroke_reg.test(svgStr), '-=-')
             svgStr = svgStr.replace(stroke_reg, ` stroke="var(${styleVarName})"`); 
             if (objs.colors?.length) {
                 // 处理无法在外部通过color 改色的
