@@ -66,38 +66,20 @@ const size = ref(42);
         </h4>
     </div>
     
-    <div :style="`padding: 8px;color: ${color}`">以下复制其它网站上的一些svg icon 测试, 但并不是所有svg icon都支持换色哦！</div>
+    <div :style="`padding: 8px;color: ${color}`">
+        在这个丰富多彩的世界，也许我们需要多点 Color! 
+    </div>
     <div class="svg-testing-icon-box">
         <ul>
             <li v-for="(name, i) in svgIconNames" :key="i"  style="padding: 8px">
                 <svgIcon 
-                    :style="`width: ${size}px;height: ${size}px;`" 
+                    :style="`width: ${size}px;height: ${size}px;--${name}-svg-color: ${color}`" 
                     :color="color"
                     :name="name"
                 ></svgIcon>
             </li>
         </ul>
     </div>
-    <svgIcon :style="`--sex-svg-color: ${color}`" name="sex"></svgIcon>
-    <svgIcon :style="`--sex-svg-color: blue`" name="sex"></svgIcon>
-    <svgIcon 
-        style="--runningrepo-com-svg-color-0: #f00; --runningrepo-com-svg-color-1: #000;--runningrepo-com-svg-color-2: blue" 
-        name="runningrepo-com"
-        color="#dcdcdc"
-    ></svgIcon>
-    <svgIcon 
-        name="like"
-        color="#dcdcdc"
-    ></svgIcon>
-    <svg style="--sex-svg-color: #f00" >
-        <use href="#icona-sex"></use>
-    </svg>
-    <!-- <svg style="--svg-color: #000;">
-        <use href="#icona-sex"></use>
-    </svg> -->
-    <svg style="width: 80px; height: 80px;--svg-color-0: #f74e00;">
-        <use href="#icona-2friesrepo-com-test"></use>
-    </svg>
 </template>
 
 <style>

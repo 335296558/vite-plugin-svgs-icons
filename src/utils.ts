@@ -35,6 +35,163 @@ export function getStringUrls(htmlString: string) {
     return urls;
 }
 
+const keywordColors = [
+    'aliceblue',
+    'antiquewhite',
+    'aqua',
+    'aquamarine',
+    'azure',
+    'beige',
+    'bisque',
+    'black',
+    'blanchedalmond',
+    'blue',
+    'blueviolet',
+    'brown',
+    'burlywood',
+    'cadetblue',
+    'chartreuse',
+    'chocolate',
+    'coral',
+    'cornflowerblue',
+    'cornsilk',
+    'crimson',
+    'cyan',
+    'darkblue',
+    'darkcyan',
+    'darkgoldenrod',
+    'darkgray',
+    'darkgreen',
+    'darkgrey',
+    'darkkhaki',
+    'darkmagenta',
+    'darkolivegreen',
+    'darkorange',
+    'darkorchid',
+    'darkred',
+    'darksalmon',
+    'darkseagreen',
+    'darkslateblue',
+    'darkslategray',
+    'darkslategrey',
+    'darkturquoise',
+    'darkviolet',
+    'deeppink',
+    'deepskyblue',
+    'dimgray',
+    'dimgrey',
+    'dodgerblue',
+    'firebrick',
+    'floralwhite',
+    'forestgreen',
+    'fuchsia',
+    'gainsboro',
+    'ghostwhite',
+    'gold',
+    'goldenrod',
+    'gray',
+    'green',
+    'greenyellow',
+    'grey',
+    'honeydew',
+    'hotpink',
+    'indianred',
+    'indigo',
+    'ivory',
+    'khaki',
+    'lavender',
+    'lavenderblush',
+    'lawngreen',
+    'lemonchiffon',
+    'lightblue',
+    'lightcoral',
+    'lightcyan',
+    'lightgoldenrodyellow',
+    'lightgray',
+    'lightgreen',
+    'lightgrey',
+    'lightpink',
+    'lightsalmon',
+    'lightseagreen',
+    'lightskyblue',
+    'lightslategray',
+    'lightslategrey',
+    'lightsteelblue',
+    'lightyellow',
+    'lime',
+    'limegreen',
+    'linen',
+    'magenta',
+    'maroon',
+    'mediumaquamarine',
+    'mediumblue',
+    'mediumorchid',
+    'mediumpurple',
+    'mediumseagreen',
+    'mediumslateblue',
+    'mediumspringgreen',
+    'mediumturquoise',
+    'mediumvioletred',
+    'midnightblue',
+    'mintcream',
+    'mistyrose',
+    'moccasin',
+    'navajowhite',
+    'navy',
+    'oldlace',
+    'olive',
+    'olivedrab',
+    'orange',
+    'orangered',
+    'orchid',
+    'palegoldenrod',
+    'palegreen',
+    'paleturquoise',
+    'palevioletred',
+    'papayawhip',
+    'peachpuff',
+    'peru',
+    'pink',
+    'plum',
+    'powderblue',
+    'purple',
+    'red',
+    'rosybrown',
+    'royalblue',
+    'saddlebrown',
+    'salmon',
+    'sandybrown',
+    'seagreen',
+    'seashell',
+    'sienna',
+    'silver',
+    'skyblue',
+    'slateblue',
+    'slategray',
+    'slategrey',
+    'snow',
+    'springgreen',
+    'steelblue',
+    'tan',
+    'teal',
+    'thistle',
+    'tomato',
+    'turquoise',
+    'violet',
+    'wheat',
+    'white',
+    'whitesmoke',
+    'yellow',
+    'yellowgreen'
+];
+
+function getRegex() {
+    // 匹配 color 
+    // const colorRegex = new RegExp(`(#([0-9a-fA-F]{3,6})|${keywordColors.join('|')})`, 'g');
+    const colorRegex = new RegExp(`(#(?:[0-9a-fA-F]{3}){1,2}|rgba?\\(\\d+,\\s*\\d+,\\s*\\d+(?:,\\s*[\\d.]+)?\\)|(?:hsla?|hsl)\\(\\d+(?:,\\s*\\d+%)\\{2\\}(?:,\\s*[\\d.]+)?\\)|\\b(?:${keywordColors.join('|')})\\b|hsla?\\([^)]*\\))`, 'g');
+    return colorRegex;
+}
+
 /**
  * @description 它将返回一个布尔值，指示SVG是否具有多个颜色，并且这些颜色是否相同。
  * @param svgCode 
@@ -42,14 +199,17 @@ export function getStringUrls(htmlString: string) {
  */
 export function isMultiColorSVG(svgCode: string) {
     // 使用正则表达式匹配所有颜色代码
-    const colorRegex = /#[0-9a-fA-F]{3,6}/g;
+    // const colorRegex = /#[0-9a-fA-F]{3,6}/g; // 配 十六进制类型 color
+    const colorRegex = getRegex();
     const regex = /(?:color|fill|stroke)="([^"]+)"/g;
+
     let match;
     let colorAttrNames = [];
     while ((match = regex.exec(svgCode)) !== null) {
         colorAttrNames.push(match[0]);
     }
     const colors = svgCode.match(colorRegex);
+    
     // 如果没有颜色代码，返回false
     // 如果只有一个颜色代码，返回false
     if (!colors || colors.length === 1) {
@@ -284,7 +444,6 @@ export function transformSvgHTML(svgStr: string, option: IOption){
         }
 
     } else if (!fill_url_reg.test(svgStr)){ // 单色
-        console.log(objs, 'objs', option.name);
         svgStr = svgStr.replace(/<svg/g, `<svg multicolor="false"`);
         if ((countPathTags(svgStr)===objs.colors?.length || countPathTags(svgStr)===1) && option.clearOriginFill) { 
             // 为了处理一些单色的svg 无法在外部use时修改它的color的问题
@@ -293,7 +452,6 @@ export function transformSvgHTML(svgStr: string, option: IOption){
             svgStr = svgStr.replace(/fill="([^"]+)"/g, ''); 
         } else if (stroke_reg.test(svgStr)) { // 处理的还是单色的情况，只是通过css var 去更改
             // 这里还没写好
-            console.log(stroke_reg.test(svgStr), '-=-')
             svgStr = svgStr.replace(stroke_reg, ` stroke="var(${styleVarName})"`); 
             if (objs.colors?.length) {
                 // 处理无法在外部通过color 改色的
