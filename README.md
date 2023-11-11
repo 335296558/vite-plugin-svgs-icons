@@ -74,7 +74,7 @@
 | 参数名 | 类型 | 默认值 |
 | -------- | ------- | -------- |
 |name|String|必需设置name，与文件名称一样， 否则不显示哦。name参数是svg文件名称，比如：svg/logo.svg 那么你引用这个svg 只需要name="logo"|
-|color|String| 设置颜色 应该方式仅支持单色修改|
+|color|String| 设置颜色此方法仅支持单色修改！ [关于多颜色修改请移步](MULTICOLOR.md)|
 |size|String、Number、Array| - |
 
 <!-- [示列图像]() -->
