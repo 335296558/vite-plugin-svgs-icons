@@ -1,7 +1,9 @@
 #### 版本描述
-#### v3.1.5
+#### v1.0.0 继承原 vite-plugin-vue-svg-icons
         1、优化与修复有些svg无法显示问题【但依然是会有些特殊的svg可能、可能、可能无法显示】
         2、支持svg 多色修改🤪
+#### vite-plugin-vue-svg-icons 最后一个版本 v3.1.5  请移步 [vite-plugin-svgs-icons](https://github.com/335296558/vite-plugin-svgs-icons)
+        文档更新而已
 
 #### v3.1.4
         🤪!!!!
