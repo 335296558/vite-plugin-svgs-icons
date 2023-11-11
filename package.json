@@ -38,7 +38,7 @@
   },
   "vite": {
     "plugins": [
-      "vite-plugin-vue-svg-icons"
+      "vite-plugin-svgs-icons"
     ]
   },
   "description": "[English](README.en.md) | [简体中文](README.en.md)｜[v3.0.0 README.3.0.md 简体中文](README.3.0.md)",
@@ -53,7 +53,7 @@
   "author": "335296558@qq.com",
   "license": "ISC",
   "keywords": [
-    "vite-plugin-vue-svg-icons",
+    "vite-plugin-svgs-icons",
     "svg-icon",
     "nuxt-svg-icon",
     "vue-svg-icon",

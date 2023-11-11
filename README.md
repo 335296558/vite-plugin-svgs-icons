@@ -1,8 +1,8 @@
 # vite-plugin-svgs-icons
 ### 原vite-plugin-vue-svg-icons 更名为 vite-plugin-svgs-icons
-[English documentation](README.en.md) 
+<!-- [English documentation](README.en.md)  -->
 
-[Nuxt3 nuxt-svg-icon](https://github.com/335296558/nuxt-svg-icon)
+<!-- [Nuxt3 nuxt-svg-icon](https://github.com/335296558/nuxt-svg-icon) -->
 
 #### 介绍
     因为自已有一个项目需要用svg icon并且有多色修改的需求所以就写了它！它是一个svg雪碧图插件🤔，可轻松修改Color、MultiColor、Size
@@ -82,7 +82,7 @@
     v >= v3.1.5 
         1、优化与修复有些svg无法显示问题【但依然是会有些特殊的svg可能、可能、可能无法显示】
         2、支持svg 多色修改🤪
-        
-[历史版本：version Update](README.en.md) 
+
+[历史版本：version Update](VERSION.md) 
 
 🤡👻👽👾🤖😈🤠👺👹😉😜🤪🤪🤪🤪
