@@ -1,13 +1,13 @@
 <script setup>
 import { ref } from 'vue';
+import svgIcon, { svgIconNames } from 'virtual:svg-icon';
 const color = ref('#ff9c00');
-const size = ref(128);
-import svgIcon from 'svg-icon';
+const size = ref(42);
 </script>
 
 <template>
     <div>
-        <h1>DEMO</h1>
+        <h1 :style="`color: ${color}`">DEMO</h1>
         <div class="install">
             <h4 style="color:rgb(253, 169, 169);display: flex;align-items: center;justify-content: center;">
                 <span style="padding-right:15px;">vite-plugin-vue-svg-icons 文档 👉👉👉</span> 
@@ -33,21 +33,9 @@ import svgIcon from 'svg-icon';
         <div class="box">
             <div class="title"><b>修改大小</b></div>
             <br />
-            <label class="label">
-                <span>大小40</span>
-                <input type="radio" value="40" v-model="size" />
-            </label>
-            <label class="label">
-                <span>大小60</span>
-                <input type="radio" value="60" v-model="size" />
-            </label>
-            <label class="label">
-                <span>大小120</span>
-                <input type="radio" value="120" v-model="size" />
-            </label>
-            <label class="label">
-                <span>大小168</span>
-                <input type="radio" value="168" v-model="size" />
+            <label class="label" v-for="(k, i) in 8" :key="k+i">
+                <span>{{ (i+1) * 12 }}px</span>
+                <input type="radio" :value="(i+1) * 12" v-model="size" />
             </label>
         </div>
         <div class="box">
@@ -71,12 +59,31 @@ import svgIcon from 'svg-icon';
             </label>
         </div>
         <h4 style="color:rgb(253, 169, 169);display: flex;align-items: center;justify-content: center;">
-            <span style="padding-right:15px;">Nuxt3用法👉👉👉</span> <a href="https://github.com/335296558/nuxt-svg-icon" target="_blank"><svgIcon name="github" size="30"></svgIcon></a>
+            <span style="padding-right:15px;">Nuxt3用法👉👉👉</span>
+            <a href="https://github.com/335296558/nuxt-svg-icon" target="_blank">
+                <svgIcon name="github" size="30"></svgIcon>
+            </a>
         </h4>
+    </div>
+    
+    <div :style="`padding: 8px;color: ${color}`">
+        在这个丰富多彩的世界，也许我们需要多点 Color! 
+    </div>
+    <div class="svg-testing-icon-box">
+        <ul>
+            <li v-for="(name, i) in svgIconNames" :key="i"  style="padding: 8px">
+                <svgIcon 
+                    :style="`width: ${size}px;height: ${size}px;--${name}-svg-color: ${color}`" 
+                    :color="color"
+                    :name="name"
+                ></svgIcon>
+            </li>
+        </ul>
     </div>
 </template>
 
 <style>
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -86,7 +93,7 @@ import svgIcon from 'svg-icon';
   margin-top: 60px;
 }
 .box {
-    padding: 30px;
+    padding: 15px;
 }
 .label {
     padding: 15px;
@@ -96,5 +103,19 @@ import svgIcon from 'svg-icon';
 }
 .icon {
     font-size: 200px;
+}
+ul ,.li{
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+.svg-testing-icon-box{
+    background: #fafafa;
+    overflow: hidden;
+    border-radius: 10px;
+    padding: 10px;
+}
+.svg-testing-icon-box ul li{
+    float: left;
 }
 </style>

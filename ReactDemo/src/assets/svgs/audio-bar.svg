@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="114" height="24" viewBox="0 0 114 24" fill="none">
+  <path fill-rule="evenodd" clip-rule="evenodd" d="M12 1C12 0.447716 12.4477 0 13 0C13.5523 0 14 0.447715 14 1V23C14 23.5523 13.5523 24 13 24C12.4477 24 12 23.5523 12 23V1ZM9 4C8.44771 4 8 4.44772 8 5V19C8 19.5523 8.44771 20 9 20C9.55229 20 10 19.5523 10 19V5C10 4.44772 9.55229 4 9 4ZM4 8C4 7.44772 4.44772 7 5 7C5.55228 7 6 7.44772 6 8V16C6 16.5523 5.55228 17 5 17C4.44772 17 4 16.5523 4 16V8ZM0 10C0 9.44772 0.447715 9 1 9C1.55228 9 2 9.44772 2 10V14C2 14.5523 1.55228 15 1 15C0.447715 15 0 14.5523 0 14V10ZM17 6C16.4477 6 16 6.44771 16 7V17C16 17.5523 16.4477 18 17 18C17.5523 18 18 17.5523 18 17V7C18 6.44772 17.5523 6 17 6ZM20 10C20 9.44771 20.4477 9 21 9C21.5523 9 22 9.44772 22 10V15C22 15.5523 21.5523 16 21 16C20.4477 16 20 15.5523 20 15V10ZM25 10C24.4477 10 24 10.4477 24 11V13C24 13.5523 24.4477 14 25 14C25.5523 14 26 13.5523 26 13V11C26 10.4477 25.5523 10 25 10ZM28 9C28 8.44771 28.4477 8 29 8C29.5523 8 30 8.44771 30 9V16C30 16.5523 29.5523 17 29 17C28.4477 17 28 16.5523 28 16V9ZM33 9C32.4477 9 32 9.44771 32 10V15C32 15.5523 32.4477 16 33 16C33.5523 16 34 15.5523 34 15V10C34 9.44772 33.5523 9 33 9ZM36 6C36 5.44772 36.4477 5 37 5C37.5523 5 38 5.44772 38 6V19C38 19.5523 37.5523 20 37 20C36.4477 20 36 19.5523 36 19V6ZM41 4C40.4477 4 40 4.44772 40 5V20C40 20.5523 40.4477 21 41 21C41.5523 21 42 20.5523 42 20V5C42 4.44772 41.5523 4 41 4ZM44 8C44 7.44771 44.4477 7 45 7C45.5523 7 46 7.44772 46 8V17C46 17.5523 45.5523 18 45 18C44.4477 18 44 17.5523 44 17V8ZM49 8C48.4477 8 48 8.44771 48 9V16C48 16.5523 48.4477 17 49 17C49.5523 17 50 16.5523 50 16V9C50 8.44771 49.5523 8 49 8ZM52 7C52 6.44771 52.4477 6 53 6C53.5523 6 54 6.44772 54 7V17C54 17.5523 53.5523 18 53 18C52.4477 18 52 17.5523 52 17V7ZM57 5C56.4477 5 56 5.44772 56 6V18C56 18.5523 56.4477 19 57 19C57.5523 19 58 18.5523 58 18V6C58 5.44772 57.5523 5 57 5Z" fill="url(#paint0_linear_5925_41835)"/>
+  <rect x="60" y="9" width="2" height="6" rx="1" fill="white" fill-opacity="0.2"/>
+  <rect x="64" y="9" width="2" height="6" rx="1" fill="white" fill-opacity="0.2"/>
+  <rect x="68" y="8" width="2" height="8" rx="1" fill="white" fill-opacity="0.2"/>
+  <rect x="72" y="11" width="2" height="3" rx="1" fill="white" fill-opacity="0.2"/>
+  <rect x="76" y="11" width="2" height="3" rx="1" fill="white" fill-opacity="0.2"/>
+  <rect x="80" y="10" width="2" height="5" rx="1" fill="white" fill-opacity="0.2"/>
+  <rect x="84" y="9" width="2" height="7" rx="1" fill="white" fill-opacity="0.2"/>
+  <rect x="88" y="3" width="2" height="19" rx="1" fill="white" fill-opacity="0.2"/>
+  <rect x="92" y="5" width="2" height="14" rx="1" fill="white" fill-opacity="0.2"/>
+  <rect x="96" y="4" width="2" height="16" rx="1" fill="white" fill-opacity="0.2"/>
+  <rect x="100" y="8" width="2" height="9" rx="1" fill="white" fill-opacity="0.2"/>
+  <rect x="104" y="6" width="2" height="12" rx="1" fill="white" fill-opacity="0.2"/>
+  <rect x="108" y="9" width="2" height="7" rx="1" fill="white" fill-opacity="0.2"/>
+  <rect x="112" y="7" width="2" height="10" rx="1" fill="white" fill-opacity="0.2"/>
+  <defs>
+    <linearGradient id="paint0_linear_5925_41835" x1="-4.32134e-07" y1="12" x2="58" y2="12" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#57EBFF"/>
+      <stop offset="1" stop-color="#57EBFF"/>
+    </linearGradient>
+  </defs>
+</svg>
