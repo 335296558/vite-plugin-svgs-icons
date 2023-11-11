@@ -1,4 +1,4 @@
-declare module "virtual:vite-plugin-vue-svg-icons";
+declare module "virtual:vite-plugin-svgs-icons";
 declare module 'virtual:svg-icon' {
     const content: any;
     export default content;

@@ -1,8 +1,8 @@
-declare module "vite-plugin-vue-svg-icons";
+declare module "vite-plugin-svgs-icons";
 declare module "path";
 declare module "process";
 declare var __dirname;
-declare module 'svg-icon' {
+declare module 'virtual:svg-icon' {
     const content: any;
     export default content;
 }

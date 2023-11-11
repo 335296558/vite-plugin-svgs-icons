@@ -5,7 +5,7 @@ import type { IOptions, IPaths } from './types.d.ts';
  * @date 2022/02
  * @flx ts @dete 2023/10/26 
  * @author 335296558@qq.com
- * @name vite-plugin-vue-svg-icons || vitePluginVueSvgIcons
+ * @name vite-plugin-svgs-icons || vitePluginVueSvgIcons
  */
 
 import { join, resolve } from 'path';

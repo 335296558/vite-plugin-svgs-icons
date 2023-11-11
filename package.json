@@ -44,12 +44,12 @@
   "description": "vite-plugin-svgs-icons svg-icon svg icon MultiColor修改",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/335296558/vite-plugin-vue-svg-icons.git"
+    "url": "git+https://github.com/335296558/vite-plugin-svgs-icons.git"
   },
   "bugs": {
-    "url": "https://github.com/335296558/vite-plugin-vue-svg-icons/issues"
+    "url": "https://github.com/335296558/vite-plugin-svgs-icons/issues"
   },
-  "homepage": "https://github.com/335296558/vite-plugin-vue-svg-icons#readme",
+  "homepage": "https://github.com/335296558/vite-plugin-svgs-icons#readme",
   "author": "335296558@qq.com",
   "license": "ISC",
   "keywords": [
