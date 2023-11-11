@@ -22,7 +22,7 @@ let defaultOptions: IOptions = {
     moduleId: 'virtual:svg-icon',
     ssr: false,
     dir: join(`${process.cwd()}/src/assets/svg`),
-    svgId: '__v__svg__icons',
+    svgId: '__v__svgs__icons',
     iconPrefix: 'icona',
     clearOriginFill: true,
     isNameVars: false,

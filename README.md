@@ -5,9 +5,10 @@
 <!-- [Nuxt3 nuxt-svg-icon](https://github.com/335296558/nuxt-svg-icon) -->
 
 #### 介绍
-    因为自已有一个项目需要用svg icon并且有多色修改的需求所以就写了它！它是一个svg雪碧图插件🤔，可轻松修改Color、MultiColor、Size
+    它是一个svg雪碧图插件🤔，可轻松修改Color、MultiColor、Size
     内置vue组件可直接调用, 虽然支持部份svg icon 多色修改，但可能并不是所有都支持哦！
     
+[多色SVG如何修改?](MULTICOLOR.md)
 
 <img src="./demo/src/assets/testing_git_svgs.gif" width="400px">
 
