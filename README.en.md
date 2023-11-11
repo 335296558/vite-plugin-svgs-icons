@@ -1,3 +1,7 @@
+
+#Please move to vite-plugin-svgs-icons
+[Please move to vite-plugin-svgs-icons](https://github.com/335296558/vite-plugin-svgs-icons)
+
 # vite-plugin-vue-svg-icons
 [简体中文文档](README.md)
 v3.0.0 English
