@@ -11,7 +11,7 @@ const size = ref(42);
         <div class="install">
             <h4 style="color:rgb(253, 169, 169);display: flex;align-items: center;justify-content: center;">
                 <span style="padding-right:15px;">vite-plugin-svgs-icons 文档 👉👉👉</span> 
-                <a href="https://github.com/335296558/vite-plugin-vue-svg-icons/blob/main/README.md" target="_blank">
+                <a href="https://github.com/335296558/vite-plugin-svgs-icons/blob/main/README.md" target="_blank">
                     <svgIcon name="github" size="30"></svgIcon>
                 </a>
             </h4>
