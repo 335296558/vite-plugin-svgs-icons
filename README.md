@@ -1,6 +1,6 @@
 # vite-plugin-svgs-icons
-### 原vite-plugin-vue-svg-icons 更名为 vite-plugin-svgs-icons
-<!-- [English documentation](README.en.md)  -->
+### 原 vite-plugin-vue-svg-icons 更名为 vite-plugin-svgs-icons
+[English documentation](README.en.md) 
 
 <!-- [Nuxt3 nuxt-svg-icon](https://github.com/335296558/nuxt-svg-icon) -->
 
