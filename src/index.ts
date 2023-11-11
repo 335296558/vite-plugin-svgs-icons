@@ -107,7 +107,7 @@ export default function vitePluginVueSvgIcons(options: IOptions) {
     // let configs = {};
     const pluginOptions = {
         // name: 'vite:svg-map-icons',
-        name: 'virtual:svg-icon',
+        name: defaultOptions.moduleId,
         // apply: 'serve',
         configResolved(config: any) {
             // configs = config;
