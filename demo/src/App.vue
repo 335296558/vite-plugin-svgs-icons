@@ -10,26 +10,21 @@ const size = ref(42);
         <h1 :style="`color: ${color}`">DEMO</h1>
         <div class="install">
             <h4 style="color:rgb(253, 169, 169);display: flex;align-items: center;justify-content: center;">
-                <span style="padding-right:15px;">vite-plugin-vue-svg-icons 文档 👉👉👉</span> 
-                <a href="https://github.com/335296558/vite-plugin-vue-svg-icons/blob/main/README.md" target="_blank"><svgIcon name="github" size="30"></svgIcon></a>
+                <span style="padding-right:15px;">vite-plugin-svgs-icons 文档 👉👉👉</span> 
+                <a href="https://github.com/335296558/vite-plugin-vue-svg-icons/blob/main/README.md" target="_blank">
+                    <svgIcon name="github" size="30"></svgIcon>
+                </a>
             </h4>
         </div>
-        <h4>
-            针对<a href="https://www.iconfont.cn/" target="_blank">iconfont.cn</a> 
-            上的svg 写了一个可以修改color、size vue组件
-        </h4>
-        <h4 style="color:rgb(253, 169, 169)">
-            多色图标不支持修改color
-        </h4>
         <!-- <svgIcon name="test1" :color="color" :size="size"></svgIcon>
         <svgIcon name="aa" :color="color" :size="size"></svgIcon> -->
-        <svgIcon name="logo" :color="color" :size="size"></svgIcon>
+        <!-- <svgIcon name="logo" :color="color" :size="size"></svgIcon>
         <svgIcon name="shop" :color="color" :size="size"></svgIcon>
         <svgIcon name="voice" :color="color" :size="size"></svgIcon>
         <svgIcon name="testColor" :size="size"></svgIcon>
         <svgIcon name="moer" :size="size"></svgIcon>
         <svgIcon name="customerService" :color="color" :size="size"></svgIcon>
-        <svgIcon name="chat" :color="color" :size="size"></svgIcon>
+        <svgIcon name="chat" :color="color" :size="size"></svgIcon> -->
         <div class="box">
             <div class="title"><b>修改大小</b></div>
             <br />

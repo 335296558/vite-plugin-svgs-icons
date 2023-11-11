@@ -33,6 +33,7 @@
 | 参数名 | 类型 | 描述 | 默认值 |
 | -------- | -------- | -------- | -------- |
 |dir|String|存放svg图标的目录|path.resolve(__dirname, 'src', 'assets', 'svg')|
+<!-- |ssr|boolean|直接服务端渲染|false| -->
 <!-- |moduleId|String|定义导入名称|virtual:svg-icon| -->
 ```js
     // 部份svg icon多色也支持修改color
