@@ -16,7 +16,7 @@ import { transformSvgHTML, createSymbol, getSvgHtmlMaps, setSvgMapHideStyle, svg
 
 import svgIconString from './components/svgIcon.js?raw';
 
-const PluginName: string = 'vite-plugin-vue-svg-icons';
+const PluginName: string = 'vite-plugin-svgs-icons';
 
 let defaultOptions: IOptions = {
     moduleId: 'virtual:svg-icon',
