@@ -1,6 +1,6 @@
 {
   "name": "vite-plugin-svgs-icons",
-  "version": "3.1.5",
+  "version": "1.0.0",
   "type": "module",
   "files": [
     "dist"
