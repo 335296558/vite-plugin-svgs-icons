@@ -3,7 +3,7 @@ declare module 'virtual:svg-icon' {
     const content: any;
     export default content;
 }
-  
+
 export interface IOptions {
     moduleId: string;
     ssr: boolean;
@@ -17,9 +17,10 @@ export interface IOptions {
     // 关闭所有警告
     isWarn: boolean;
     isMultiColor: boolean;
+    configResolvedAfter?: Function;
 }
 
-interface IPaths {
+export interface IPaths {
     path: any;
     filename: string;
 }

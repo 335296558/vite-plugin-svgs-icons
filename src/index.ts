@@ -5,7 +5,7 @@ import type { IOptions, IPaths } from './types.d.ts';
  * @date 2022/02
  * @flx ts @dete 2023/10/26 
  * @author 335296558@qq.com
- * @name vite-plugin-svgs-icons || vitePluginVueSvgIcons
+ * @name vite-plugin-svgs-icons || vitePluginSvgsIcons
  */
 
 import { join, resolve } from 'path';
@@ -30,7 +30,7 @@ let defaultOptions: IOptions = {
     isMultiColor: true
 };
 
-export default function vitePluginVueSvgIcons(options: IOptions) {
+export default function vitePluginSvgsIcons(options: IOptions) {
     let svgs: string[] = [];
     let symbolMaps: string = '';
     let svgIconMaps: { [key: string]: string } = {};
@@ -43,7 +43,6 @@ export default function vitePluginVueSvgIcons(options: IOptions) {
 
     // 递归读取目录并返回一个path集合
     const loopReaddir = async (url: string, paths: IPaths[] = [])=> {
-        console.log('url', url);
         let files = fs.readdirSync(url);
         if (files.length === 0) {
             console.warn(PluginName+':File directory is empty --->'+defaultOptions.dir);
@@ -100,25 +99,23 @@ export default function vitePluginVueSvgIcons(options: IOptions) {
         if (!defaultOptions.ssr) return html;
         const style = setSvgMapHideStyle(defaultOptions.svgId);
         const svgHtmlMaps = getSvgHtmlMaps(defaultOptions.svgId, symbolMaps);
-        const tgHtmlStr = `${html}${svgHtmlMaps} ${style}`;
-        const rsHtmlString = tgHtmlStr;
+        const rsHtmlString = `${html}${svgHtmlMaps} ${style}`;
         return rsHtmlString;
     }
-    let svgMapPath = '';
+    let svgMapPath = `${defaultOptions.dir}`;
+    handleSvgMaps(svgMapPath); // 如果不在这里执行，在configResolved 中执行，Nuxt Module 那边会有问题！所以为了兼容多点场景使用，需要在这执行
     // let configs = {};
     const pluginOptions = {
-        // name: 'vite:svg-map-icons',
         name: defaultOptions.moduleId,
-        // apply: 'serve',
-        configResolved(config: any) {
-            // configs = config;
-            svgMapPath = resolve(config.root, `${defaultOptions.dir}`);
-            handleSvgMaps(svgMapPath);
-        },
+        // configResolved(config: any) {
+        //     configs = config; 
+        //     svgMapPath = resolve(config.root, `${defaultOptions.dir}`);
+        //     handleSvgMaps(svgMapPath)
+        // },
         transformIndexHtml,
         resolveId(id: string) {
             if (id === ModuleId) {
-                return resolvedModuleId
+                return resolvedModuleId;
             }
         },
         async load(id: string) {
@@ -164,6 +161,14 @@ export default function vitePluginVueSvgIcons(options: IOptions) {
             });
 
             return await update(svgMapPath);
+        },
+        buildEnd: ()=> {
+            try {
+                fs.copyFileSync(join(`${process.cwd()}/src/types.d.ts`), join(`${process.cwd()}/dist/types.d.ts`));
+                console.log('types.d.ts copy success!');
+            } catch (err) {
+                console.error(err)
+            }
         },
     }
     return pluginOptions;
