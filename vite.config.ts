@@ -2,6 +2,14 @@ import { defineConfig } from 'vite';
 import path from 'path';
 const __dirname = path.resolve();
 // import vueJsx from '@vitejs/plugin-vue-jsx';
+ // buildEnd: ()=> {
+        //     try {
+        //         fs.copyFileSync(join(`${process.cwd()}/src/types.d.ts`), join(`${process.cwd()}/dist/types.d.ts`));
+        //         console.log('types.d.ts copy success!');
+        //     } catch (err) {
+        //         console.error(err)
+        //     }
+        // },
 export default defineConfig({
     build: {
         lib: {

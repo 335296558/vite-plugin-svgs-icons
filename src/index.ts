@@ -161,15 +161,7 @@ export default function vitePluginSvgsIcons(options: IOptions) {
             });
 
             return await update(svgMapPath);
-        },
-        buildEnd: ()=> {
-            try {
-                fs.copyFileSync(join(`${process.cwd()}/src/types.d.ts`), join(`${process.cwd()}/dist/types.d.ts`));
-                console.log('types.d.ts copy success!');
-            } catch (err) {
-                console.error(err)
-            }
-        },
+        }
     }
     return pluginOptions;
 }
