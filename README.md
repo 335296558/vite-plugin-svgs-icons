@@ -73,7 +73,8 @@
     VueApp.component('svg-icon', svgIcon);
 ```
 
-```Nuxt 也是一样的
+##### Nuxt 也可以用Nuxt module [nuxt-svgs-icon](https://github.com/335296558/nuxt-svgs-icon)
+```js
     import path from 'path';
     import vitePluginSvgsIcons from 'vite-plugin-svgs-icons';
     export default defineNuxtConfig({
