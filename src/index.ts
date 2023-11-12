@@ -43,6 +43,7 @@ export default function vitePluginVueSvgIcons(options: IOptions) {
 
     // 递归读取目录并返回一个path集合
     const loopReaddir = async (url: string, paths: IPaths[] = [])=> {
+        console.log('url', url);
         let files = fs.readdirSync(url);
         if (files.length === 0) {
             console.warn(PluginName+':File directory is empty --->'+defaultOptions.dir);
@@ -123,18 +124,12 @@ export default function vitePluginVueSvgIcons(options: IOptions) {
         async load(id: string) {
             if (id === resolvedModuleId) {
                 const varNamesCodes = `${ defaultOptions.isNameVars?'export const svgIconNames ='+ JSON.stringify(svgs): '' }`;
+                const svgIconConponentString = svgIconStringReplace(svgIconString, defaultOptions.iconPrefix);
                 if (defaultOptions.ssr) {
-                    return `${svgIconStringReplace(svgIconString, defaultOptions.iconPrefix)};
-                    \n// svg目录的svg名称集合的数组, 新加、删除svg文件时该变量还不支持热更
-                    \n ${ varNamesCodes }
-                    `;
+                    return `${svgIconConponentString};\n ${ varNamesCodes }`;
                 }
                 const svgHtmlMaps = escapeHtml(compressHtml(getSvgHtmlMaps(defaultOptions.svgId, symbolMaps)));
-                return `
-                    ${svgIconStringReplace(svgIconString, defaultOptions.iconPrefix)};\n
-                    ${createLoadSvgIconsCode(defaultOptions.svgId, svgHtmlMaps)}\n
-                    ${varNamesCodes};
-                `;
+                return `${svgIconConponentString};\n${createLoadSvgIconsCode(defaultOptions.svgId, svgHtmlMaps)}\n${varNamesCodes};`;
             }
         },
         // transform(code, id) {
