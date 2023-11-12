@@ -33,8 +33,11 @@
 | 参数名 | 类型 | 描述 | 默认值 |
 | -------- | -------- | -------- | -------- |
 |dir|String|存放svg图标的目录|path.resolve(__dirname, 'src', 'assets', 'svg')|
+|moduleId|String|定义导入名称|virtual:svg-icon|
+|isNameVars|Boolean|set true 可用导出svgIconNames，svg集合的数组名称， import svgIcon, { svgIconNames } from 'virtual:svg-icon'|false|
+
 <!-- |ssr|boolean|直接服务端渲染|false| -->
-<!-- |moduleId|String|定义导入名称|virtual:svg-icon| -->
+
 ```js
     // 部份svg icon多色也支持修改color
     // 可多级目录，但不会把目录名称加在svg名称中，所以svg 名称要是唯一的喔
@@ -68,6 +71,21 @@
     // main.js 全局注册，不推荐哈，推荐局部导入即可
     import svgIcon from 'virtual:svg-icon'
     VueApp.component('svg-icon', svgIcon);
+```
+
+```Nuxt 也是一样的
+    import path from 'path';
+    import vitePluginSvgsIcons from 'vite-plugin-svgs-icons';
+    export default defineNuxtConfig({
+        vite: {
+            plugins: [
+                vitePluginSvgsIcons({
+                    dir: path.resolve(__dirname, 'assets', 'svg'),
+                    isNameVars: true,
+                })
+            ]
+        }
+    })
 ```
 
 #### 组件参数说明
