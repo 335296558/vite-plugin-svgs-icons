@@ -33,6 +33,7 @@
     "@vitejs/plugin-vue": "^4.4.0",
     "fast-glob": "^3.3.1",
     "path": "^0.12.7",
+    "rollup-plugin-copy": "^3.5.0",
     "vite": "^4.4.11",
     "vite-plugin-node": "^3.0.2"
   },
