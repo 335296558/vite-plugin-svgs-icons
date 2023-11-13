@@ -68,7 +68,7 @@
 ```
 
 ```js
-    // main.js 全局注册，不推荐哈，推荐局部导入即可
+    // main.js 全局注册
     import svgIcon from 'virtual:svg-icon'
     VueApp.component('svg-icon', svgIcon);
 ```
