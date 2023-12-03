@@ -1,6 +1,10 @@
 <script setup>
 import { ref } from 'vue';
+import HelloWorld from './components/HelloWorld.vue'
 import svgIcon, { svgIconNames } from 'virtual:svg-icon';
+// import 'virtual:svg-icons-register';
+// import testSvgIcon from './components/SvgIcon.vue';
+// import SvgsTools from './components/SvgsTools.jsx';
 const color = ref('#ff9c00');
 const size = ref(42);
 </script>
@@ -16,15 +20,6 @@ const size = ref(42);
                 </a>
             </h4>
         </div>
-        <!-- <svgIcon name="test1" :color="color" :size="size"></svgIcon>
-        <svgIcon name="aa" :color="color" :size="size"></svgIcon> -->
-        <!-- <svgIcon name="logo" :color="color" :size="size"></svgIcon>
-        <svgIcon name="shop" :color="color" :size="size"></svgIcon>
-        <svgIcon name="voice" :color="color" :size="size"></svgIcon>
-        <svgIcon name="testColor" :size="size"></svgIcon>
-        <svgIcon name="moer" :size="size"></svgIcon>
-        <svgIcon name="customerService" :color="color" :size="size"></svgIcon>
-        <svgIcon name="chat" :color="color" :size="size"></svgIcon> -->
         <div class="box">
             <div class="title"><b>修改大小</b></div>
             <br />
@@ -62,13 +57,14 @@ const size = ref(42);
     </div>
     
     <div :style="`padding: 8px;color: ${color}`">
-        在这个丰富多彩的世界，也许我们需要多点 Color! 
+        在这个丰富多彩的世界，也许我们需要多点
     </div>
+    <HelloWorld />
     <div class="svg-testing-icon-box">
         <ul>
             <li v-for="(name, i) in svgIconNames" :key="i"  style="padding: 8px">
                 <svgIcon 
-                    :style="`width: ${size}px;height: ${size}px;--${name}-svg-color: ${color}`" 
+                    :style="`width: ${size}px;height: ${size}px;--${name}-svg-color: ${color};`" 
                     :color="color"
                     :name="name"
                 ></svgIcon>

@@ -1,5 +1,5 @@
 'use strict';
-import type { IOptions, IPaths } from './types.d.ts';
+
 /**
  * @author 忘情上人
  * @date 2022/02
@@ -12,9 +12,17 @@ import { join, resolve } from 'path';
 
 import fs from 'node:fs';
 
-import { transformSvgHTML, createSymbol, getSvgHtmlMaps, setSvgMapHideStyle, svgIconStringReplace, createLoadSvgIconsCode, escapeHtml, compressHtml } from './utils';
+import { transformSvgHTML, getSvgHtmlMaps, setSvgMapHideStyle, svgIconStringReplace, createLoadSvgIconsCode, escapeHtml, compressHtml } from './utils';
 
+// @ts-ignore
 import svgIconString from './components/svgIcon.js?raw';
+// @ts-ignore
+import SvgViewsDevToolsString from './components/SvgViews.js?raw';
+
+// @ts-ignore
+import SvgViewsDevToolsStyle from './style/SvgViews.css?raw';
+
+import type { IOptions, IPaths } from './types.d.ts';
 
 const PluginName: string = 'vite-plugin-svgs-icons';
 
@@ -27,7 +35,8 @@ let defaultOptions: IOptions = {
     clearOriginFill: true,
     isNameVars: false,
     isWarn: true,
-    isMultiColor: true
+    isMultiColor: true,
+    isViewTools: true
 };
 
 export default function vitePluginSvgsIcons(options: IOptions) {
@@ -84,22 +93,25 @@ export default function vitePluginSvgsIcons(options: IOptions) {
                 clearOriginFill: defaultOptions.clearOriginFill,
                 isWarn: Boolean(defaultOptions.isWarn),         
                 isMultiColor: Boolean(defaultOptions.isMultiColor),
+                iconPrefix: defaultOptions?.iconPrefix
             });
             svgIconMaps[name] = newSvgText as string;
-            // const viewBox = getViewBox(newSvgText); // 取viewBox的值
-            // viewBox="${viewBox}" // 不设置也可以
             
-            let svgHtml = createSymbol(defaultOptions?.iconPrefix, name, newSvgText as string);
+            let svgHtml = newSvgText;
             symbolMaps+=svgHtml;
         });
         return symbolMaps;
     }
 
     function transformIndexHtml(html: string) {
-        if (!defaultOptions.ssr) return html;
+        let otherStyle = '';
+        if (defaultOptions.isViewTools && process.env.NODE_ENV === 'development') {
+            otherStyle = `<style>${SvgViewsDevToolsStyle}</style>`;
+        }
+        if (!defaultOptions.ssr) return html + otherStyle;
         const style = setSvgMapHideStyle(defaultOptions.svgId);
-        const svgHtmlMaps = getSvgHtmlMaps(defaultOptions.svgId, symbolMaps);
-        const rsHtmlString = `${html}${svgHtmlMaps} ${style}`;
+        const svgHtmlMaps = symbolMaps;
+        const rsHtmlString = `${html} ${getSvgHtmlMaps(defaultOptions.svgId, svgHtmlMaps)} ${style} ${otherStyle}`;
         return rsHtmlString;
     }
     let svgMapPath = `${defaultOptions.dir}`;
@@ -120,13 +132,17 @@ export default function vitePluginSvgsIcons(options: IOptions) {
         },
         async load(id: string) {
             if (id === resolvedModuleId) {
+                let other = '';
+                if (defaultOptions.isViewTools && process.env.NODE_ENV === 'development') {
+                    other = SvgViewsDevToolsString;
+                }
                 const varNamesCodes = `${ defaultOptions.isNameVars?'export const svgIconNames ='+ JSON.stringify(svgs): '' }`;
                 const svgIconConponentString = svgIconStringReplace(svgIconString, defaultOptions.iconPrefix);
                 if (defaultOptions.ssr) {
                     return `${svgIconConponentString};\n ${ varNamesCodes }`;
                 }
                 const svgHtmlMaps = escapeHtml(compressHtml(getSvgHtmlMaps(defaultOptions.svgId, symbolMaps)));
-                return `${svgIconConponentString};\n${createLoadSvgIconsCode(defaultOptions.svgId, svgHtmlMaps)}\n${varNamesCodes};`;
+                return `${svgIconConponentString};\n${createLoadSvgIconsCode(defaultOptions.svgId, svgHtmlMaps)}\n${varNamesCodes};\n${other}`;
             }
         },
         // transform(code, id) {

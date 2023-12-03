@@ -18,6 +18,7 @@ export interface IOptions {
     isWarn: boolean;
     isMultiColor: boolean;
     configResolvedAfter?: Function;
+    isViewTools?: boolean;
 }
 
 export interface IPaths {

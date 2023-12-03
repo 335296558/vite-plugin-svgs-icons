@@ -27,7 +27,7 @@
     <svgIcon name="logo" size="28" style="--logo-svg-color: #f00"></svgIcon>
 ```
 
-<p style="color: #2af598">示例二【多色修改】, 该示例为2个color, css var name 变量规则 --${name}-svg-color-${index}</p>
+<p style="color: #2af598">示例二【多色修改, 它不一定会起作用，只是一种尝试】, 该示例为2个color, css var name 变量规则 --${name}-svg-color-${index}</p>
 
 ```
     <svg id="__v__svgs__icons">

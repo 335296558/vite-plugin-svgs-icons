@@ -10,7 +10,7 @@ export default defineConfig({
         vitePluginSvgsIcons({
             dir: path.resolve(__dirname, 'src', 'assets', 'svg'),
             isNameVars: true,
-            // ssr: true // 服务端渲染
+            ssr: true // 服务端渲染
         }),
     ],
     resolve: {
@@ -18,4 +18,7 @@ export default defineConfig({
             find: '@', replacement: fileURLToPath(new URL('./src', import.meta.url))
         }]
     },
+    server: {
+        host: true
+    }
 })
