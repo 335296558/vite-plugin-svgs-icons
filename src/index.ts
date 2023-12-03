@@ -139,7 +139,7 @@ export default function vitePluginSvgsIcons(options: IOptions) {
                 const varNamesCodes = `${ defaultOptions.isNameVars?'export const svgIconNames ='+ JSON.stringify(svgs): '' }`;
                 const svgIconConponentString = svgIconStringReplace(svgIconString, defaultOptions.iconPrefix);
                 if (defaultOptions.ssr) {
-                    return `${svgIconConponentString};\n ${ varNamesCodes }`;
+                    return `${svgIconConponentString};\n ${ varNamesCodes }\n${other}`;
                 }
                 const svgHtmlMaps = escapeHtml(compressHtml(getSvgHtmlMaps(defaultOptions.svgId, symbolMaps)));
                 return `${svgIconConponentString};\n${createLoadSvgIconsCode(defaultOptions.svgId, svgHtmlMaps)}\n${varNamesCodes};\n${other}`;
