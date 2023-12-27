@@ -45,7 +45,9 @@ export default function vitePluginSvgsIcons(options: IOptions) {
     let svgIconMaps: { [key: string]: string } = {};
 
     defaultOptions = Object.assign(defaultOptions, options);
-
+    if (defaultOptions.isViewTools) {
+        defaultOptions.isNameVars = true;
+    }
     const ModuleId = defaultOptions.moduleId;
     // virtual
     const resolvedModuleId = '\0' + ModuleId;
@@ -136,7 +138,8 @@ export default function vitePluginSvgsIcons(options: IOptions) {
                 if (defaultOptions.isViewTools && process.env.NODE_ENV === 'development') {
                     other = SvgViewsDevToolsString;
                 }
-                const varNamesCodes = `${ defaultOptions.isNameVars?'export const svgIconNames ='+ JSON.stringify(svgs): '' }`;
+                // const varNamesCodes = `${ defaultOptions.isNameVars?'export const svgIconNames ='+ JSON.stringify(svgs): '' }`;
+                const varNamesCodes = `export const svgIconNames = ${ defaultOptions.isNameVars? JSON.stringify(svgs): '[]' }`;
                 const svgIconConponentString = svgIconStringReplace(svgIconString, defaultOptions.iconPrefix);
                 if (defaultOptions.ssr) {
                     return `${svgIconConponentString};\n ${ varNamesCodes }\n${other}`;

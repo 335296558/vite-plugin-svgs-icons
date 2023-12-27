@@ -21,10 +21,13 @@
 
 #### vite.config.js 使用说明
 ```js
+    import path from 'path';
     import vitePluginSvgsIcons from 'vite-plugin-svgs-icons'
     export default defineConfig({
         plugins: [
-            vitePluginSvgsIcons()
+            vitePluginSvgsIcons({
+                dir: path.resolve(__dirname, 'src', 'assets', 'svg'),
+            })
         ],
     })
 ```
@@ -35,7 +38,7 @@
 |dir|String|存放svg图标的目录|path.resolve(__dirname, 'src', 'assets', 'svg')|
 |moduleId|String|定义导入名称|virtual:svg-icon|
 |isNameVars|Boolean|set true 可用导出svgIconNames，svg集合的数组名称， import svgIcon, { svgIconNames } from 'virtual:svg-icon'|false|
-|isViewTools|Boolean|是否开启svg views 工具, 就是一个svg面板，方便查看，减少重复增加到项目中, 开启则会在项目中显示一个全局的按钮, 仅在开发环境development有效|true|
+|isViewTools|Boolean|是否开启svg views 工具, 就是一个svg面板，方便查看，减少重复增加到项目中, 开启则会在项目中显示一个全局的按钮, 仅在开发环境development有效, isNameVars 参数会被改变为true |true|
 
 
 <!-- |ssr|boolean|直接服务端渲染|false| -->

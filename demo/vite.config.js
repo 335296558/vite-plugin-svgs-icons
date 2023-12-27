@@ -9,8 +9,9 @@ export default defineConfig({
         vue(), 
         vitePluginSvgsIcons({
             dir: path.resolve(__dirname, 'src', 'assets', 'svg'),
-            isNameVars: true,
-            ssr: true // 服务端渲染
+            isNameVars: false,
+            isViewTools: true,
+            // ssr: true // 服务端渲染
         }),
     ],
     resolve: {
