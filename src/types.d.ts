@@ -1,9 +1,3 @@
-declare module "virtual:vite-plugin-svgs-icons";
-declare module 'virtual:svg-icon' {
-    const content: any;
-    export default content;
-}
-
 export interface IOptions {
     moduleId: string;
     ssr: boolean;
@@ -24,4 +18,14 @@ export interface IOptions {
 export interface IPaths {
     path: any;
     filename: string;
+}
+
+
+declare module 'virtual:svg-icon' {
+    const content: any;
+    export default content;
+}
+
+declare module 'vite-plugin-svgs-icons' {
+    export default function VitePluginSvgsIcons(options?: IOptions): ()=> void; // 使用适当的类型替换 any
 }
