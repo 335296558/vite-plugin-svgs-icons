@@ -157,7 +157,6 @@ export default function vitePluginSvgsIcons(options: IOptions): Plugin {
         },
         async handleHotUpdate({ file, server, read }) {
             // 检查更改的文件是否是 SVG 图标
-            // console.log('svg ======', file)
             if (file.endsWith('.svg')) {
                 // const normalizedPath = posix.normalize(file);
                 // 读取更新后的 SVG 文件内容
