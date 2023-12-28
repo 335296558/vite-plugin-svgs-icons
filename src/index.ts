@@ -95,6 +95,7 @@ export default function vitePluginSvgsIcons(options: IOptions) {
                 clearOriginFill: defaultOptions.clearOriginFill,
                 isWarn: Boolean(defaultOptions.isWarn),         
                 isMultiColor: Boolean(defaultOptions.isMultiColor),
+                // @ts-ignore
                 iconPrefix: defaultOptions?.iconPrefix
             });
             svgIconMaps[name] = newSvgText as string;
@@ -111,8 +112,10 @@ export default function vitePluginSvgsIcons(options: IOptions) {
             otherStyle = `<style>${SvgViewsDevToolsStyle}</style>`;
         }
         if (!defaultOptions.ssr) return html + otherStyle;
+        // @ts-ignore
         const style = setSvgMapHideStyle(defaultOptions.svgId);
         const svgHtmlMaps = symbolMaps;
+        // @ts-ignore
         const rsHtmlString = `${html} ${getSvgHtmlMaps(defaultOptions.svgId, svgHtmlMaps)} ${style} ${otherStyle}`;
         return rsHtmlString;
     }
@@ -140,12 +143,14 @@ export default function vitePluginSvgsIcons(options: IOptions) {
                 }
                 // const varNamesCodes = `${ defaultOptions.isNameVars?'export const svgIconNames ='+ JSON.stringify(svgs): '' }`;
                 const varNamesCodes = `export const svgIconNames = ${ defaultOptions.isNameVars? JSON.stringify(svgs): '[]' }`;
+                // @ts-ignore
                 const svgIconConponentString = svgIconStringReplace(svgIconString, defaultOptions.iconPrefix);
                 if (defaultOptions.ssr) {
                     return `${svgIconConponentString};\n ${ varNamesCodes }\n${other}`;
                 }
-                const svgHtmlMaps = escapeHtml(compressHtml(getSvgHtmlMaps(defaultOptions.svgId, symbolMaps)));
-                return `${svgIconConponentString};\n${createLoadSvgIconsCode(defaultOptions.svgId, svgHtmlMaps)}\n${varNamesCodes};\n${other}`;
+                const svgId = defaultOptions.svgId || '';
+                const svgHtmlMaps = escapeHtml(compressHtml(getSvgHtmlMaps(svgId, symbolMaps)));
+                return `${svgIconConponentString};\n${createLoadSvgIconsCode(svgId, svgHtmlMaps)}\n${varNamesCodes};\n${other}`;
             }
         },
         // transform(code, id) {
