@@ -7,8 +7,8 @@
  * @author 335296558@qq.com
  * @name vite-plugin-svgs-icons || vitePluginSvgsIcons
  */
-
-import { join, resolve } from 'path';
+import { Plugin } from 'vite';
+import { join, posix } from 'path';
 
 import fs from 'node:fs';
 
@@ -39,9 +39,8 @@ let defaultOptions: IOptions = {
     isViewTools: true
 };
 
-export default function vitePluginSvgsIcons(options: IOptions) {
+export default function vitePluginSvgsIcons(options: IOptions): Plugin {
     let svgs: string[] = [];
-    let symbolMaps: string = '';
     let svgIconMaps: { [key: string]: string } = {};
 
     defaultOptions = Object.assign(defaultOptions, options);
@@ -77,6 +76,21 @@ export default function vitePluginSvgsIcons(options: IOptions) {
         return paths;
     }
 
+    function optionIconMaps(filePathLast: string, svgText: string) {
+        const name = filePathLast.replace(/.svg/g, '');
+        svgs.push(name);
+        const newSvgText = transformSvgHTML(svgText, { 
+            name,
+            clearOriginFill: defaultOptions.clearOriginFill,
+            isWarn: Boolean(defaultOptions.isWarn),         
+            isMultiColor: Boolean(defaultOptions.isMultiColor),
+            // @ts-ignore
+            iconPrefix: defaultOptions?.iconPrefix
+        });
+        svgIconMaps[name] = newSvgText as string;
+        return newSvgText;
+    }
+
     async function handleSvgMaps(RootPath: string) { // RootPath=使用插件的项目根目录的path
         const FilePath: string = RootPath;
         if (!fs.existsSync(FilePath)) {
@@ -85,25 +99,18 @@ export default function vitePluginSvgsIcons(options: IOptions) {
         }
         const files = await loopReaddir(FilePath);
         svgs = [];
-        symbolMaps = '';
         files.forEach(item => {
             let svgText = fs.readFileSync(item.path, 'utf8');
-            const name = item.filename.replace(/.svg/g, '');
-            svgs.push(name);
-            const newSvgText = transformSvgHTML(svgText, { 
-                name,
-                clearOriginFill: defaultOptions.clearOriginFill,
-                isWarn: Boolean(defaultOptions.isWarn),         
-                isMultiColor: Boolean(defaultOptions.isMultiColor),
-                // @ts-ignore
-                iconPrefix: defaultOptions?.iconPrefix
-            });
-            svgIconMaps[name] = newSvgText as string;
-            
-            let svgHtml = newSvgText;
-            symbolMaps+=svgHtml;
+            optionIconMaps(item.filename, svgText);
         });
-        return symbolMaps;
+    }
+
+    function getAllSvgHtmlString() {
+        let symbolStrMaps = '';
+        for (const k in svgIconMaps) {
+            symbolStrMaps+=svgIconMaps[k];
+        }
+        return symbolStrMaps;
     }
 
     function transformIndexHtml(html: string) {
@@ -114,21 +121,15 @@ export default function vitePluginSvgsIcons(options: IOptions) {
         if (!defaultOptions.ssr) return html + otherStyle;
         // @ts-ignore
         const style = setSvgMapHideStyle(defaultOptions.svgId);
-        const svgHtmlMaps = symbolMaps;
+        const svgHtmlMaps = getAllSvgHtmlString();
         // @ts-ignore
         const rsHtmlString = `${html} ${getSvgHtmlMaps(defaultOptions.svgId, svgHtmlMaps)} ${style} ${otherStyle}`;
         return rsHtmlString;
     }
     let svgMapPath = `${defaultOptions.dir}`;
     handleSvgMaps(svgMapPath); // 如果不在这里执行，在configResolved 中执行，Nuxt Module 那边会有问题！所以为了兼容多点场景使用，需要在这执行
-    // let configs = {};
     const pluginOptions = {
         name: defaultOptions.moduleId,
-        // configResolved(config: any) {
-        //     configs = config; 
-        //     svgMapPath = resolve(config.root, `${defaultOptions.dir}`);
-        //     handleSvgMaps(svgMapPath)
-        // },
         transformIndexHtml,
         resolveId(id: string) {
             if (id === ModuleId) {
@@ -149,43 +150,41 @@ export default function vitePluginSvgsIcons(options: IOptions) {
                     return `${svgIconConponentString};\n ${ varNamesCodes }\n${other}`;
                 }
                 const svgId = defaultOptions.svgId || '';
+                const symbolMaps = getAllSvgHtmlString();
                 const svgHtmlMaps = escapeHtml(compressHtml(getSvgHtmlMaps(svgId, symbolMaps)));
                 return `${svgIconConponentString};\n${createLoadSvgIconsCode(svgId, svgHtmlMaps)}\n${varNamesCodes};\n${other}`;
             }
         },
-        // transform(code, id) {
-        //     if (id === resolvedModuleId) {
-        //         console.log('===', id);
-        //     }
-        // },
-        async handleHotUpdate(ctx: any) { // 热更新处理
-            const svgMapPath = resolve(ctx.server.config.root, `${defaultOptions.dir}`);
-            async function update(filePath: string) {
-                if (ctx.file.indexOf(filePath) >= 0 || ctx.file.indexOf('.svg') >=0) {
-                    await handleSvgMaps(svgMapPath);
-                    try {
-                        const { moduleGraph } = ctx.server;
-                        const module = moduleGraph.getModuleById(resolvedModuleId);
-                        ctx.server.ws.send({
-                            type: 'full-reload',
-                            path: '*',
-                        });
-                        return module?[...module]: true;
-                    } catch (error) {}
-                }
-                return true;
+        async handleHotUpdate({ file, server, read }) {
+            // 检查更改的文件是否是 SVG 图标
+            // console.log('svg ======', file)
+            if (file.endsWith('.svg')) {
+                // const normalizedPath = posix.normalize(file);
+                // 读取更新后的 SVG 文件内容
+                const newSvgContent = await read();
+                const filePaths = file.split('/');
+                const filePathLast = filePaths[filePaths.length - 1];
+                optionIconMaps(filePathLast, newSvgContent);
+                // 发送一个 'update' 类型的消息给客户端
+                server.ws.send({
+                    type: 'update',
+                    updates: [
+                        {
+                            type: 'js-update',
+                            // path: normalizedPath, // 需要更新的模块路径 ModuleId
+                            path: resolvedModuleId,
+                            timestamp: Date.now(),
+                            acceptedPath: resolvedModuleId, // 被 HMR 接受处理的模块路径
+                        },
+                    ],
+                });
+                // 返回空数组，表示不使用默认的 HMR 更新
+                return [];
             }
-          
-            // ctx.server.watcher.on('add', async (path: string) => {
-            //     await update(path);
-            // });
-
-            ctx.server.watcher.on('unlink', async (path: string) => {
-                await update(path);
-            });
-
-            return await update(svgMapPath);
-        }
+            // 对于非 SVG 文件，使用默认处理
+            return null;
+        },
     }
+    // @ts-ignore
     return pluginOptions;
 }
