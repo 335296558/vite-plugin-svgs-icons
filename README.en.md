@@ -78,12 +78,4 @@
 
 <!-- [示列图像]() -->
 
-
-#### Latest version description：
-    v1.0.0
-        1、Supports SVG multi-color modification🤪! [But multi-color modification may still have some problems that cannot be modified]
-        2、Optimize and fix the problem that some svg cannot be displayed [but there are still some special svg that may, may, or may not be displayed]
-
-[historic version：version Update](VERSION.md) 
-
 🤡👻👽👾🤖😈🤠👺👹😉😜🤪🤪🤪🤪

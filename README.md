@@ -31,7 +31,23 @@
         ],
     })
 ```
-#### vitePluginSvgsIcons 方法传参，Object， 如果不需要的svg图标建议不要放在目录下
+##### Nuxt3
+```js
+    import path from 'path';
+    import vitePluginSvgsIcons from 'vite-plugin-svgs-icons';
+    export default defineNuxtConfig({
+        vite: {
+            plugins: [
+                vitePluginSvgsIcons({
+                    dir: path.resolve(__dirname, 'assets', 'svg'),
+                })
+            ]
+        }
+    })
+```
+##### 也可以用Nuxt module [nuxt-svgs-icon](https://github.com/335296558/nuxt-svgs-icon)
+
+#### vitePluginSvgsIcons 参数配置
 
 | 参数名 | 类型 | 描述 | 默认值 |
 | -------- | -------- | -------- | -------- |
@@ -58,6 +74,12 @@
 ```
 #### svg组件使用说明
 ```js
+    // main.js 全局注册
+    import svgIcon from 'virtual:svg-icon'
+    VueApp.component('svg-icon', svgIcon);
+```
+
+```js
     // app.vue 局部注册使用
     <script setup>
         import svgIcon from 'virtual:svg-icon';
@@ -72,29 +94,7 @@
     </template>
 ```
 
-```js
-    // main.js 全局注册
-    import svgIcon from 'virtual:svg-icon'
-    VueApp.component('svg-icon', svgIcon);
-```
-
-##### Nuxt 也可以用Nuxt module [nuxt-svgs-icon](https://github.com/335296558/nuxt-svgs-icon)
-```js
-    import path from 'path';
-    import vitePluginSvgsIcons from 'vite-plugin-svgs-icons';
-    export default defineNuxtConfig({
-        vite: {
-            plugins: [
-                vitePluginSvgsIcons({
-                    dir: path.resolve(__dirname, 'assets', 'svg'),
-                    isNameVars: true,
-                })
-            ]
-        }
-    })
-```
-
-#### 组件参数说明
+#### virtual:svg-icon 组件参数说明
 | 参数名 | 类型 | 默认值 |
 | -------- | ------- | -------- |
 |name|String|必需设置name，与文件名称一样， 否则不显示哦。name参数是svg文件名称，比如：svg/logo.svg 那么你引用这个svg 只需要name="logo"|
@@ -103,12 +103,5 @@
 
 <!-- [示列图像]() -->
 
-
-#### 版本描述：
-    v >= v3.1.5 
-        1、优化与修复有些svg无法显示问题【但依然是会有些特殊的svg可能、可能、可能无法显示】
-        2、支持svg 多色修改🤪
-
-[历史版本：version Update](VERSION.md) 
 
 🤡👻👽👾🤖😈🤠👺👹😉😜🤪🤪🤪🤪
