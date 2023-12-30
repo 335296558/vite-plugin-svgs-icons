@@ -8,8 +8,8 @@
  * @name vite-plugin-svgs-icons || vitePluginSvgsIcons
  */
 import { Plugin } from 'vite';
-import { join, posix } from 'path';
-
+import { join, resolve } from 'path';
+import type { ViteDevServer, ModuleNode } from 'vite';
 import fs from 'node:fs';
 
 import { transformSvgHTML, getSvgHtmlMaps, setSvgMapHideStyle, svgIconStringReplace, createLoadSvgIconsCode, escapeHtml, compressHtml } from './utils';
@@ -42,7 +42,6 @@ let defaultOptions: IOptions = {
 export default function vitePluginSvgsIcons(options: IOptions): Plugin {
     let svgs: string[] = [];
     let svgIconMaps: { [key: string]: string } = {};
-
     defaultOptions = Object.assign(defaultOptions, options);
     if (defaultOptions.isViewTools) {
         defaultOptions.isNameVars = true;
@@ -155,32 +154,21 @@ export default function vitePluginSvgsIcons(options: IOptions): Plugin {
                 return `${svgIconConponentString};\n${createLoadSvgIconsCode(svgId, svgHtmlMaps)}\n${varNamesCodes};\n${other}`;
             }
         },
-        async handleHotUpdate({ file, server, read }) {
-            // 检查更改的文件是否是 SVG 图标
+        async handleHotUpdate({ file, server }:{ file: string ; server: ViteDevServer }) { // 热更新处理
             if (file.endsWith('.svg')) {
-                // const normalizedPath = posix.normalize(file);
-                // 读取更新后的 SVG 文件内容
-                const newSvgContent = await read();
-                const filePaths = file.split('/');
-                const filePathLast = filePaths[filePaths.length - 1];
-                optionIconMaps(filePathLast, newSvgContent);
-                // 发送一个 'update' 类型的消息给客户端
-                server.ws.send({
-                    type: 'update',
-                    updates: [
-                        {
-                            type: 'js-update',
-                            // path: normalizedPath, // 需要更新的模块路径 ModuleId
-                            path: resolvedModuleId,
-                            timestamp: Date.now(),
-                            acceptedPath: resolvedModuleId, // 被 HMR 接受处理的模块路径
-                        },
-                    ],
-                });
-                // 返回空数组，表示不使用默认的 HMR 更新
-                return [];
+                const svgMapPath = resolve(server.config.root, `${defaultOptions.dir}`);
+                await handleSvgMaps(svgMapPath);
+                const { moduleGraph } = server;
+                const module = moduleGraph.getModuleById(resolvedModuleId) as ModuleNode;
+                if (module) {
+                    server.reloadModule(module);
+                    server.ws.send({
+                        type: 'full-reload',
+                        path: '*',
+                    });
+                }
+                return module;
             }
-            // 对于非 SVG 文件，使用默认处理
             return null;
         },
     }
