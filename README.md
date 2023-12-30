@@ -19,7 +19,7 @@
 
     pnpm add vite-plugin-svgs-icons -D
 
-#### vite.config.js 使用说明
+#### vite.config.js
 ```js
     import path from 'path';
     import vitePluginSvgsIcons from 'vite-plugin-svgs-icons'
