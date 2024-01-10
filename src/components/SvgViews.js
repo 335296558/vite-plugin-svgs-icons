@@ -87,4 +87,6 @@ function SvgsViewDevTools() {
     document.body.appendChild(wrapDom);
 }
 
-SvgsViewDevTools();
+if (typeof window === 'object') {
+    SvgsViewDevTools();
+}
