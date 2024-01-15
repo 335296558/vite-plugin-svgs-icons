@@ -14,15 +14,15 @@ export default defineConfig({
         },
         rollupOptions: {
             external: ['vue', 'fs', 'path','url','node:fs', 'node:url'],
-            plugins: [
-                copy({
-                    targets: [
-                        { src: './src/types.d.ts', dest: 'dist/' }
-                    ],
-                    // 因为打包后dist目录会被先清空，所以要加hook: 'writeBundle'
-                    hook: 'writeBundle' 
-                })
-            ]
+            // plugins: [
+            //     copy({
+            //         targets: [
+            //             { src: './src/types.d.ts', dest: 'dist/' }
+            //         ],
+            //         // 因为打包后dist目录会被先清空，所以要加hook: 'writeBundle'
+            //         hook: 'writeBundle' 
+            //     })
+            // ]
         },
     }
 })
