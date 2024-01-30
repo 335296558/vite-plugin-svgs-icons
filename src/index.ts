@@ -22,7 +22,27 @@ import SvgViewsDevToolsString from './components/SvgViews.js?raw';
 // @ts-ignore
 import SvgViewsDevToolsStyle from './style/SvgViews.css?raw';
 
-import type { IOptions, IPaths } from './types.d.ts';
+interface IOptions {
+    moduleId?: string;
+    ssr?: boolean;
+    dir?: any;
+    svgId?: string;
+    iconPrefix?: string;
+    // 可以设置初始化时不要清除原来svg的fill, =true也是仅针对单色处理
+    clearOriginFill?: boolean; 
+    // 是否生成svg名称，Array
+    isNameVars?: boolean; 
+    // 关闭所有警告
+    isWarn?: boolean;
+    isMultiColor?: boolean;
+    configResolvedAfter?: Function;
+    isViewTools?: boolean;
+}
+
+interface IPaths {
+    path: any;
+    filename: string;
+}
 
 const PluginName: string = 'vite-plugin-svgs-icons';
 
