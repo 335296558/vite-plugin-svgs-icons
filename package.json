@@ -1,6 +1,6 @@
 {
   "name": "vite-plugin-svgs-icons",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "type": "module",
   "files": [
     "dist"
@@ -10,7 +10,7 @@
   "types": "./dist/types.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/types.d.ts",
+      "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
     },
@@ -18,7 +18,7 @@
   },
   "scripts": {
     "dev": "vite build && vite dev demo watch",
-    "build": "vite build && vite build demo && pnpm run build:types",
+    "build": "vite build && pnpm run build:types && vite build demo",
     "build:types": "tsc --emitDeclarationOnly",
     "preview": "vite preview demo",
     "deploy": "npm publish --registry=https://registry.npmjs.org/",
@@ -27,6 +27,7 @@
   },
   "dependencies": {
     "@vitejs/plugin-vue-jsx": "^3.1.0",
+    "typescript": "^5.3.3",
     "vite": "^5.0.10",
     "vue": "^3.3.13"
   },

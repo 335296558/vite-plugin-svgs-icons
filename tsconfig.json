@@ -1,11 +1,11 @@
 {
   "compilerOptions": {
-    "declaration": true,
     "target": "ES2020",
     "useDefineForClassFields": true,
     "module": "ESNext",
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "skipLibCheck": true,
+    "declaration": true,
 
     /* Bundler mode */
     "moduleResolution": "bundler",
@@ -19,12 +19,14 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "outDir": "./dist",
+    "outDir": "./dist/",
+    "rootDir": "./src/",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "emitDeclarationOnly": true,
     "noEmit": false // 确保这个选项被设置为 false 或者完全移除它
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "test"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
