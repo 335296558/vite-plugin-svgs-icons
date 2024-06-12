@@ -398,7 +398,7 @@ export function transformSvgHTML(svgStr: string, option: IOption){
     const endTag = /<\/svg>/g;
     const symbolStartTag = '<symbol';
     const symbolEndTag = '</symbol>';
-    // svg 夫换 symbol
+    // svg 替换 symbol
     // @ts-ignore
     let svgStartTag = svgStr.match(svgReg)[0];
     if (svgStartTag.match(startTag)) {
@@ -411,6 +411,8 @@ export function transformSvgHTML(svgStr: string, option: IOption){
     const h_reg = /\s+height=".+?"/s;
     const class_reg = /\s+class=".+?"/g;
     const fill_url_reg = /\s+fill="url\(#(\w+)\)"/g;
+    const fill_reg = /\s+fill="([^"]+)"/g;
+    // const stroke_fill_reg = /\s+(?:fill|stroke)="([^"]+)"/g;
     const stroke_reg = /\s+stroke="([^"]+)"/g;
 
     const xmlns_reg = /\s+xmlns=".+?"/s;
@@ -462,8 +464,17 @@ export function transformSvgHTML(svgStr: string, option: IOption){
             // 清除掉它原来的color
             // 并且不能给默认color, 不然外部无法修改color
             svgStr = svgStr.replace(/fill="([^"]+)"/g, ''); 
-        } else if (stroke_reg.test(svgStr)) { // 处理的还是单色的情况，只是通过css var 去更改
-            // 这里还没写好
+        } else if (stroke_reg.test(svgStr)||fill_reg.test(svgStr)) { // 处理的还是单色的情况，只是通过css var 去更改
+            if (objs.colors && objs.colors?.length>=2) { // 判断多个color 的情况但是color是相同的
+                const symbol_tag_inner = /<symbol[^>]*>(.*?)<\/symbol>/gs;
+                const modifiedString = svgStr.replace(symbol_tag_inner, (match, group) => {
+                // 将 fill 或 stroke 属性的值替换为 styleVarName
+                    const modifiedGroup = group.replace(/\s+(fill|stroke)="([^"]+)"/g, ` $1="var(${styleVarName})"`);
+                    return match.replace(group, modifiedGroup);
+                });
+                svgStr = modifiedString;
+            }
+
             svgStr = svgStr.replace(stroke_reg, ` stroke="var(${styleVarName})"`); 
             if (objs.colors?.length) {
                 // 处理无法在外部通过color 改色的
