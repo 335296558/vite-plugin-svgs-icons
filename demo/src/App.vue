@@ -55,6 +55,8 @@ const size = ref(42);
             </a>
         </h4>
         <svgIcon name="de" size="40" style="--de-svg-color: #f00"></svgIcon>
+        <svgIcon name="de" size="40" style="--de-svg-color: #000"></svgIcon>
+        <svgIcon name="about" size="40" color="#f00"></svgIcon>
     </div>
     
     <div :style="`padding: 8px;color: ${color}`">

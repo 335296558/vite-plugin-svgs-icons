@@ -93,6 +93,14 @@
         <svgIcon name="logo" style="color:#f00;width: 80px;height:80px" />
     </template>
 ```
+### 关于设置color要注意的
+```text
+如果color 设置无效，可能你需要用css 变量修改它，例如:
+logo.svg 那么css 变量则是 --logo-svg-color: #f00;
+<svgIcon name="logo" style="--logo-svg-color: #f00;" />
+```
+[关于多颜色修改请移步](MULTICOLOR.md)
+
 
 #### virtual:svg-icon 组件参数说明
 | 参数名 | 类型 | 默认值 |

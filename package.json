@@ -17,7 +17,8 @@
     "./package.json": "./package.json"
   },
   "scripts": {
-    "dev": "vite dev demo watch",
+    "dev": "vite dev demo watch & pnpm run watch",
+    "watch": "chokidar 'src/**/*' -c 'bun run build'",
     "build": "vite build && pnpm run build:types",
     "build-demo": "vite build && pnpm run build:types && vite build demo",
     "build:types": "tsc --emitDeclarationOnly",
