@@ -1,6 +1,8 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
-import vitePluginSvgsIcons from '../dist/index';
+// import vitePluginSvgsIcons from '../dist/index';
+import vitePluginSvgsIcons from 'vite-plugin-svgs-icons';
+console.log(vitePluginSvgsIcons, 'vitePluginSvgsIcons')
 // import vitePluginSvgsIcons from '/Users/shuang/web/Plugin/vite-plugin-svgs-icons/src/index';
 import path from 'path';
 import { fileURLToPath, URL } from "url";

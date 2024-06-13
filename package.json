@@ -39,7 +39,8 @@
     "chokidar-cli": "^3.0.0",
     "fast-glob": "^3.3.2",
     "path": "^0.12.7",
-    "rollup-plugin-copy": "^3.5.0"
+    "rollup-plugin-copy": "^3.5.0",
+    "vite-plugin-svgs-icons": "^1.0.10"
   },
   "vite": {
     "plugins": [

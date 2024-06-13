@@ -54,6 +54,7 @@ const size = ref(42);
                 <svgIcon name="github" size="30"></svgIcon>
             </a>
         </h4>
+        <svgIcon name="de" size="40" style="--de-svg-color: #f00"></svgIcon>
     </div>
     
     <div :style="`padding: 8px;color: ${color}`">
